@@ -6,7 +6,9 @@
     Private asegurado As Asegurado
     Private nroExamenes As Short
     Private nroResultados As Short
-    Private detalles As DetalleOrdenLaboratorio()
+    Private detalles As DetalleLaboratorio()
+    Private nota As String
+
     Public Sub New()
         codigo = 0
         fecha = New Date()
@@ -14,7 +16,8 @@
         asegurado = New Asegurado()
         nroExamenes = 0
         nroResultados = 0
-        detalles = New DetalleOrdenLaboratorio(-1) {}
+        detalles = New DetalleLaboratorio(-1) {}
+        nota = ""
     End Sub
 
 
@@ -70,6 +73,7 @@
 
 
 
+
     Public Sub setNroResultados(_nroResultados As Short)
         nroResultados = _nroResultados
     End Sub
@@ -80,14 +84,27 @@
 
 
 
-    Public Sub setDetalles(_detalles As DetalleOrdenLaboratorio())
+
+    Public Sub setDetalles(_detalles As DetalleLaboratorio())
         detalles = _detalles
     End Sub
 
-
-    Public Function getDetalles() As DetalleOrdenLaboratorio()
+    Public Function getDetalles() As DetalleLaboratorio()
         Return detalles
     End Function
+
+
+
+
+    Public Sub setNota(_nota As String)
+        nota = _nota
+    End Sub
+
+    Public Function getNota() As String
+        Return nota
+    End Function
+
+
 
 
 End Class

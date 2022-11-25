@@ -2,9 +2,9 @@
 
     Private objDAL As DAL.TDatosSql = New DAL.TDatosSql(False)
     Public listaOrdenesLab() As OrdenLaboratorio
-    Public listaDetallesOrdLab() As DetalleOrdenLaboratorio
+    Public listaDetallesOrdLab() As DetalleLaboratorio
     Public oOrdenLaboratorio As OrdenLaboratorio
-    Public listaDetallesSeleccionados() As DetalleOrdenLaboratorio
+    Public listaDetallesSeleccionados() As DetalleLaboratorio
 
 
 
@@ -64,7 +64,7 @@
 
     Public Sub traerDetallesOrden(ByVal _codigoOrden As Int16)
         Dim datatable As DataTable = traerDetallesOrdenBD(_codigoOrden), index As Int16 = 0
-        listaDetallesOrdLab = New DetalleOrdenLaboratorio(datatable.Rows.Count - 1) {}
+        listaDetallesOrdLab = New DetalleLaboratorio(datatable.Rows.Count - 1) {}
 
         Dim orden As New OrdenLaboratorio()
         orden.setCodigo(_codigoOrden)
@@ -73,7 +73,7 @@
             Dim codigoDetalle As Int16 = Int16.Parse(row("COD DETALLE"))
             Dim codigoOrden As Int16 = Int16.Parse(row("COD ORDEN"))
             Dim nombreExamen As String = row("EXAMEN").ToString()
-            Dim objDetalleOrdenLab As DetalleOrdenLaboratorio = New DetalleOrdenLaboratorio()
+            Dim objDetalleOrdenLab As DetalleLaboratorio = New DetalleLaboratorio()
             objDetalleOrdenLab.setCodigo(codigoDetalle)
             objDetalleOrdenLab.setOrden(orden)
             objDetalleOrdenLab.getExamen().setNombre(nombreExamen)
@@ -86,7 +86,7 @@
     Public Function registrarRecepcionDeMuestra()
         Dim respuesta As Int16 = 0
 
-        For Each ordenLaboratorio As DetalleOrdenLaboratorio In listaDetallesSeleccionados
+        For Each ordenLaboratorio As DetalleLaboratorio In listaDetallesSeleccionados
             respuesta = registrarRecepcionDeMuestraBD(ordenLaboratorio)
         Next
 
@@ -117,7 +117,7 @@
         Return (objDAL.TraerDataTable("SPtraerDetalleOrden", P))
     End Function
 
-    Private Function registrarRecepcionDeMuestraBD(ByVal _oDetalleOrdenLab As DetalleOrdenLaboratorio) As Int16
+    Private Function registrarRecepcionDeMuestraBD(ByVal _oDetalleOrdenLab As DetalleLaboratorio) As Int16
         Dim P As Object() = New Object(1) {}
         P(0) = _oDetalleOrdenLab.getCodigo()
         P(1) = Usuario.codUserLoggedSystem

@@ -138,7 +138,6 @@ Public Class FormRegistrarAreaLaboratorio
             Dim mensajeValidacion As String = validarEntradasArea()
             If mensajeValidacion = "" Then enviarDatosAreaDatanase() Else mostrarMensaje(mensajeValidacion)
         End If
-
     End Sub
 
     Private Function cargarDatosArea()
@@ -212,6 +211,7 @@ Public Class FormRegistrarAreaLaboratorio
     Private Sub btnRegistrarArea_Click(sender As Object, e As EventArgs) Handles btnRegistrarArea.Click
         Try
             enviarDatosArea()
+
         Catch ex As Exception
             MessageBox.Show(ex.Message)
         End Try

@@ -7,6 +7,7 @@
     Private tipo As Concepto
     Private examen As ExamenLaboratorio
     Private tipoReferencia As Concepto
+    Private marca As MarcaKitEquipoLaboratorio
 
     Public Sub New()
         codigo = 0
@@ -14,10 +15,15 @@
         proveedor = New ProveedorKitEquipo()
         modelo = 0
         tipo = New Concepto()
-        examen = New ExamenLaboratorio()
+        examen = Nothing
         tipoReferencia = New Concepto()
+        marca = Nothing
     End Sub
 
+    Public Sub New(_examen As ExamenLaboratorio)
+        codigo = 0
+        examen = _examen
+    End Sub
 
 
     Public Function getCodigo() As Long
@@ -88,6 +94,16 @@
     Public Sub setTipoReferencia(ByRef _tipoReferencia As Concepto)
         tipoReferencia = _tipoReferencia
     End Sub
+
+
+
+    Public Sub setMarca(_marca As MarcaKitEquipoLaboratorio)
+        marca = _marca
+    End Sub
+
+    Public Function getMarca() As MarcaKitEquipoLaboratorio
+        Return marca
+    End Function
 
 End Class
 

@@ -47,6 +47,7 @@ Partial Class FormRegistrarExamenLaboratorio
         Me.cboxTipoResultado = New System.Windows.Forms.ComboBox()
         Me.hintTipoResultado = New System.Windows.Forms.Label()
         Me.panelDatosExamen = New System.Windows.Forms.Panel()
+        Me.chPuedePedirseIndividual = New System.Windows.Forms.CheckBox()
         Me.btnEnviarDatos = New System.Windows.Forms.Button()
         Me.panelDatosUnidad = New System.Windows.Forms.Panel()
         Me.btnBuscarUnidad = New System.Windows.Forms.Button()
@@ -125,16 +126,16 @@ Partial Class FormRegistrarExamenLaboratorio
         Me.panelResultado1.Controls.Add(Me.lblNombreKitEquipo)
         Me.panelResultado1.Controls.Add(Me.btnRegistrarKitEquipo)
         Me.panelResultado1.Controls.Add(Me.Label26)
-        Me.panelResultado1.Location = New System.Drawing.Point(30, 260)
+        Me.panelResultado1.Location = New System.Drawing.Point(417, 245)
         Me.panelResultado1.Name = "panelResultado1"
-        Me.panelResultado1.Size = New System.Drawing.Size(518, 154)
+        Me.panelResultado1.Size = New System.Drawing.Size(500, 162)
         Me.panelResultado1.TabIndex = 11
         '
         'chKitEquipoAsignado
         '
         Me.chKitEquipoAsignado.AutoSize = True
         Me.chKitEquipoAsignado.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.5!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chKitEquipoAsignado.Location = New System.Drawing.Point(355, 117)
+        Me.chKitEquipoAsignado.Location = New System.Drawing.Point(333, 117)
         Me.chKitEquipoAsignado.Name = "chKitEquipoAsignado"
         Me.chKitEquipoAsignado.Size = New System.Drawing.Size(146, 20)
         Me.chKitEquipoAsignado.TabIndex = 98
@@ -146,7 +147,7 @@ Partial Class FormRegistrarExamenLaboratorio
         Me.txtTipoReferencia.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtTipoReferencia.Location = New System.Drawing.Point(166, 80)
         Me.txtTipoReferencia.Name = "txtTipoReferencia"
-        Me.txtTipoReferencia.Size = New System.Drawing.Size(335, 21)
+        Me.txtTipoReferencia.Size = New System.Drawing.Size(313, 21)
         Me.txtTipoReferencia.TabIndex = 97
         '
         'lblNombreTipoReferencia
@@ -164,7 +165,7 @@ Partial Class FormRegistrarExamenLaboratorio
         Me.txtKitEquipo.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtKitEquipo.Location = New System.Drawing.Point(166, 44)
         Me.txtKitEquipo.Name = "txtKitEquipo"
-        Me.txtKitEquipo.Size = New System.Drawing.Size(335, 21)
+        Me.txtKitEquipo.Size = New System.Drawing.Size(313, 21)
         Me.txtKitEquipo.TabIndex = 95
         '
         'lblNombreKitEquipo
@@ -182,9 +183,9 @@ Partial Class FormRegistrarExamenLaboratorio
         Me.btnRegistrarKitEquipo.BackColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(0, Byte), Integer), CType(CType(0, Byte), Integer), CType(CType(0, Byte), Integer))
         Me.btnRegistrarKitEquipo.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnRegistrarKitEquipo.ForeColor = System.Drawing.Color.Black
-        Me.btnRegistrarKitEquipo.Location = New System.Drawing.Point(165, 117)
+        Me.btnRegistrarKitEquipo.Location = New System.Drawing.Point(165, 113)
         Me.btnRegistrarKitEquipo.Name = "btnRegistrarKitEquipo"
-        Me.btnRegistrarKitEquipo.Size = New System.Drawing.Size(184, 25)
+        Me.btnRegistrarKitEquipo.Size = New System.Drawing.Size(162, 29)
         Me.btnRegistrarKitEquipo.TabIndex = 92
         Me.btnRegistrarKitEquipo.Text = "Registrar nuevo kit-equipo"
         Me.btnRegistrarKitEquipo.UseVisualStyleBackColor = False
@@ -195,7 +196,7 @@ Partial Class FormRegistrarExamenLaboratorio
         Me.cboxArea.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cboxArea.FormattingEnabled = True
         Me.cboxArea.Items.AddRange(New Object() {"SC", "LP", "CO", "BE", "PA", "OR", "PO", "CH", "TA"})
-        Me.cboxArea.Location = New System.Drawing.Point(80, 45)
+        Me.cboxArea.Location = New System.Drawing.Point(75, 45)
         Me.cboxArea.Name = "cboxArea"
         Me.cboxArea.Size = New System.Drawing.Size(262, 23)
         Me.cboxArea.TabIndex = 20
@@ -204,7 +205,7 @@ Partial Class FormRegistrarExamenLaboratorio
         '
         Me.Label6.AutoSize = True
         Me.Label6.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.5!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label6.Location = New System.Drawing.Point(38, 44)
+        Me.Label6.Location = New System.Drawing.Point(38, 45)
         Me.Label6.Name = "Label6"
         Me.Label6.Size = New System.Drawing.Size(36, 16)
         Me.Label6.TabIndex = 18
@@ -214,7 +215,7 @@ Partial Class FormRegistrarExamenLaboratorio
         '
         Me.hintArea.AutoSize = True
         Me.hintArea.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.hintArea.Location = New System.Drawing.Point(85, 50)
+        Me.hintArea.Location = New System.Drawing.Point(80, 50)
         Me.hintArea.Name = "hintArea"
         Me.hintArea.Size = New System.Drawing.Size(82, 13)
         Me.hintArea.TabIndex = 19
@@ -223,7 +224,7 @@ Partial Class FormRegistrarExamenLaboratorio
         'txtNombreExamen
         '
         Me.txtNombreExamen.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtNombreExamen.Location = New System.Drawing.Point(80, 115)
+        Me.txtNombreExamen.Location = New System.Drawing.Point(75, 115)
         Me.txtNombreExamen.Name = "txtNombreExamen"
         Me.txtNombreExamen.Size = New System.Drawing.Size(386, 21)
         Me.txtNombreExamen.TabIndex = 17
@@ -242,7 +243,7 @@ Partial Class FormRegistrarExamenLaboratorio
         '
         Me.Label7.AutoSize = True
         Me.Label7.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.5!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label7.Location = New System.Drawing.Point(15, 117)
+        Me.Label7.Location = New System.Drawing.Point(15, 115)
         Me.Label7.Name = "Label7"
         Me.Label7.Size = New System.Drawing.Size(56, 16)
         Me.Label7.TabIndex = 16
@@ -253,7 +254,7 @@ Partial Class FormRegistrarExamenLaboratorio
         Me.cboxSubarea.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboxSubarea.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cboxSubarea.FormattingEnabled = True
-        Me.cboxSubarea.Location = New System.Drawing.Point(80, 80)
+        Me.cboxSubarea.Location = New System.Drawing.Point(75, 80)
         Me.cboxSubarea.Name = "cboxSubarea"
         Me.cboxSubarea.Size = New System.Drawing.Size(261, 23)
         Me.cboxSubarea.TabIndex = 23
@@ -274,7 +275,7 @@ Partial Class FormRegistrarExamenLaboratorio
         Me.btnRegistrarArea.BackColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(0, Byte), Integer), CType(CType(0, Byte), Integer), CType(CType(0, Byte), Integer))
         Me.btnRegistrarArea.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnRegistrarArea.ForeColor = System.Drawing.Color.Black
-        Me.btnRegistrarArea.Location = New System.Drawing.Point(348, 45)
+        Me.btnRegistrarArea.Location = New System.Drawing.Point(343, 45)
         Me.btnRegistrarArea.Name = "btnRegistrarArea"
         Me.btnRegistrarArea.Size = New System.Drawing.Size(118, 25)
         Me.btnRegistrarArea.TabIndex = 11
@@ -285,7 +286,7 @@ Partial Class FormRegistrarExamenLaboratorio
         '
         Me.hintSubarea.AutoSize = True
         Me.hintSubarea.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.hintSubarea.Location = New System.Drawing.Point(85, 85)
+        Me.hintSubarea.Location = New System.Drawing.Point(80, 85)
         Me.hintSubarea.Name = "hintSubarea"
         Me.hintSubarea.Size = New System.Drawing.Size(82, 13)
         Me.hintSubarea.TabIndex = 22
@@ -296,7 +297,7 @@ Partial Class FormRegistrarExamenLaboratorio
         Me.btnRegistrarSubarea.BackColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(0, Byte), Integer), CType(CType(0, Byte), Integer), CType(CType(0, Byte), Integer))
         Me.btnRegistrarSubarea.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnRegistrarSubarea.ForeColor = System.Drawing.Color.Black
-        Me.btnRegistrarSubarea.Location = New System.Drawing.Point(347, 80)
+        Me.btnRegistrarSubarea.Location = New System.Drawing.Point(342, 80)
         Me.btnRegistrarSubarea.Name = "btnRegistrarSubarea"
         Me.btnRegistrarSubarea.Size = New System.Drawing.Size(119, 25)
         Me.btnRegistrarSubarea.TabIndex = 12
@@ -307,7 +308,7 @@ Partial Class FormRegistrarExamenLaboratorio
         '
         Me.Label3.AutoSize = True
         Me.Label3.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.5!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label3.Location = New System.Drawing.Point(479, 45)
+        Me.Label3.Location = New System.Drawing.Point(478, 80)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(113, 16)
         Me.Label3.TabIndex = 35
@@ -319,16 +320,16 @@ Partial Class FormRegistrarExamenLaboratorio
         Me.cboxTipoResultado.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cboxTipoResultado.FormattingEnabled = True
         Me.cboxTipoResultado.Items.AddRange(New Object() {"SC", "LP", "CO", "BE", "PA", "OR", "PO", "CH", "TA"})
-        Me.cboxTipoResultado.Location = New System.Drawing.Point(595, 45)
+        Me.cboxTipoResultado.Location = New System.Drawing.Point(594, 80)
         Me.cboxTipoResultado.Name = "cboxTipoResultado"
-        Me.cboxTipoResultado.Size = New System.Drawing.Size(209, 23)
+        Me.cboxTipoResultado.Size = New System.Drawing.Size(218, 23)
         Me.cboxTipoResultado.TabIndex = 37
         '
         'hintTipoResultado
         '
         Me.hintTipoResultado.AutoSize = True
         Me.hintTipoResultado.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.hintTipoResultado.Location = New System.Drawing.Point(598, 50)
+        Me.hintTipoResultado.Location = New System.Drawing.Point(597, 85)
         Me.hintTipoResultado.Name = "hintTipoResultado"
         Me.hintTipoResultado.Size = New System.Drawing.Size(82, 13)
         Me.hintTipoResultado.TabIndex = 36
@@ -338,6 +339,7 @@ Partial Class FormRegistrarExamenLaboratorio
         '
         Me.panelDatosExamen.BackColor = System.Drawing.Color.White
         Me.panelDatosExamen.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.panelDatosExamen.Controls.Add(Me.chPuedePedirseIndividual)
         Me.panelDatosExamen.Controls.Add(Me.hintTipoResultado)
         Me.panelDatosExamen.Controls.Add(Me.cboxTipoResultado)
         Me.panelDatosExamen.Controls.Add(Me.Label3)
@@ -354,17 +356,30 @@ Partial Class FormRegistrarExamenLaboratorio
         Me.panelDatosExamen.Controls.Add(Me.cboxArea)
         Me.panelDatosExamen.Location = New System.Drawing.Point(30, 65)
         Me.panelDatosExamen.Name = "panelDatosExamen"
-        Me.panelDatosExamen.Size = New System.Drawing.Size(820, 162)
+        Me.panelDatosExamen.Size = New System.Drawing.Size(1204, 158)
         Me.panelDatosExamen.TabIndex = 10
+        '
+        'chPuedePedirseIndividual
+        '
+        Me.chPuedePedirseIndividual.AutoSize = True
+        Me.chPuedePedirseIndividual.Checked = True
+        Me.chPuedePedirseIndividual.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.chPuedePedirseIndividual.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.5!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chPuedePedirseIndividual.Location = New System.Drawing.Point(477, 47)
+        Me.chPuedePedirseIndividual.Name = "chPuedePedirseIndividual"
+        Me.chPuedePedirseIndividual.Size = New System.Drawing.Size(227, 20)
+        Me.chPuedePedirseIndividual.TabIndex = 45
+        Me.chPuedePedirseIndividual.Text = "Puede solicitarse individualmente"
+        Me.chPuedePedirseIndividual.UseVisualStyleBackColor = True
         '
         'btnEnviarDatos
         '
         Me.btnEnviarDatos.BackColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(0, Byte), Integer), CType(CType(0, Byte), Integer), CType(CType(0, Byte), Integer))
         Me.btnEnviarDatos.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnEnviarDatos.ForeColor = System.Drawing.Color.Black
-        Me.btnEnviarDatos.Location = New System.Drawing.Point(1092, 508)
+        Me.btnEnviarDatos.Location = New System.Drawing.Point(1092, 491)
         Me.btnEnviarDatos.Name = "btnEnviarDatos"
-        Me.btnEnviarDatos.Size = New System.Drawing.Size(142, 25)
+        Me.btnEnviarDatos.Size = New System.Drawing.Size(142, 28)
         Me.btnEnviarDatos.TabIndex = 8
         Me.btnEnviarDatos.Text = "Registrar examen"
         Me.btnEnviarDatos.UseVisualStyleBackColor = False
@@ -380,7 +395,7 @@ Partial Class FormRegistrarExamenLaboratorio
         Me.panelDatosUnidad.Controls.Add(Me.Label16)
         Me.panelDatosUnidad.Controls.Add(Me.cboxUnidadMedida)
         Me.panelDatosUnidad.Controls.Add(Me.btnRegistrarUnidadMedida)
-        Me.panelDatosUnidad.Location = New System.Drawing.Point(869, 65)
+        Me.panelDatosUnidad.Location = New System.Drawing.Point(30, 245)
         Me.panelDatosUnidad.Name = "panelDatosUnidad"
         Me.panelDatosUnidad.Size = New System.Drawing.Size(365, 162)
         Me.panelDatosUnidad.TabIndex = 12
@@ -470,7 +485,7 @@ Partial Class FormRegistrarExamenLaboratorio
         Me.panelResultado2.Controls.Add(Me.cboxConjunto)
         Me.panelResultado2.Controls.Add(Me.btnRegistrarConjunto)
         Me.panelResultado2.Controls.Add(Me.Label5)
-        Me.panelResultado2.Location = New System.Drawing.Point(30, 260)
+        Me.panelResultado2.Location = New System.Drawing.Point(30, 700)
         Me.panelResultado2.Name = "panelResultado2"
         Me.panelResultado2.Size = New System.Drawing.Size(680, 274)
         Me.panelResultado2.TabIndex = 13
@@ -583,7 +598,7 @@ Partial Class FormRegistrarExamenLaboratorio
         'menuStripMenuLaboratorio
         '
         Me.menuStripMenuLaboratorio.Name = "menuStripMenuLaboratorio"
-        Me.menuStripMenuLaboratorio.Size = New System.Drawing.Size(180, 22)
+        Me.menuStripMenuLaboratorio.Size = New System.Drawing.Size(166, 22)
         Me.menuStripMenuLaboratorio.Text = "Menu laboratorio"
         '
         'FormRegistrarExamenLaboratorio
@@ -668,4 +683,5 @@ Partial Class FormRegistrarExamenLaboratorio
     Friend WithEvents menuStrip As MenuStrip
     Friend WithEvents menuStripMenu As ToolStripMenuItem
     Friend WithEvents menuStripMenuLaboratorio As ToolStripMenuItem
+    Friend WithEvents chPuedePedirseIndividual As CheckBox
 End Class

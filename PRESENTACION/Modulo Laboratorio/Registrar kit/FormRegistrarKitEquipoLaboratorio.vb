@@ -3,7 +3,7 @@
 Public Class FormRegistrarKitEquipoLaboratorio
 
     'ATRIBUTOS LÓGICOS
-    Public registro As RegistroKitEquipoLaboratorio
+    Public negocio As RegistroKitEquipoLaboratorio
 
     'ATRIBUTOS LÓGICOS MODO FORM HIJO
     Public estadoFormGuardado As Boolean
@@ -86,22 +86,24 @@ Public Class FormRegistrarKitEquipoLaboratorio
         iniciarAtributos()
         iniciarProcesosNegocio()
         iniciarControlesInterfaz()
+
         traerTipos()
         poblarCboxTipo()
+
+        negocio.traerMarcas()
+        intPoblarCboxMarca()
 
 
         traerTiposValoresReferencia()
         poblarCboxTipoReferencia()
 
-        traerProveedores()
-        poblarCboxProveedor()
 
         If esFormHijo Then iniciarControlesInterfazFormSecundario()
     End Sub
 
     Private Sub iniciarAtributos()
         'ATRIBUTOS LÓGICOS
-        registro = New RegistroKitEquipoLaboratorio()
+        negocio = New RegistroKitEquipoLaboratorio()
 
 
         'ATRIBUTOS LÓGICOS MODO FORM HIJO
@@ -177,28 +179,6 @@ Public Class FormRegistrarKitEquipoLaboratorio
         hintTipo.Text = "SELECCIONAR"
         hintTipo.BackColor = Color.Transparent
 
-        cboxProveedor.Enabled = True
-        cboxProveedor.Visible = True
-        cboxProveedor.Font = New Font("Microsoft Sans Serif", 9)
-        cboxProveedor.Items.Clear()
-        cboxProveedor.DropDownStyle = ComboBoxStyle.DropDownList
-
-        hintProveedor.Enabled = True
-        hintProveedor.Visible = True
-        hintProveedor.Font = New Font("Microsoft Sans Serif", 8)
-        hintProveedor.Text = "SELECCIONAR"
-        hintProveedor.BackColor = Color.Transparent
-
-        btnRegistrarProveedor.Enabled = True
-        btnRegistrarProveedor.Visible = True
-        btnRegistrarProveedor.Font = New Font("Microsoft Sans Serif", 9)
-        btnRegistrarProveedor.Text = "Registrar nuevo proveedor"
-
-        txtModelo.Enabled = True
-        txtModelo.Visible = True
-        txtModelo.Font = New Font("Microsoft Sans Serif", 9)
-        txtModelo.Text = ""
-        txtModelo.CharacterCasing = CharacterCasing.Upper
     End Sub
 
     Private Sub iniciarControlesInterfazGrupo2()
@@ -339,58 +319,53 @@ Public Class FormRegistrarKitEquipoLaboratorio
 
 
 
-    'METODOS LOGICOS G1 --
+    'METODOS LOGICOS G1 ----
     Private Sub traerTipos()
-        registro.traerTipos()
+        negocio.traerTipos()
     End Sub
 
     Private Sub seleccionarTipo()
         Dim index As Short = cboxTipo.SelectedIndex
-        tipoSeleccionado = registro.tipos(index)
+        tipoSeleccionado = negocio.tipos(index)
 
     End Sub
 
-    Private Sub traerProveedores()
-        registro.traerProveedores()
+    Private Sub logSeleccionarMarca()
+        Dim index As Short = cboxMarca.SelectedIndex
+        negocio.marcaSeleccionada = negocio.marcas(index)
     End Sub
-
-    Private Sub seleccionarProveedor()
-        Dim index As Short = cboxProveedor.SelectedIndex
-        proveedorSeleccionado = registro.proveedores(index)
-    End Sub
-
 
     'METODOS LOGICOS G2 
     Private Sub traerExamenes()
         Dim nombreExamen As String = txtBuscarExamen.Text.Trim()
-        registro.traerExamenes(nombreExamen)
+        negocio.traerExamenes(nombreExamen)
     End Sub
 
     Private Sub seleccionarExamen()
         Dim index As Short = cboxExamen.SelectedIndex
-        examenSeleccionado = registro.examenes(index)
+        examenSeleccionado = negocio.examenes(index)
     End Sub
 
 
     'METODOS LOGICOS G3
     Private Function permiteReferenciasResultado(ByRef _tipoResultado As Concepto) As Boolean
-        Dim permiteReferencias As Boolean = registro.permiteReferenciasResultado(_tipoResultado)
+        Dim permiteReferencias As Boolean = negocio.permiteReferenciasResultado(_tipoResultado)
         Return permiteReferencias
     End Function
 
 
     'METODOS LOGICOS G4
     Private Sub traerTiposValoresReferencia()
-        registro.traerTiposValoresReferencia()
+        negocio.traerTiposValoresReferencia()
     End Sub
 
     Private Sub seleccionarTipoValorReferencia()
         Dim index As Short = cboxTipoReferencia.SelectedIndex
-        tipoReferenciaSeleccionada = registro.tiposReferencia(index)
+        tipoReferenciaSeleccionada = negocio.tiposReferencia(index)
     End Sub
 
     Private Sub abrirFormRegistrarReferencias()
-        Dim nomKitEquipo As String = proveedorSeleccionado.getNombre() + " " + txtModelo.Text.Trim()
+        Dim nomKitEquipo As String = proveedorSeleccionado.getNombre()
         nuevoKitEquipo.setCodigo(1)
         nuevoKitEquipo.setNombre(nomKitEquipo)
 
@@ -403,7 +378,6 @@ Public Class FormRegistrarKitEquipoLaboratorio
         estadoFormHijoReferenciasGuardado = formReferecias.estadoFormGuardado
         nuevasReferenciasLaboratorio = formReferecias.nuevasReferencias
     End Sub
-
 
 
     'METODOS LOGICOS G9
@@ -421,14 +395,14 @@ Public Class FormRegistrarKitEquipoLaboratorio
                     If Not esFormHijo Then enviarDatosDatabase()
                 End If
             Else
-                mostrarMensaje(mensajeValidacion)
+                intMostrarMensaje(mensajeValidacion)
             End If
         End If
     End Sub
 
     Private Function cargarEntradas() As Boolean
         Try
-            Dim tipo As ConceptoInput, proveedor As ProveedorKitEquipoInput,
+            Dim nombre As String, tipo As ConceptoInput, proveedor As ProveedorKitEquipoInput,
                 modelo As String, examen As ExamenLaboratorioInput, tipoReferencia As ConceptoInput
 
             tipo = New ConceptoInput()
@@ -443,8 +417,6 @@ Public Class FormRegistrarKitEquipoLaboratorio
             examen.codigo = examenSeleccionado.getCodigo()
             examen.nombre = examenSeleccionado.getNombre()
 
-            modelo = txtModelo.Text.Trim()
-
             tipoReferencia = New ConceptoInput()
             tipoReferencia.correlativo = tipoReferenciaSeleccionada.getCorrelativo()
             tipoReferencia.descripcion = tipoReferenciaSeleccionada.getDescripcion()
@@ -458,39 +430,41 @@ Public Class FormRegistrarKitEquipoLaboratorio
             Return True
 
         Catch ex As Exception
-            mostrarMensaje(ex.Message)
+            intMostrarMensaje(ex.Message)
             Return False
         End Try
     End Function
 
     Private Function validarEntradas()
-        Dim mensaje As String = registro.validarEntradas(nuevoInputKitEquipo, estadoFormHijoReferenciasGuardado)
+        Dim mensaje As String = negocio.validarEntradas(nuevoInputKitEquipo, estadoFormHijoReferenciasGuardado)
         Return mensaje
     End Function
 
     Private Function cargarObjetos()
         Try
+            Dim marca As MarcaKitEquipoLaboratorio
+
+            marca = negocio.marcaSeleccionada
 
             nuevoKitEquipo = New KitEquipoLaboratorio()
             nuevoKitEquipo.setTipo(tipoSeleccionado)
-            nuevoKitEquipo.setProveedor(proveedorSeleccionado)
-            nuevoKitEquipo.setModelo(nuevoInputKitEquipo.modelo)
+            nuevoKitEquipo.setMarca(marca)
             nuevoKitEquipo.setExamen(examenSeleccionado)
             nuevoKitEquipo.setTipoReferencia(tipoReferenciaSeleccionada)
             Return True
 
         Catch ex As Exception
-            mostrarMensaje(ex.Message)
+            intMostrarMensaje(ex.Message)
             Return False
         End Try
     End Function
 
     Private Sub enviarDatosDatabase()
-        registro.insertKitEquipo(nuevoKitEquipo, nuevasReferenciasLaboratorio, formReferecias.registro)
+        negocio.insertKitEquipo(nuevoKitEquipo, nuevasReferenciasLaboratorio, formReferecias.registro)
 
-        Dim mensajeInsercion As String = registro.generarMensajeInsercion()
-        mostrarMensaje(mensajeInsercion)
-        If registro.estadoInsercion > 0 Then reiniciarFormulario()
+        Dim mensajeInsercion As String = negocio.generarMensajeInsercion()
+        intMostrarMensaje(mensajeInsercion)
+        If negocio.estadoInsercion > 0 Then reiniciarFormulario()
     End Sub
 
     Private Sub reiniciarFormulario()
@@ -510,11 +484,19 @@ Public Class FormRegistrarKitEquipoLaboratorio
 
 
 
-    'METODOS INTERFAZ G1 --
+
+
+
+
+
+
+
+
+    'METODOS INTERFAZ G1 -----
     Private Sub poblarCboxTipo()
         cboxTipo.Items.Clear()
 
-        For Each tipo As Concepto In registro.tipos
+        For Each tipo As Concepto In negocio.tipos
             cboxTipo.Items.Add(tipo.getDescripcion)
         Next
     End Sub
@@ -527,27 +509,28 @@ Public Class FormRegistrarKitEquipoLaboratorio
         hintTipo.Visible = False
     End Sub
 
-    Private Sub poblarCboxProveedor()
-        cboxProveedor.Items.Clear()
+    Private Sub intPoblarCboxMarca()
+        cboxMarca.Items.Clear()
 
-        For Each proveedor As ProveedorKitEquipo In registro.proveedores
-            cboxProveedor.Items.Add(proveedor.getNombre())
+        For Each marca As MarcaKitEquipoLaboratorio In negocio.marcas
+            Dim nombre As String
+
+            nombre = marca.getNombre()
+
+            cboxMarca.Items.Add(nombre)
         Next
     End Sub
 
-    Private Sub mosrtarHintProveedor()
-        hintProveedor.Visible = True
+    Private Sub intOcultarHintMarca()
+        hintMarca.Visible = False
     End Sub
 
-    Private Sub ocultarHintProveedor()
-        hintProveedor.Visible = False
-    End Sub
 
     'METODOS INTERFAZ G2
     Private Sub poblarCboxExamen()
         cboxExamen.Items.Clear()
 
-        For Each examen As ExamenLaboratorio In registro.examenes
+        For Each examen As ExamenLaboratorio In negocio.examenes
             cboxExamen.Items.Add(examen.getNombre())
         Next
     End Sub
@@ -582,7 +565,7 @@ Public Class FormRegistrarKitEquipoLaboratorio
     Private Sub poblarCboxTipoReferencia()
         cboxTipoReferencia.Items.Clear()
 
-        For Each tipoReferencia As Concepto In registro.tiposReferencia
+        For Each tipoReferencia As Concepto In negocio.tiposReferencia
             cboxTipoReferencia.Items.Add(tipoReferencia.getDescripcion())
         Next
     End Sub
@@ -613,7 +596,7 @@ Public Class FormRegistrarKitEquipoLaboratorio
 
 
     'METODOS INTERFAZ G9
-    Private Sub mostrarMensaje(ByVal _mensaje As String)
+    Private Sub intMostrarMensaje(ByVal _mensaje As String)
         MessageBox.Show(_mensaje, "Mensaje")
     End Sub
 
@@ -640,21 +623,21 @@ Public Class FormRegistrarKitEquipoLaboratorio
             ocultarHintTipo()
 
         Catch ex As Exception
-            mostrarMensaje(ex.Message)
+            intMostrarMensaje(ex.Message)
         End Try
     End Sub
 
-    Private Sub btnRegistrarProveedor_Click(sender As Object, e As EventArgs) Handles btnRegistrarProveedor.Click
+    Private Sub cboxMarca_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles cboxMarca.SelectionChangeCommitted
         Try
-            Dim form As FormRegistrarProveedorKitEquipo
-            form = New FormRegistrarProveedorKitEquipo(True)
-            form.ShowDialog()
+            If cboxMarca.SelectedIndex < 0 Then Return
+            logSeleccionarMarca()
+            intOcultarHintMarca()
+
 
         Catch ex As Exception
-            mostrarMensaje(ex.Message)
+            intMostrarMensaje(ex.Message)
         End Try
     End Sub
-
 
     'EVENTOS G2
     Private Sub btnBuscarExamen_Click(sender As Object, e As EventArgs) Handles btnBuscarExamen.Click
@@ -663,7 +646,7 @@ Public Class FormRegistrarKitEquipoLaboratorio
             poblarCboxExamen()
 
         Catch ex As Exception
-            mostrarMensaje(ex.Message)
+            intMostrarMensaje(ex.Message)
         End Try
     End Sub
 
@@ -675,7 +658,7 @@ Public Class FormRegistrarKitEquipoLaboratorio
             ajustarInterfazPanelReferncias()
 
         Catch ex As Exception
-            mostrarMensaje(ex.Message)
+            intMostrarMensaje(ex.Message)
         End Try
     End Sub
 
@@ -687,7 +670,7 @@ Public Class FormRegistrarKitEquipoLaboratorio
             ocultarHintTipoReferencia()
 
         Catch ex As Exception
-            mostrarMensaje(ex.Message)
+            intMostrarMensaje(ex.Message)
         End Try
     End Sub
 
@@ -697,7 +680,7 @@ Public Class FormRegistrarKitEquipoLaboratorio
             ajustarChValoresAsignados()
 
         Catch ex As Exception
-            mostrarMensaje(ex.Message)
+            intMostrarMensaje(ex.Message)
         End Try
     End Sub
 
@@ -708,7 +691,7 @@ Public Class FormRegistrarKitEquipoLaboratorio
             enviarDatos()
 
         Catch ex As Exception
-            mostrarMensaje(ex.Message)
+            intMostrarMensaje(ex.Message)
         End Try
     End Sub
 
@@ -717,20 +700,8 @@ Public Class FormRegistrarKitEquipoLaboratorio
             If e.CloseReason = CloseReason.UserClosing Then descartarEstado()
 
         Catch ex As Exception
-            mostrarMensaje(ex.Message)
+            intMostrarMensaje(ex.Message)
         End Try
-    End Sub
-
-    Private Sub cboxProveedor_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles cboxProveedor.SelectionChangeCommitted
-        Try
-            seleccionarProveedor()
-            ocultarHintProveedor()
-
-        Catch ex As Exception
-            mostrarMensaje(ex.Message)
-        End Try
-
-
     End Sub
 
 

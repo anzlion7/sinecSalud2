@@ -1,10 +1,9 @@
 ﻿Imports NEGOCIO
 
-
 Public Class FormRegistrarOrdenLaboratorio
 
-    'ATRIBUTOS LÓGICOS
-    Private registro As RegistroOrdenLaboratorio
+    'ATRIBUTOS LÓGICOS -----
+    Private negocio As RegistroOrdenLaboratorio
 
     'ATRIBUTOS LÓGICOS MODO FORM HIJO
     Public estadoFormGuardado As Boolean
@@ -21,18 +20,22 @@ Public Class FormRegistrarOrdenLaboratorio
     Private areaSeleccionada As AreaLaboratorio
 
     'ATRIBUTOS G3
-    Private clmExamen As String
+    Private examenesMarcados As ExamenSolicitableLaboratorio()
+
+    'ATRIBUTOS G4
+    Private clmCodigo As String
+    Private clmCodTipo As String
+    Private clmNomExamen As String
     Private clmAccion As String
 
-    'ATRIBUTOS G9
-    Public nuevaOrden As OrdenLaboratorio
-    Public nuevosDetalles() As DetalleOrdenLaboratorio
+    'ATRIBUTOS SUBMIT   
+    Private nuevosExamenesSolicitables As ListaEnlazadaExamenSolicitableLaboratorio
+    Private nuevaOrden As OrdenLaboratorio
 
 
 
 
-
-    'METODOS INICIO
+    'METODOS INICIO ----
     Public Sub New()
         ' This call is required by the designer.
         InitializeComponent()
@@ -45,8 +48,6 @@ Public Class FormRegistrarOrdenLaboratorio
 
     Protected Overrides Sub OnLoad(e As EventArgs)
         MyBase.OnLoad(e)
-
-
         establecerDisplay()
     End Sub
 
@@ -56,11 +57,12 @@ Public Class FormRegistrarOrdenLaboratorio
 
     Private Sub preIniciarAtributosFormHijo(_esHijo As Boolean)
         estadoFormGuardado = False
+        esFormHijo = _esHijo
 
         If _esHijo Then
-            esFormHijo = True
+
         Else
-            esFormHijo = False
+
         End If
     End Sub
 
@@ -69,24 +71,22 @@ Public Class FormRegistrarOrdenLaboratorio
         iniciarProcesosNegocio()
         iniciarControlesInterfaz()
 
-        traerMedicos()
-        poblarCboxMedico()
+        logTraerAreas()
+        negocio.traerExamenesSolictablesPorArea()
+        negocio.traerExamenesIndividualesPorGrupo()
 
-        traerAsegurados()
-        poblarCboxAsegurado()
-
-        traerAreas()
-        poblarLboxAreas()
+        intPoblarLboxAreas()
 
         'If esFormHijo Then iniciarControlesInterfazFormSecundario()
     End Sub
 
     Private Sub iniciarAtributos()
         'ATRIBUTOS LÓGICOS
-        registro = New RegistroOrdenLaboratorio()
+        negocio = New RegistroOrdenLaboratorio()
 
         'ATRIBUTOS LÓGICOS MODO FORM HIJO
         'estadoFormGuardado = False
+        'esFormHijo = False
 
         'ATRIBUTOS G0
         tituloFormulario = "Registrar orden de laboratorio"
@@ -99,8 +99,17 @@ Public Class FormRegistrarOrdenLaboratorio
         areaSeleccionada = New AreaLaboratorio()
 
         'ATRIBUTOS G3
-        clmExamen = "clmExamen"
+        examenesMarcados = New ExamenSolicitableLaboratorio(-1) {}
+
+        'ATRIBUTOS G4
+        clmCodigo = "clmCodGrupo"
+        clmCodTipo = "clmCodExamen"
+        clmNomExamen = "clmExamen"
         clmAccion = "clmAccion"
+
+        'ATRIBUTOS SUBMIT
+        nuevosExamenesSolicitables = New ListaEnlazadaExamenSolicitableLaboratorio()
+        nuevaOrden = New OrdenLaboratorio()
     End Sub
 
     Private Sub iniciarProcesosNegocio()
@@ -126,6 +135,12 @@ Public Class FormRegistrarOrdenLaboratorio
     End Sub
 
     Private Sub iniciarControlesInterfazGrupo1()
+        txtBuscarMedico.Enabled = True
+        txtBuscarMedico.Visible = True
+        txtBuscarMedico.Font = New Font("Microsoft Sans Serif", 9)
+        txtBuscarMedico.Text = ""
+        txtBuscarMedico.CharacterCasing = CharacterCasing.Upper
+
         cboxMedico.Enabled = True
         cboxMedico.Visible = True
         cboxMedico.Font = New Font("Microsoft Sans Serif", 9)
@@ -137,6 +152,12 @@ Public Class FormRegistrarOrdenLaboratorio
         hintMedico.Font = New Font("Microsoft Sans Serif", 8)
         hintMedico.Text = "SELECCIONAR"
         hintMedico.BackColor = Color.Transparent
+
+        txtBuscarAsegurado.Enabled = True
+        txtBuscarAsegurado.Visible = True
+        txtBuscarAsegurado.Font = New Font("Microsoft Sans Serif", 9)
+        txtBuscarAsegurado.Text = ""
+        txtBuscarAsegurado.CharacterCasing = CharacterCasing.Upper
 
         cboxAsegurado.Enabled = True
         cboxAsegurado.Visible = True
@@ -157,12 +178,13 @@ Public Class FormRegistrarOrdenLaboratorio
         lboxAreas.Font = New Font("Microsoft Sans Serif", 9)
         lboxAreas.Items.Clear()
 
-        clistExamen.Enabled = True
-        clistExamen.Visible = True
-        clistExamen.MultiColumn = True
-        clistExamen.ColumnWidth = clistExamen.Width * 0.5
-        clistExamen.Font = New Font("Microsoft Sans Serif", 9)
-        clistExamen.Items.Clear()
+        clistExamenesSolicitables.Enabled = True
+        clistExamenesSolicitables.Visible = True
+        clistExamenesSolicitables.MultiColumn = True
+        clistExamenesSolicitables.ColumnWidth = clistExamenesSolicitables.Width * 0.5
+        clistExamenesSolicitables.Font = New Font("Microsoft Sans Serif", 9)
+        clistExamenesSolicitables.DataSource = Nothing
+        clistExamenesSolicitables.Items.Clear()
 
         btnAgregarExamenes.Enabled = True
         btnAgregarExamenes.Visible = True
@@ -172,90 +194,106 @@ Public Class FormRegistrarOrdenLaboratorio
 
     Private Sub iniciarControlesInterfazGrupo3()
         iniciarDgvExamenes()
+
+
+        txtNota.Enabled = True
+        txtNota.Visible = True
+        txtNota.ReadOnly = False
+        txtNota.Font = New Font("Microsoft Sans Serif", 9)
+        txtNota.Text = ""
+        txtNota.CharacterCasing = CharacterCasing.Upper
     End Sub
 
     Private Sub iniciarDgvExamenes()
         'ENCABEZADOS LABELS
 
         'PROPIEDADES BASE
-        dgvExamenes.Enabled = True
-        dgvExamenes.Visible = True
-        dgvExamenes.Font = New Font("Microsoft Sans Serif", 9)
-        dgvExamenes.Rows.Clear()
-        dgvExamenes.Columns.Clear()
+        dgvExamenesSolicitables.Enabled = True
+        dgvExamenesSolicitables.Visible = True
+        dgvExamenesSolicitables.Font = New Font("Microsoft Sans Serif", 9)
+        dgvExamenesSolicitables.Rows.Clear()
+        dgvExamenesSolicitables.Columns.Clear()
 
         'PERMISOS EDITAR
-        dgvExamenes.EditMode = DataGridViewEditMode.EditOnEnter
-        dgvExamenes.AllowUserToAddRows = False
-        dgvExamenes.AllowUserToDeleteRows = False
-        dgvExamenes.AllowUserToResizeRows = False
-        dgvExamenes.AllowUserToOrderColumns = False
-        dgvExamenes.AllowUserToResizeColumns = False
-        dgvExamenes.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing
-        dgvExamenes.MultiSelect = False
-        dgvExamenes.ReadOnly = True
+        dgvExamenesSolicitables.EditMode = DataGridViewEditMode.EditOnEnter
+        dgvExamenesSolicitables.AllowUserToAddRows = False
+        dgvExamenesSolicitables.AllowUserToDeleteRows = False
+        dgvExamenesSolicitables.AllowUserToResizeRows = False
+        dgvExamenesSolicitables.AllowUserToOrderColumns = False
+        dgvExamenesSolicitables.AllowUserToResizeColumns = False
+        dgvExamenesSolicitables.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing
+        dgvExamenesSolicitables.MultiSelect = False
+        dgvExamenesSolicitables.ReadOnly = True
 
         'PROPIEDADES MODOS DE SELECCION
-        dgvExamenes.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill
-        dgvExamenes.SelectionMode = DataGridViewSelectionMode.CellSelect
+        dgvExamenesSolicitables.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill
+        dgvExamenesSolicitables.SelectionMode = DataGridViewSelectionMode.CellSelect
 
         'PROPIEDADES COLOR CABEZAS COLUMNAS 
-        dgvExamenes.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(235, 235, 235)
-        dgvExamenes.ColumnHeadersDefaultCellStyle.ForeColor = Color.Black
+        dgvExamenesSolicitables.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(235, 235, 235)
+        dgvExamenesSolicitables.ColumnHeadersDefaultCellStyle.ForeColor = Color.Black
 
         'PROPIEDADES COLOR CABEZERAS FILAS
-        dgvExamenes.RowHeadersDefaultCellStyle.SelectionBackColor = Color.FromArgb(255, 255, 255)
-        dgvExamenes.RowHeadersDefaultCellStyle.SelectionForeColor = Color.FromArgb(0, 0, 0)
+        dgvExamenesSolicitables.RowHeadersDefaultCellStyle.SelectionBackColor = Color.FromArgb(255, 255, 255)
+        dgvExamenesSolicitables.RowHeadersDefaultCellStyle.SelectionForeColor = Color.FromArgb(0, 0, 0)
 
         'PROPIEDAES COLOR CELDAS NORMALES
-        dgvExamenes.BackgroundColor = Color.FromArgb(255, 255, 255)
-        dgvExamenes.DefaultCellStyle.BackColor = Color.FromArgb(255, 255, 255)
-        dgvExamenes.DefaultCellStyle.ForeColor = Color.Black
+        dgvExamenesSolicitables.BackgroundColor = Color.FromArgb(255, 255, 255)
+        dgvExamenesSolicitables.DefaultCellStyle.BackColor = Color.FromArgb(255, 255, 255)
+        dgvExamenesSolicitables.DefaultCellStyle.ForeColor = Color.Black
 
         'PROPIEDADES COLOR FILAS SELECCIONADAS
-        dgvExamenes.RowsDefaultCellStyle.SelectionBackColor = Color.FromArgb(255, 255, 255)
-        dgvExamenes.RowsDefaultCellStyle.SelectionForeColor = Color.FromArgb(0, 0, 0)
+        dgvExamenesSolicitables.RowsDefaultCellStyle.SelectionBackColor = Color.FromArgb(255, 255, 255)
+        dgvExamenesSolicitables.RowsDefaultCellStyle.SelectionForeColor = Color.FromArgb(0, 0, 0)
 
         'OTRAS PROPIEDAES
-        dgvExamenes.ScrollBars = ScrollBars.Both
-        dgvExamenes.EnableHeadersVisualStyles = False
+        dgvExamenesSolicitables.ScrollBars = ScrollBars.Both
+        dgvExamenesSolicitables.EnableHeadersVisualStyles = False
 
 
 
 
         'COLUMNAS 
-        dgvExamenes.Columns.Add(clmExamen, "EXAMEN")
-        dgvExamenes.Columns(clmExamen).Visible = True
+        dgvExamenesSolicitables.Columns.Add(clmCodigo, "CODIGO")
+        dgvExamenesSolicitables.Columns(clmCodigo).Visible = False
+
+        dgvExamenesSolicitables.Columns.Add(clmCodTipo, "CODIGO TIPO")
+        dgvExamenesSolicitables.Columns(clmCodTipo).Visible = False
+
+        dgvExamenesSolicitables.Columns.Add(clmNomExamen, "EXAMEN")
+        dgvExamenesSolicitables.Columns(clmNomExamen).Visible = True
 
         Dim clmButtonAccion As New DataGridViewButtonColumn()
         clmButtonAccion.Name = clmAccion
         clmButtonAccion.HeaderText = ""
         clmButtonAccion.Text = "ELIMINAR"
         clmButtonAccion.UseColumnTextForButtonValue = True
-        dgvExamenes.Columns.Add(clmButtonAccion)
-        dgvExamenes.Columns(clmAccion).Visible = True
+        dgvExamenesSolicitables.Columns.Add(clmButtonAccion)
+        dgvExamenesSolicitables.Columns(clmAccion).Visible = True
 
 
         'BLOQUEAR ORDENAR POR COLUMNA
-        For Each columna As DataGridViewColumn In dgvExamenes.Columns
+        For Each columna As DataGridViewColumn In dgvExamenesSolicitables.Columns
             columna.SortMode = DataGridViewColumnSortMode.NotSortable
         Next
 
 
         'ALINEAR COLUMNAS
-        For Each columna As DataGridViewColumn In dgvExamenes.Columns
+        For Each columna As DataGridViewColumn In dgvExamenesSolicitables.Columns
             columna.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleLeft
             columna.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
         Next
 
 
         'CONFIGURAR ANCHO COLUMNAS
-        dgvExamenes.Columns(clmExamen).FillWeight = 75
-        dgvExamenes.Columns(clmAccion).FillWeight = 25
+        dgvExamenesSolicitables.Columns(clmCodigo).FillWeight = 10
+        dgvExamenesSolicitables.Columns(clmCodTipo).FillWeight = 10
+        dgvExamenesSolicitables.Columns(clmNomExamen).FillWeight = 60
+        dgvExamenesSolicitables.Columns(clmAccion).FillWeight = 20
 
 
         'FILAS
-        dgvExamenes.Rows.Clear()
+        dgvExamenesSolicitables.Rows.Clear()
     End Sub
 
     Private Sub iniciarControlesInterfazGrupo9()
@@ -277,203 +315,141 @@ Public Class FormRegistrarOrdenLaboratorio
         Me.CenterToScreen()
     End Sub
 
-
-
-
-
-
-
-
-
-    'METODOS LÓGICOS G1
-    Private Sub traerMedicos()
-        registro.traerMedicos()
-    End Sub
-
-    Private Sub seleccionarMedico()
-        Dim index As Short = cboxMedico.SelectedIndex
-        medicoSeleccionado = registro.medicos(index)
-    End Sub
-
-    Private Sub traerAsegurados()
-        registro.traerAsegurados()
-    End Sub
-
-    Private Sub seleccionarAsegurado()
-        Dim index As Int16 = cboxAsegurado.SelectedIndex
-        aseguradoSeleccionado = registro.asegurados(index)
-    End Sub
-
-
-    'METODOS LÓGICOS G2
-    Private Sub traerAreas()
-        registro.traerAreas()
-    End Sub
-
-    Private Sub seleccionarArea()
-        Dim index As Short = lboxAreas.SelectedIndex
-        areaSeleccionada = registro.areas(index)
-    End Sub
-
-    Private Sub traerExamenes()
-        registro.traerExamenes(areaSeleccionada)
-    End Sub
-
-
-    'METODOS LÓGICOS G3
-    Private Function esListaLlena() As Boolean
-        Dim listaLlena As Boolean = registro.esListaLlena()
-        Return listaLlena
-    End Function
-
-    Private Function hayEspacio() As Boolean
-        Dim espacioInsuficiente As Boolean = False
-        Dim espaciosDisponibles As Int16 = registro.contarEspaciosDisponibles()
-        Dim examenesPorAgregar As Int16 = clistExamen.CheckedItems.Count()
-
-
-        If examenesPorAgregar > espaciosDisponibles Then
-            espacioInsuficiente = True
-            Return espacioInsuficiente
-        End If
-
-        Return espacioInsuficiente
-    End Function
-
-    Private Function hayRepetidos() As Boolean
-        Dim repetido As Boolean = False
-
-        For Each item In clistExamen.CheckedItems
-            Dim nombreExamen As String = item.ToString()
-            repetido = registro.revisarRepetidos(nombreExamen)
-
-            If repetido Then
-                Return repetido
-            End If
-        Next
-
-        Return repetido
-    End Function
-
-
-    'METODOS LÓGICOS G9
-    Private Sub enviarDatos()
-        Try
-            Dim entradasCargadas As Boolean = cargarEntradas()
-
-            If entradasCargadas Then
-                Dim objetosCargados As Boolean = cargarObjetos()
-
-                If objetosCargados Then
-                    Dim mensajeValidacion As String = validarEntradas()
-
-                    If mensajeValidacion = "" Then
-                        Dim reigstroConfirmado As Boolean = abrirFormularioConfirmacion()
-                        If reigstroConfirmado Then enviarDatosDatabase()
-
-                    Else
-                        mostrarMensaje(mensajeValidacion)
-                    End If
-                End If
-            End If
-
-
-        Catch ex As Exception
-            mostrarMensaje(ex.Message)
-        End Try
-    End Sub
-
-    Private Function cargarEntradas() As Boolean
-        Return True
-    End Function
-
-    Private Function validarEntradas()
-        Dim mensaje As String = registro.validarEntradas(nuevaOrden)
-        Return mensaje
-    End Function
-
-    Private Function cargarObjetos()
-        Try
-            Dim fecha As Date, orden As OrdenLaboratorio, detalles As DetalleOrdenLaboratorio(), index As Short
-
-            fecha = Date.Today
-
-            orden = New OrdenLaboratorio()
-            orden.setAsegurado(aseguradoSeleccionado)
-            orden.setFecha(fecha)
-            orden.setMedico(medicoSeleccionado)
-
-
-            detalles = New DetalleOrdenLaboratorio(9) {}
-            index = 0
-            For Each examen As ExamenLaboratorio In registro.examenesSeleccionados
-                If Not IsNothing(examen) Then
-                    Dim detalle As DetalleOrdenLaboratorio
-
-                    detalle = New DetalleOrdenLaboratorio()
-                    detalle.setExamen(examen)
-                    detalle.setOrden(orden)
-
-
-                    detalles(index) = detalle
-                    index += 1
-                End If
-            Next
-
-            nuevaOrden = orden
-            nuevosDetalles = detalles
-
-            nuevaOrden.setDetalles(nuevosDetalles)
-
-            Return True
-
-
-        Catch ex As Exception
-            mostrarMensaje(ex.Message)
-            Return False
-        End Try
-    End Function
-
-    Private Sub enviarDatosDatabase()
-        Dim mensajeInsercion As String, codigoInsercion As Short
-
-        registro.insertarOrden(nuevaOrden)
-        mensajeInsercion = registro.generarMensajeInsercion()
-        codigoInsercion = registro.codigoInsercion
-
-        If Not mensajeInsercion = "" Then
-            mostrarMensaje(mensajeInsercion)
-            If codigoInsercion > 0 Then reiniciarFormulario()
-        End If
-    End Sub
-
-    Private Sub enviarDatosOrden()
-    End Sub
-
     Private Sub reiniciarFormulario()
         iniciarFormulario()
     End Sub
 
-    Private Function cancelarOrden(ByVal _mensaje As String, ByVal _titulo As String) As Boolean
-        Dim dialogResult As DialogResult = MessageBox.Show(_mensaje, _titulo, MessageBoxButtons.YesNo)
 
-        If dialogResult = DialogResult.Yes Then Return True Else Return False
+
+
+
+
+
+
+
+    'METODOS LÓGICOS G1 -----
+    Private Sub logTraerMedicos()
+        Dim nombre As String = txtBuscarMedico.Text.Trim()
+        negocio.traerMedicos(nombre)
+    End Sub
+
+    Private Sub logSeleccionarMedico()
+        Dim index As Short = cboxMedico.SelectedIndex
+        medicoSeleccionado = negocio.medicos(index)
+    End Sub
+
+    Private Sub logTraerAsegurados()
+        Dim nombre As String = txtBuscarAsegurado.Text.Trim()
+        negocio.traerAsegurados(nombre)
+    End Sub
+
+    Private Sub logSeleccionarAsegurado()
+        Dim index As Int16 = cboxAsegurado.SelectedIndex
+        aseguradoSeleccionado = negocio.asegurados(index)
+    End Sub
+
+
+    'METODOS LÓGICOS G2
+    Private Sub logTraerAreas()
+        negocio.traerAreas()
+    End Sub
+
+    Private Sub logSeleccionarArea()
+        Dim index As Short = lboxAreas.SelectedIndex
+        areaSeleccionada = negocio.areas(index)
+    End Sub
+
+    'METODOS LÓGICOS G3
+    Private Sub logCargarExamenesMarcados()
+        Dim dimension As Short, index As Short
+
+        dimension = clistExamenesSolicitables.CheckedItems.Count
+        examenesMarcados = New ExamenSolicitableLaboratorio(dimension - 1) {}
+
+        index = 0
+        For Each examenSolicitable As ExamenSolicitableLaboratorio In clistExamenesSolicitables.CheckedItems
+            examenesMarcados(index) = examenSolicitable
+            index += 1
+        Next
+    End Sub
+
+    Private Function logValidarEntradasExamenesMarcados() As String
+        Dim mensaje As String = ""
+
+        mensaje = negocio.validarExamenesMarcados(examenesMarcados, nuevosExamenesSolicitables)
+        Return mensaje
     End Function
 
-    Private Function abrirFormularioConfirmacion()
+    Private Sub logAgregarExamenesMarcados()
+        negocio.agregarExamenesMarcados(examenesMarcados, nuevosExamenesSolicitables)
+    End Sub
+
+    Private Sub logEliminarExamen(_filaIndex As Short)
+        Dim row As DataGridViewRow, codigo As Long, codigoTipoExamen As Short
+
+        row = dgvExamenesSolicitables.Rows(_filaIndex)
+        codigo = row.Cells(clmCodigo).Value
+        codigoTipoExamen = row.Cells(clmCodTipo).Value
+        negocio.eliminarExamenSolicitable(nuevosExamenesSolicitables, codigo, codigoTipoExamen)
+    End Sub
+
+
+    'METODOS LÓGICOS SUBTMIT
+    Private Function logValidarEntradas() As String
+        Dim mensaje As String
+
+        mensaje = negocio.validarEntradasFrontEnd(medicoSeleccionado, aseguradoSeleccionado)
+        If Not mensaje = "" Then Return mensaje
+
+        mensaje = negocio.validarEntradasBackEnd(nuevosExamenesSolicitables)
+        If Not mensaje = "" Then Return mensaje
+
+        Return ""
+    End Function
+
+    Private Function logCargarObjetosParaSubmit() As OrdenLaboratorio
+        Dim nota As String, nuevaOrden As OrdenLaboratorio
+
+        nota = txtNota.Text.Trim()
+
+        nuevaOrden = New OrdenLaboratorio()
+        nuevaOrden.setAsegurado(aseguradoSeleccionado)
+        nuevaOrden.setMedico(medicoSeleccionado)
+        nuevaOrden.setNota(nota)
+
+        Return nuevaOrden
+    End Function
+
+    Private Sub logEnviarObjetosADatabase()
+        Try
+            Dim nuevaOrden As OrdenLaboratorio, nuevosDetalles As DetalleLaboratorio()
+
+            nuevaOrden = logCargarObjetosParaSubmit()
+            nuevosDetalles = negocio.generarListaDetalles(nuevosExamenesSolicitables)
+
+            negocio.insertarOrden(nuevaOrden)
+            negocio.insertarDetalles(nuevosDetalles)
+
+            Me.nuevaOrden = nuevaOrden
+
+        Catch ex As Exception
+            intMostrarMensaje(ex.Message)
+        End Try
+    End Sub
+
+    Private Function logAbrirFormularioConfirmacion() As Boolean
         Dim form As FormConfimarOrdenLaboratorio, registroConfirmado As Boolean
 
-        form = New FormConfimarOrdenLaboratorio(True, nuevaOrden)
+        nuevaOrden.setAsegurado(aseguradoSeleccionado)
+        nuevaOrden.setMedico(medicoSeleccionado)
+
+        form = New FormConfimarOrdenLaboratorio(True, nuevaOrden, nuevosExamenesSolicitables)
         form.ShowDialog()
         registroConfirmado = form.registroConfirmado
 
         Return registroConfirmado
     End Function
 
-    Private Sub mostrarRespuesta(_respuesta As Short)
-        If _respuesta = 0 Then mostrarMensaje("El usuario canceló la orden")
-        If _respuesta = 1 Then mostrarMensaje("El usuario confirmó la orden")
-    End Sub
 
 
 
@@ -486,33 +462,33 @@ Public Class FormRegistrarOrdenLaboratorio
 
 
 
-    'METODOS INTERFAZ G1
-    Private Sub poblarCboxMedico()
+    'METODOS INTERFAZ G1 ----
+    Private Sub intPoblarCboxMedico()
         cboxMedico.Items.Clear()
 
-        For Each medico As Medico In registro.medicos
+        For Each medico As Medico In negocio.medicos
             Dim usuario As Usuario, nombreCompleto As String
 
             usuario = medico.getUsuario()
             nombreCompleto = Trim(usuario.getApellidoPaterno()) + " " + Trim(usuario.getApellidoMaterno()) + " " + Trim(usuario.getNombres())
-            nombreCompleto = Trim(nombreCompleto)
+            nombreCompleto.Trim()
 
             cboxMedico.Items.Add(nombreCompleto)
         Next
     End Sub
 
-    Private Sub mostrarHintMedico()
+    Private Sub intMostrarHintMedico()
         hintMedico.Visible = True
     End Sub
 
-    Private Sub ocultarHintMedico()
+    Private Sub intOcultarHintMedico()
         hintMedico.Visible = False
     End Sub
 
-    Private Sub poblarCboxAsegurado()
+    Private Sub intPoblarCboxAsegurado()
         cboxAsegurado.Items.Clear()
 
-        For Each asegurado As Asegurado In registro.asegurados
+        For Each asegurado As Asegurado In negocio.asegurados
             Dim nombreCompleto As String
 
             nombreCompleto = Trim(asegurado.getApellidoPaterno()) + " " + Trim(asegurado.getApellidoMaterno()) + " " + Trim(asegurado.getNombres)
@@ -522,84 +498,76 @@ Public Class FormRegistrarOrdenLaboratorio
         Next
     End Sub
 
-    Private Sub mostrarHintAsegurado()
+    Private Sub intMostrarHintAsegurado()
         hintAsegurado.Visible = True
     End Sub
 
-    Private Sub ocultarHintAsegurado()
+    Private Sub intOcultarHintAsegurado()
         hintAsegurado.Visible = False
     End Sub
 
-
-
-
     'METODOS INTERFAZ G2
-    Private Sub poblarLboxAreas()
+    Private Sub intPoblarLboxAreas()
         lboxAreas.Items.Clear()
 
-        For Each area As AreaLaboratorio In registro.areas
+        For Each area As AreaLaboratorio In negocio.areas
             lboxAreas.Items.Add(area.getNombre())
         Next
     End Sub
 
-    Private Sub enfocarLboxAreas()
-        lboxAreas.Focus()
+    Private Sub intMostrarExamenesSolicitables()
+        clistExamenesSolicitables.DataSource = Nothing
+
+        Dim examenesSolicitables As ExamenSolicitableLaboratorio()
+
+        examenesSolicitables = areaSeleccionada.getExamenesSolicitables()
+
+        clistExamenesSolicitables.DisplayMember = "nombre"
+        clistExamenesSolicitables.ValueMember = "codigo"
+        clistExamenesSolicitables.DataSource = examenesSolicitables
+        clistExamenesSolicitables.DisplayMember = "nombre"
     End Sub
 
-    Private Sub poblarClistExamenes()
-        clistExamen.Items.Clear()
+    'METODOS INTERFAZ G3    
+    Private Sub intDesmarcarItemsExamenesSolicitables()
+        Dim dimension As Short
 
-        For Each examen As ExamenLaboratorio In registro.examenes
-            If examen IsNot Nothing Then
-                clistExamen.Items.Add(examen.getNombre())
-            End If
-        Next
-    End Sub
-
-    Private Sub enfocarClistExamen()
-        clistExamen.Focus()
-    End Sub
-
-    Private Sub desmarcarTodoClistExamen()
-        For Each index As Int16 In clistExamen.CheckedIndices
-            clistExamen.SetItemCheckState(index, CheckState.Unchecked)
-        Next
-    End Sub
-
-    Private Sub deseleccionarEnClistExamen()
-        clistExamen.ClearSelected()
-    End Sub
-
-    Private Sub agregarExamenDgv(ByVal _examen As String)
-        dgvExamenes.Rows.Add(_examen)
-    End Sub
-
-    Private Sub agregarExamenes()
-        For Each item In clistExamen.CheckedItems
-            Dim nombreExamen As String = item.ToString()
-            registro.agregarExamen(nombreExamen)
-            agregarExamenDgv(nombreExamen)
+        dimension = clistExamenesSolicitables.Items.Count
+        For index = 0 To dimension - 1
+            clistExamenesSolicitables.SetItemChecked(index, False)
         Next
 
     End Sub
 
-    Private Sub eliminarExamen(ByVal _examenSeleccionado As String)
-        registro.eliminarExamen(_examenSeleccionado)
-        iniciarDgvExamenes()
-        agregarListaExamenes()
+    Private Sub intPoblarDgvExamenesSolicitables()
+        dgvExamenesSolicitables.Rows.Clear()
+
+        Dim nodoActual As NodoExamenSolicitableLaboratorio
+        nodoActual = nuevosExamenesSolicitables.raiz
+
+        While Not IsNothing(nodoActual)
+            Dim examenSolicitable As ExamenSolicitableLaboratorio, rowIndex As Short, rowAux As DataGridViewRow,
+                codigo As String, codigoTipo As String, nombre As String
+
+            examenSolicitable = nodoActual.examenSolicitable
+
+            rowIndex = dgvExamenesSolicitables.Rows.Add()
+            rowAux = dgvExamenesSolicitables.Rows(rowIndex)
+            codigo = examenSolicitable.getCodigo()
+            If TypeOf examenSolicitable Is ExamenLaboratorio Then codigoTipo = 1 Else codigoTipo = 2
+            nombre = examenSolicitable.getNombre()
+
+            rowAux.Cells(clmCodigo).Value = codigo
+            rowAux.Cells(clmCodTipo).Value = codigoTipo
+            rowAux.Cells(clmNomExamen).Value = nombre
+
+            nodoActual = nodoActual.siguiente
+        End While
+
     End Sub
 
-    Private Sub agregarListaExamenes()
-        For Each examen As ExamenLaboratorio In registro.examenesSeleccionados
-            If examen IsNot Nothing Then
-                dgvExamenes.Rows.Add(examen.getNombre())
-            End If
-        Next
-    End Sub
-
-
-    'METODOS INTERFAZ G9
-    Private Sub mostrarMensaje(_mensaje As String)
+    'METODOS INTERFAZ MENU
+    Private Sub intMostrarMensaje(_mensaje As String)
         MessageBox.Show(_mensaje, "Mensaje")
     End Sub
 
@@ -610,24 +578,62 @@ Public Class FormRegistrarOrdenLaboratorio
 
 
 
-    'EVENTOS G1
-    Private Sub cboxMedico_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles cboxMedico.SelectionChangeCommitted
+
+
+    'EVENTOS MENU -----
+    Private Sub menuStripMenuLaboratorio_Click(sender As Object, e As EventArgs) Handles menuStripMenuLaboratorio.Click
         Try
-            seleccionarMedico()
-            ocultarHintMedico()
+            Dim form As FormMenuLaboratorio
+
+            form = New FormMenuLaboratorio()
+            form.Show()
+            Me.Close()
 
         Catch ex As Exception
-            mostrarMensaje(ex.Message)
+            intMostrarMensaje(ex.Message)
+        End Try
+    End Sub
+
+    'EVENTOS G1 
+    Private Sub btnBuscarMedico_Click(sender As Object, e As EventArgs) Handles btnBuscarMedico.Click
+        Try
+            If txtBuscarMedico.Text.Trim = "" Then Return
+            logTraerMedicos()
+            intPoblarCboxMedico()
+
+        Catch ex As Exception
+            intMostrarMensaje(ex.Message)
+        End Try
+    End Sub
+
+    Private Sub cboxMedico_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles cboxMedico.SelectionChangeCommitted
+        Try
+            logSeleccionarMedico()
+            intOcultarHintMedico()
+
+        Catch ex As Exception
+            intMostrarMensaje(ex.Message)
+        End Try
+    End Sub
+
+    Private Sub btnBuscarAsegurado_Click(sender As Object, e As EventArgs) Handles btnBuscarAsegurado.Click
+        Try
+            If txtBuscarAsegurado.Text.Trim = "" Then Return
+            logTraerAsegurados()
+            intPoblarCboxAsegurado()
+
+        Catch ex As Exception
+            intMostrarMensaje(ex.Message)
         End Try
     End Sub
 
     Private Sub cboxAsegurado_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles cboxAsegurado.SelectionChangeCommitted
         Try
-            seleccionarAsegurado()
-            ocultarHintAsegurado()
+            logSeleccionarAsegurado()
+            intOcultarHintAsegurado()
 
         Catch ex As Exception
-            mostrarMensaje(ex.Message)
+            intMostrarMensaje(ex.Message)
         End Try
     End Sub
 
@@ -635,76 +641,43 @@ Public Class FormRegistrarOrdenLaboratorio
     'EVENTOS G2
     Private Sub lboxAreas_SelectedIndexChanged(sender As Object, e As EventArgs) Handles lboxAreas.SelectedIndexChanged
         Try
-            seleccionarArea()
-            traerExamenes()
-            poblarClistExamenes()
+            logSeleccionarArea()
+            intMostrarExamenesSolicitables()
+            clistExamenesSolicitables.ClearSelected()
 
         Catch ex As Exception
-            mostrarMensaje(ex.Message)
-        End Try
-    End Sub
-
-    Private Sub lboxAreas_KeyDown(sender As Object, e As KeyEventArgs) Handles lboxAreas.KeyDown
-        Try
-            If (e.KeyData = Keys.Enter) Then enfocarClistExamen()
-
-        Catch ex As Exception
-            mostrarMensaje(ex.Message)
-        End Try
-    End Sub
-
-    Private Sub clistExamen_KeyDown(sender As Object, e As KeyEventArgs) Handles clistExamen.KeyDown
-        Try
-            If (e.KeyData = Keys.Enter) Then
-                If clistExamen.SelectedIndex >= 0 Then
-                    Dim tickeado As Boolean
-
-                    tickeado = clistExamen.GetItemChecked(clistExamen.SelectedIndex)
-
-                    If tickeado Then clistExamen.SetItemChecked(clistExamen.SelectedIndex, False)
-                    If Not tickeado Then clistExamen.SetItemChecked(clistExamen.SelectedIndex, True)
-                End If
-
-            ElseIf (e.KeyData = Keys.Escape) Then
-                desmarcarTodoClistExamen()
-                deseleccionarEnClistExamen()
-                enfocarLboxAreas()
-            End If
-
-
-        Catch ex As Exception
-            mostrarMensaje(ex.Message)
+            intMostrarMensaje(ex.Message)
         End Try
     End Sub
 
     Private Sub btnAgregarExamenes_Click(sender As Object, e As EventArgs) Handles btnAgregarExamenes.Click
         Try
-            If esListaLlena() Then
-                mostrarMensaje("Error. Sólo se permiten 10 examenes/pruebas por orden. La lista se encuentra llena.")
-            Else
+            Dim mensaje As String
 
-                If hayEspacio() Then
-                    mostrarMensaje("Sólo se permite agregar 10 examenes por prueba. Seleccione una cantidad menor.")
-                Else
-                    If hayRepetidos() Then
-                        mostrarMensaje("Error. No se puede repetir el mismo examen en una orden. Elija otro examen.")
-                    Else
-                        agregarExamenes()
-                        desmarcarTodoClistExamen()
-                    End If
-                End If
+            logCargarExamenesMarcados()
+            mensaje = logValidarEntradasExamenesMarcados()
+
+            If mensaje = "" Then
+                logAgregarExamenesMarcados()
+                intDesmarcarItemsExamenesSolicitables()
+                clistExamenesSolicitables.ClearSelected()
+
+
+            Else
+                intMostrarMensaje(mensaje)
             End If
 
-            enfocarClistExamen()
+            intPoblarDgvExamenesSolicitables()
+
 
         Catch ex As Exception
-            mostrarMensaje(ex.Message)
+            intMostrarMensaje(ex.Message)
         End Try
     End Sub
 
 
     'EVENTOS G3
-    Private Sub dgvExamenes_RowPostPaint(sender As Object, e As DataGridViewRowPostPaintEventArgs) Handles dgvExamenes.RowPostPaint
+    Private Sub dgvExamenesSolicitables_RowPostPaint(sender As Object, e As DataGridViewRowPostPaintEventArgs) Handles dgvExamenesSolicitables.RowPostPaint
         Try
             Dim grid = TryCast(sender, DataGridView)
             Dim rowIdx = (e.RowIndex + 1).ToString()
@@ -718,95 +691,62 @@ Public Class FormRegistrarOrdenLaboratorio
 
 
         Catch ex As Exception
-            mostrarMensaje(ex.Message)
+            intMostrarMensaje(ex.Message)
         End Try
     End Sub
 
-    Private Sub dgviewExamenes_CellClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgvExamenes.CellClick
+    Private Sub dgvExamenesSolicitables_CellClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgvExamenesSolicitables.CellClick
         Try
-            Dim clmAccionIndex As Short, filaIndex As Short
+            Dim clmAccionIndex As Short, clmClickIndex As Short, rowIndex As Short
 
-            clmAccionIndex = dgvExamenes.Columns(clmAccion).Index
-            filaIndex = e.RowIndex
+            clmAccionIndex = dgvExamenesSolicitables.Columns(clmAccion).Index
+            clmClickIndex = e.ColumnIndex
+            rowIndex = e.RowIndex
 
-            If e.RowIndex < 0 Then Return
-
-            If e.ColumnIndex = clmAccionIndex Then
-                Dim row As DataGridViewRow, nombreExamen As String
-
-                row = dgvExamenes.Rows(filaIndex)
-                nombreExamen = row.Cells(clmExamen).Value.ToString()
-                eliminarExamen(nombreExamen)
+            If Not clmAccionIndex = clmClickIndex Or rowIndex < 0 Then
+                Return
+            Else
+                logEliminarExamen(rowIndex)
+                intPoblarDgvExamenesSolicitables()
             End If
 
         Catch ex As Exception
-            mostrarMensaje(ex.Message)
-        End Try
-    End Sub
-
-    Private Sub dgviewExamenes_KeyDown(sender As Object, e As KeyEventArgs) Handles dgvExamenes.KeyDown
-        Try
-            If (e.KeyData = Keys.Enter) Then
-                Dim filaIndex As Short, columnaIndex As Short, clmAccionIndex As Short
-
-
-                If Not IsNothing(dgvExamenes.CurrentCell) Then
-
-                    filaIndex = dgvExamenes.CurrentCell.RowIndex
-                    columnaIndex = dgvExamenes.CurrentCell.ColumnIndex
-                    clmAccionIndex = dgvExamenes.Columns(clmAccion).Index
-
-                    If filaIndex < 0 Then Return
-
-                    If columnaIndex = clmAccionIndex Then
-                        Dim row As DataGridViewRow, nombreExamen As String
-
-                        row = dgvExamenes.Rows(filaIndex)
-                        nombreExamen = row.Cells(clmExamen).Value.ToString()
-                        eliminarExamen(nombreExamen)
-                    End If
-                End If
-
-
-
-            ElseIf (e.KeyData = Keys.Escape) Then
-                clistExamen.Focus()
-            End If
-
-        Catch ex As Exception
-            mostrarMensaje(ex.Message)
+            intMostrarMensaje(ex.Message)
         End Try
     End Sub
 
 
 
-    'EVENTOS G9
-    Private Sub btnCancelarOrden_Click(sender As Object, e As EventArgs) Handles btnCancelarOrden.Click
-        If cancelarOrden("¿Está seguro de cancelar la orden de laboratorio?", "Cancelar Orden") Then
-            reiniciarFormulario()
-        End If
-    End Sub
-
+    'EVENTOS SUBMIT
     Private Sub btnEnviarDatos_Click(sender As Object, e As EventArgs) Handles btnEnviarDatos.Click
         Try
-            enviarDatos()
+            Dim mensaje As String, respuesta As Short, confirmado As Boolean
+
+
+            mensaje = logValidarEntradas()
+            If Not mensaje = "" Then
+                intMostrarMensaje(mensaje)
+                Return
+            End If
+
+
+
+
+            confirmado = logAbrirFormularioConfirmacion()
+            If confirmado Then
+                logEnviarObjetosADatabase()
+                respuesta = negocio.respuestaInsercionDetalles
+
+                If respuesta > 0 Then
+                    intMostrarMensaje("La orden se guardó correctamente.")
+                    reiniciarFormulario()
+                End If
+            End If
+
 
 
         Catch ex As Exception
-            mostrarMensaje(ex.Message)
-        End Try
-    End Sub
-
-    Private Sub menuStripMenuLaboratorio_Click(sender As Object, e As EventArgs) Handles menuStripMenuLaboratorio.Click
-        Try
-            Dim form As FormMenuLaboratorio
-
-            form = New FormMenuLaboratorio()
-            form.Show()
-            Me.Close()
-
-        Catch ex As Exception
-            mostrarMensaje(ex.Message)
+            intMostrarMensaje(ex.Message)
         End Try
     End Sub
 

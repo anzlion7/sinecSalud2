@@ -8,13 +8,13 @@ Public Class FormRegistrarExamenLaboratorio
     'ATRIBUTOS FORM MODO HIJO
     Private esFormHijo As Boolean
 
-
     'ATRIBUTOS G0
     Private tituloFormulario As String
 
     'ATRIBUTOS G1
     Private areaSeleccionada As AreaLaboratorio
     Private subareaSeleccionada As SubareaLaboratorio
+    Private puedePedirseIndividual As Boolean
     Private tipoResultadoSeleccionado As Concepto
 
     'ATRIBUTOS G2 -- RESULTADO FORMATO 1
@@ -26,11 +26,9 @@ Public Class FormRegistrarExamenLaboratorio
     Private nuevoKitEquipo As KitEquipoLaboratorio
     Private nuevasReferencias As ReferenciaResultadoLaboratorio()
 
-
     'ATRIBUTOS G3b -- RESULTADO TIPO 2
     Private conjuntoSeleccionado As ConjuntoOpcionesResultadosLaboratorio
     Private clmValorDgvOpciones As String
-
 
     'ATRIBUTOS G9  
     Private nuevoInputExamen As ExamenLaboratorioInput
@@ -95,6 +93,8 @@ Public Class FormRegistrarExamenLaboratorio
         areaSeleccionada = New AreaLaboratorio()
         subareaSeleccionada = New SubareaLaboratorio()
         tipoResultadoSeleccionado = New Concepto()
+        puedePedirseIndividual = False
+
 
         'ATRIBUTOS G2
         unidadSeleccionada = New UnidadMedidaLaboratorio()
@@ -143,7 +143,7 @@ Public Class FormRegistrarExamenLaboratorio
         panelDatosExamen.Enabled = True
         panelDatosExamen.Visible = True
 
-
+        'C1
         cboxArea.Enabled = True
         cboxArea.Visible = True
         cboxArea.Font = New Font("Microsoft Sans Serif", 9)
@@ -161,9 +161,6 @@ Public Class FormRegistrarExamenLaboratorio
         btnRegistrarArea.Font = New Font("Microsoft Sans Serif", 9)
         btnRegistrarArea.Text = "Registrar area"
 
-
-
-        cboxSubarea.Enabled = True
         cboxSubarea.Visible = True
         cboxSubarea.Font = New Font("Microsoft Sans Serif", 9)
         cboxSubarea.Items.Clear()
@@ -180,8 +177,6 @@ Public Class FormRegistrarExamenLaboratorio
         btnRegistrarSubarea.Font = New Font("Microsoft Sans Serif", 9)
         btnRegistrarSubarea.Text = "Registrar subarea"
 
-
-
         txtNombreExamen.Enabled = True
         txtNombreExamen.Visible = True
         txtNombreExamen.Font = New Font("Microsoft Sans Serif", 9)
@@ -191,6 +186,17 @@ Public Class FormRegistrarExamenLaboratorio
 
 
 
+        'C2
+        chPuedePedirseIndividual.Enabled = True
+        chPuedePedirseIndividual.Visible = True
+        chPuedePedirseIndividual.Checked = False
+        chPuedePedirseIndividual.Font = New Font("Microsoft Sans Serif", 9.5)
+        chPuedePedirseIndividual.Text = "Puede solicitarse individualmente"
+
+
+
+
+        'C3
         cboxTipoResultado.Enabled = True
         cboxTipoResultado.Visible = True
         cboxTipoResultado.Font = New Font("Microsoft Sans Serif", 9)
@@ -460,6 +466,11 @@ Public Class FormRegistrarExamenLaboratorio
         subareaSeleccionada = registro.subareas(index)
     End Sub
 
+    Private Sub actualizarEstadoPuedePedirseInvidual()
+        If chPuedePedirseIndividual.Checked = True Then puedePedirseIndividual = True
+        If chPuedePedirseIndividual.Checked = False Then puedePedirseIndividual = False
+    End Sub
+
     Private Sub traerTipoDeResultado()
         registro.traerTipoDeResultado()
     End Sub
@@ -485,7 +496,6 @@ Public Class FormRegistrarExamenLaboratorio
         Dim index As Short = cboxUnidadMedida.SelectedIndex
         unidadSeleccionada = registro.unidadesMedida(index)
     End Sub
-
 
     'MÉTODOS LÓGICOS G3a
     Private Sub abrirFormularioKitEqiupo()
@@ -530,7 +540,7 @@ Public Class FormRegistrarExamenLaboratorio
     End Sub
 
 
-    'MÉTODOS LÓGICOS G9tru  
+    'MÉTODOS LÓGICOS G9
     Private Sub enviarDatos()
         Dim entradasCargadas As Boolean = cargarEntradas()
 
@@ -548,7 +558,8 @@ Public Class FormRegistrarExamenLaboratorio
 
     Private Function cargarEntradas() As Boolean
         Try
-            Dim area As AreaLaboratorioInput, subarea As SubareaLaboratorioInput, nombre As String, tipoResultado As ConceptoInput
+            Dim area As AreaLaboratorioInput, subarea As SubareaLaboratorioInput, nombre As String, grupoExamen As GrupoExamenLaboratorioInput,
+                permiteIndividual As Short, tipoResultado As ConceptoInput
 
             area = New AreaLaboratorioInput()
             area.codigo = areaSeleccionada.getCodigo()
@@ -558,18 +569,18 @@ Public Class FormRegistrarExamenLaboratorio
             subarea.codigo = subareaSeleccionada.getCodigo()
             subarea.nombre = subareaSeleccionada.getNombre()
 
+            If puedePedirseIndividual Then permiteIndividual = 1 Else permiteIndividual = 2
             nombre = txtNombreExamen.Text.Trim()
 
             tipoResultado = New ConceptoInput()
             tipoResultado.correlativo = tipoResultadoSeleccionado.getCorrelativo()
             tipoResultado.descripcion = tipoResultadoSeleccionado.getDescripcion()
 
-
             Dim tipo As Short = Short.Parse(tipoResultado.correlativo)
 
-            If tipo = 1 Then Return cargarEntradasResultadoTipoComunNumerico(area, subarea, nombre, tipoResultado)
-            If tipo = 2 Then Return cargarEntradasResultadoTipoOpccionSeleccion(area, subarea, nombre, tipoResultado)
-            If tipo = 3 Then Return cargarEntradasResultadoTipoTextual(area, subarea, nombre, tipoResultado) Else Return cargarEntradasResultadoTipoComunNumerico(area, subarea, nombre, tipoResultado)
+            If tipo = 1 Then Return cargarEntradasResultadoTipoComunNumerico(area, subarea, nombre, grupoExamen, permiteIndividual, tipoResultado)
+            If tipo = 2 Then Return cargarEntradasResultadoTipoOpccionSeleccion(area, subarea, nombre, grupoExamen, permiteIndividual, tipoResultado)
+            If tipo = 3 Then Return cargarEntradasResultadoTipoTextual(area, subarea, nombre, grupoExamen, permiteIndividual, tipoResultado) Else Return cargarEntradasResultadoTipoComunNumerico(area, subarea, nombre, grupoExamen, permiteIndividual, tipoResultado)
 
 
         Catch ex As Exception
@@ -579,7 +590,7 @@ Public Class FormRegistrarExamenLaboratorio
     End Function
 
     Private Function cargarEntradasResultadoTipoComunNumerico(ByRef _area As AreaLaboratorioInput, _subarea As SubareaLaboratorioInput, _nombre As String,
-                                                              _tipoResultado As ConceptoInput) As Boolean
+                                                              _grupoExamen As GrupoExamenLaboratorioInput, _permiteIndividual As Short, _tipoResultado As ConceptoInput) As Boolean
         Dim unidad As New UnidadMedidaLaboratorioInput()
 
         unidad.codigo = unidadSeleccionada.getCodigo()
@@ -590,6 +601,8 @@ Public Class FormRegistrarExamenLaboratorio
         nuevoInputExamen.area = _area
         nuevoInputExamen.subarea = _subarea
         nuevoInputExamen.nombre = _nombre
+        nuevoInputExamen.grupoExamen = _grupoExamen
+        nuevoInputExamen.codigoIndividual = _permiteIndividual
         nuevoInputExamen.tipoResultado = _tipoResultado
         nuevoInputExamen.unidad = unidad
 
@@ -597,7 +610,7 @@ Public Class FormRegistrarExamenLaboratorio
     End Function
 
     Private Function cargarEntradasResultadoTipoOpccionSeleccion(ByRef _area As AreaLaboratorioInput, _subarea As SubareaLaboratorioInput, _nombre As String,
-                                                              _tipoResultado As ConceptoInput) As Boolean
+                                                                 _grupoExamen As GrupoExamenLaboratorioInput, _permiteIndividual As Short, _tipoResultado As ConceptoInput) As Boolean
 
 
         Dim conjuntoOpciones As New ConjuntoOpcionesResultadosLabInput()
@@ -607,6 +620,8 @@ Public Class FormRegistrarExamenLaboratorio
         nuevoInputExamen.area = _area
         nuevoInputExamen.subarea = _subarea
         nuevoInputExamen.nombre = _nombre
+        nuevoInputExamen.grupoExamen = _grupoExamen
+        nuevoInputExamen.codigoIndividual = _permiteIndividual
         nuevoInputExamen.tipoResultado = _tipoResultado
         nuevoInputExamen.conjuntoOpcionesResultado = conjuntoOpciones
 
@@ -614,12 +629,14 @@ Public Class FormRegistrarExamenLaboratorio
     End Function
 
     Private Function cargarEntradasResultadoTipoTextual(ByRef _area As AreaLaboratorioInput, _subarea As SubareaLaboratorioInput, _nombre As String,
-                                                              _tipoResultado As ConceptoInput) As Boolean
+                                                        _grupoExamen As GrupoExamenLaboratorioInput, _permiteIndividual As Short, _tipoResultado As ConceptoInput) As Boolean
 
         nuevoInputExamen = New ExamenLaboratorioInput()
         nuevoInputExamen.area = _area
         nuevoInputExamen.subarea = _subarea
         nuevoInputExamen.nombre = _nombre
+        nuevoInputExamen.grupoExamen = _grupoExamen
+        nuevoInputExamen.codigoIndividual = _permiteIndividual
         nuevoInputExamen.tipoResultado = _tipoResultado
 
         Return True
@@ -652,6 +669,7 @@ Public Class FormRegistrarExamenLaboratorio
         nuevoExamen.setArea(areaSeleccionada)
         nuevoExamen.setSubarea(subareaSeleccionada)
         nuevoExamen.setNombre(nombreExamen)
+        nuevoExamen.setCodigoIndividual(nuevoInputExamen.codigoIndividual)
         nuevoExamen.setTipoResultado(tipoResultadoSeleccionado)
         nuevoExamen.setUnidad(unidadSeleccionada)
 
@@ -665,6 +683,7 @@ Public Class FormRegistrarExamenLaboratorio
         nuevoExamen.setArea(areaSeleccionada)
         nuevoExamen.setSubarea(subareaSeleccionada)
         nuevoExamen.setNombre(nombreExamen)
+        nuevoExamen.setCodigoIndividual(nuevoInputExamen.codigoIndividual)
         nuevoExamen.setTipoResultado(tipoResultadoSeleccionado)
         nuevoExamen.setConjuntoOpcionesResultado(conjuntoSeleccionado)
 
@@ -678,13 +697,14 @@ Public Class FormRegistrarExamenLaboratorio
         nuevoExamen.setArea(areaSeleccionada)
         nuevoExamen.setSubarea(subareaSeleccionada)
         nuevoExamen.setNombre(nombreExamen)
+        nuevoExamen.setCodigoIndividual(nuevoInputExamen.codigoIndividual)
         nuevoExamen.setTipoResultado(tipoResultadoSeleccionado)
 
         Return True
     End Function
 
     Private Sub enviarDatosDatabase()
-        Dim registroKitEquipo As RegistroKitEquipoLaboratorio = formKitEquipo.registro
+        Dim registroKitEquipo As RegistroKitEquipoLaboratorio = formKitEquipo.negocio
         Dim registroReferencias As RegistroReferenciaResultadoLaboratorio = formKitEquipo.formReferecias.registro
 
         registro.insertExamen(tipoResultadoSeleccionado, nuevoExamen, nuevoKitEquipo, nuevasReferencias, registroKitEquipo, registroReferencias)
@@ -738,6 +758,14 @@ Public Class FormRegistrarExamenLaboratorio
 
     Private Sub mostrarHintSubarea()
         hintSubarea.Visible = True
+    End Sub
+
+    Private Sub marcarChPuedePedirseIndividual()
+        chPuedePedirseIndividual.Checked = True
+    End Sub
+
+    Private Sub desmarcarChPuedePedirseIndividual()
+        chPuedePedirseIndividual.Checked = False
     End Sub
 
     Private Sub poblarCboxTipoResultado()
@@ -900,7 +928,7 @@ Public Class FormRegistrarExamenLaboratorio
     End Sub
 
 
-    'EVENTOS G1
+    'EVENTOS G1 C1
     Private Sub cboxArea_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles cboxArea.SelectionChangeCommitted
         Try
             seleccionarArea()
@@ -949,6 +977,17 @@ Public Class FormRegistrarExamenLaboratorio
         End Try
     End Sub
 
+    'EVENTOS G1 C2
+    Private Sub chPuedePedirseIndividual_CheckedChanged(sender As Object, e As EventArgs) Handles chPuedePedirseIndividual.CheckedChanged
+        Try
+            actualizarEstadoPuedePedirseInvidual()
+
+        Catch ex As Exception
+            mostrarMensaje(ex.Message)
+        End Try
+    End Sub
+
+    'EVENTOS G1 C3
     Private Sub cboxTipoResultado_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles cboxTipoResultado.SelectionChangeCommitted
         Try
             seleccionarTipoResultado()
@@ -959,6 +998,9 @@ Public Class FormRegistrarExamenLaboratorio
             mostrarMensaje(ex.Message)
         End Try
     End Sub
+
+
+
 
 
     'EVENTOS G2
@@ -1060,7 +1102,6 @@ Public Class FormRegistrarExamenLaboratorio
             mostrarMensaje(ex.Message)
         End Try
     End Sub
-
 
 
 End Class

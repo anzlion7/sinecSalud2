@@ -51,23 +51,20 @@ Partial Class FormRegistrarResultadoLabTipoValorComun
         Me.Column1 = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.Column2 = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.lblHeaderValorDeReferencia = New System.Windows.Forms.Label()
-        Me.Label4 = New System.Windows.Forms.Label()
         Me.cboxProcesador = New System.Windows.Forms.ComboBox()
         Me.Label7 = New System.Windows.Forms.Label()
         Me.lblHeaderEdad = New System.Windows.Forms.Label()
-        Me.cboxKit = New System.Windows.Forms.ComboBox()
-        Me.hintKit = New System.Windows.Forms.Label()
         Me.hintProcesador = New System.Windows.Forms.Label()
         Me.panelDatosResultado = New System.Windows.Forms.Panel()
+        Me.chboxResVacio = New System.Windows.Forms.CheckBox()
+        Me.txtKit = New System.Windows.Forms.TextBox()
+        Me.Label2 = New System.Windows.Forms.Label()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
         Me.Label3 = New System.Windows.Forms.Label()
-        Me.hintProveedor = New System.Windows.Forms.Label()
-        Me.cboxProveedor = New System.Windows.Forms.ComboBox()
-        Me.Label2 = New System.Windows.Forms.Label()
         Me.numResultado = New System.Windows.Forms.NumericUpDown()
         Me.lblHeaderEmpty = New System.Windows.Forms.Label()
         Me.Label14 = New System.Windows.Forms.Label()
-        Me.rc = New System.Windows.Forms.TextBox()
+        Me.txtObservacion = New System.Windows.Forms.TextBox()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.panelDatosAsegurado = New System.Windows.Forms.Panel()
         Me.Label22 = New System.Windows.Forms.Label()
@@ -116,7 +113,7 @@ Partial Class FormRegistrarResultadoLabTipoValorComun
         'btnEnviarDatos
         '
         Me.btnEnviarDatos.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnEnviarDatos.Location = New System.Drawing.Point(1004, 486)
+        Me.btnEnviarDatos.Location = New System.Drawing.Point(1007, 501)
         Me.btnEnviarDatos.Name = "btnEnviarDatos"
         Me.btnEnviarDatos.Size = New System.Drawing.Size(206, 28)
         Me.btnEnviarDatos.TabIndex = 48
@@ -237,7 +234,7 @@ Partial Class FormRegistrarResultadoLabTipoValorComun
         Me.txtEdad.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtEdad.Location = New System.Drawing.Point(65, 67)
         Me.txtEdad.Name = "txtEdad"
-        Me.txtEdad.Size = New System.Drawing.Size(151, 21)
+        Me.txtEdad.Size = New System.Drawing.Size(207, 21)
         Me.txtEdad.TabIndex = 66
         '
         'lblEdad
@@ -263,7 +260,7 @@ Partial Class FormRegistrarResultadoLabTipoValorComun
         Me.txtSexo.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtSexo.Location = New System.Drawing.Point(65, 36)
         Me.txtSexo.Name = "txtSexo"
-        Me.txtSexo.Size = New System.Drawing.Size(151, 21)
+        Me.txtSexo.Size = New System.Drawing.Size(207, 21)
         Me.txtSexo.TabIndex = 64
         '
         'lblNombreAsegurado
@@ -290,11 +287,11 @@ Partial Class FormRegistrarResultadoLabTipoValorComun
         '
         Me.lblResultado.AutoSize = True
         Me.lblResultado.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.5!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblResultado.Location = New System.Drawing.Point(486, 260)
+        Me.lblResultado.Location = New System.Drawing.Point(479, 266)
         Me.lblResultado.Name = "lblResultado"
-        Me.lblResultado.Size = New System.Drawing.Size(102, 16)
+        Me.lblResultado.Size = New System.Drawing.Size(69, 16)
         Me.lblResultado.TabIndex = 32
-        Me.lblResultado.Text = "Resultado en %"
+        Me.lblResultado.Text = "Resultado"
         '
         'Label13
         '
@@ -315,7 +312,7 @@ Partial Class FormRegistrarResultadoLabTipoValorComun
         Me.dgvReferencias.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.Column5, Me.Column4, Me.Column1, Me.Column2})
         Me.dgvReferencias.Location = New System.Drawing.Point(17, 92)
         Me.dgvReferencias.Name = "dgvReferencias"
-        Me.dgvReferencias.Size = New System.Drawing.Size(446, 296)
+        Me.dgvReferencias.Size = New System.Drawing.Size(446, 312)
         Me.dgvReferencias.TabIndex = 58
         '
         'Column5
@@ -350,31 +347,21 @@ Partial Class FormRegistrarResultadoLabTipoValorComun
         Me.lblHeaderValorDeReferencia.Text = "VALORES EN %"
         Me.lblHeaderValorDeReferencia.TextAlign = System.Drawing.ContentAlignment.TopCenter
         '
-        'Label4
-        '
-        Me.Label4.AutoSize = True
-        Me.Label4.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.5!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label4.Location = New System.Drawing.Point(487, 69)
-        Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(74, 16)
-        Me.Label4.TabIndex = 59
-        Me.Label4.Text = "Kit / Equipo"
-        '
         'cboxProcesador
         '
         Me.cboxProcesador.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboxProcesador.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!)
         Me.cboxProcesador.FormattingEnabled = True
-        Me.cboxProcesador.Location = New System.Drawing.Point(570, 104)
+        Me.cboxProcesador.Location = New System.Drawing.Point(564, 222)
         Me.cboxProcesador.Name = "cboxProcesador"
-        Me.cboxProcesador.Size = New System.Drawing.Size(240, 23)
+        Me.cboxProcesador.Size = New System.Drawing.Size(252, 23)
         Me.cboxProcesador.TabIndex = 35
         '
         'Label7
         '
         Me.Label7.AutoSize = True
         Me.Label7.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.5!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label7.Location = New System.Drawing.Point(487, 104)
+        Me.Label7.Location = New System.Drawing.Point(479, 222)
         Me.Label7.Name = "Label7"
         Me.Label7.Size = New System.Drawing.Size(78, 16)
         Me.Label7.TabIndex = 34
@@ -392,31 +379,11 @@ Partial Class FormRegistrarResultadoLabTipoValorComun
         Me.lblHeaderEdad.Text = "EDAD EN AÑOS"
         Me.lblHeaderEdad.TextAlign = System.Drawing.ContentAlignment.TopCenter
         '
-        'cboxKit
-        '
-        Me.cboxKit.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cboxKit.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!)
-        Me.cboxKit.FormattingEnabled = True
-        Me.cboxKit.Location = New System.Drawing.Point(570, 69)
-        Me.cboxKit.Name = "cboxKit"
-        Me.cboxKit.Size = New System.Drawing.Size(240, 23)
-        Me.cboxKit.TabIndex = 60
-        '
-        'hintKit
-        '
-        Me.hintKit.AutoSize = True
-        Me.hintKit.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.hintKit.Location = New System.Drawing.Point(574, 73)
-        Me.hintKit.Name = "hintKit"
-        Me.hintKit.Size = New System.Drawing.Size(82, 13)
-        Me.hintKit.TabIndex = 61
-        Me.hintKit.Text = "SELECCIONAR"
-        '
         'hintProcesador
         '
         Me.hintProcesador.AutoSize = True
         Me.hintProcesador.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.hintProcesador.Location = New System.Drawing.Point(574, 108)
+        Me.hintProcesador.Location = New System.Drawing.Point(569, 227)
         Me.hintProcesador.Name = "hintProcesador"
         Me.hintProcesador.Size = New System.Drawing.Size(82, 13)
         Me.hintProcesador.TabIndex = 36
@@ -426,30 +393,55 @@ Partial Class FormRegistrarResultadoLabTipoValorComun
         '
         Me.panelDatosResultado.BackColor = System.Drawing.Color.White
         Me.panelDatosResultado.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.panelDatosResultado.Controls.Add(Me.GroupBox1)
-        Me.panelDatosResultado.Controls.Add(Me.hintProveedor)
-        Me.panelDatosResultado.Controls.Add(Me.cboxProveedor)
+        Me.panelDatosResultado.Controls.Add(Me.chboxResVacio)
+        Me.panelDatosResultado.Controls.Add(Me.txtKit)
         Me.panelDatosResultado.Controls.Add(Me.Label2)
+        Me.panelDatosResultado.Controls.Add(Me.GroupBox1)
         Me.panelDatosResultado.Controls.Add(Me.lblHeaderEdad)
         Me.panelDatosResultado.Controls.Add(Me.numResultado)
         Me.panelDatosResultado.Controls.Add(Me.lblHeaderEmpty)
         Me.panelDatosResultado.Controls.Add(Me.Label14)
         Me.panelDatosResultado.Controls.Add(Me.hintProcesador)
-        Me.panelDatosResultado.Controls.Add(Me.hintKit)
-        Me.panelDatosResultado.Controls.Add(Me.cboxKit)
         Me.panelDatosResultado.Controls.Add(Me.Label7)
         Me.panelDatosResultado.Controls.Add(Me.cboxProcesador)
-        Me.panelDatosResultado.Controls.Add(Me.Label4)
         Me.panelDatosResultado.Controls.Add(Me.lblHeaderValorDeReferencia)
-        Me.panelDatosResultado.Controls.Add(Me.rc)
+        Me.panelDatosResultado.Controls.Add(Me.txtObservacion)
         Me.panelDatosResultado.Controls.Add(Me.dgvReferencias)
         Me.panelDatosResultado.Controls.Add(Me.Label13)
         Me.panelDatosResultado.Controls.Add(Me.Label1)
         Me.panelDatosResultado.Controls.Add(Me.lblResultado)
         Me.panelDatosResultado.Location = New System.Drawing.Point(377, 62)
         Me.panelDatosResultado.Name = "panelDatosResultado"
-        Me.panelDatosResultado.Size = New System.Drawing.Size(836, 411)
+        Me.panelDatosResultado.Size = New System.Drawing.Size(836, 426)
         Me.panelDatosResultado.TabIndex = 51
+        '
+        'chboxResVacio
+        '
+        Me.chboxResVacio.AutoSize = True
+        Me.chboxResVacio.Location = New System.Drawing.Point(672, 292)
+        Me.chboxResVacio.Name = "chboxResVacio"
+        Me.chboxResVacio.Size = New System.Drawing.Size(124, 17)
+        Me.chboxResVacio.TabIndex = 53
+        Me.chboxResVacio.Text = "Resultado en blanco"
+        Me.chboxResVacio.UseVisualStyleBackColor = True
+        '
+        'txtKit
+        '
+        Me.txtKit.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtKit.Location = New System.Drawing.Point(564, 191)
+        Me.txtKit.Name = "txtKit"
+        Me.txtKit.Size = New System.Drawing.Size(252, 21)
+        Me.txtKit.TabIndex = 66
+        '
+        'Label2
+        '
+        Me.Label2.AutoSize = True
+        Me.Label2.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.5!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label2.Location = New System.Drawing.Point(489, 191)
+        Me.Label2.Name = "Label2"
+        Me.Label2.Size = New System.Drawing.Size(68, 16)
+        Me.Label2.TabIndex = 65
+        Me.Label2.Text = "Kit-Equipo"
         '
         'GroupBox1
         '
@@ -458,9 +450,9 @@ Partial Class FormRegistrarResultadoLabTipoValorComun
         Me.GroupBox1.Controls.Add(Me.lblSexo)
         Me.GroupBox1.Controls.Add(Me.lblEdad)
         Me.GroupBox1.Controls.Add(Me.txtSexo)
-        Me.GroupBox1.Location = New System.Drawing.Point(487, 140)
+        Me.GroupBox1.Location = New System.Drawing.Point(481, 74)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(323, 102)
+        Me.GroupBox1.Size = New System.Drawing.Size(300, 102)
         Me.GroupBox1.TabIndex = 53
         Me.GroupBox1.TabStop = False
         '
@@ -474,43 +466,13 @@ Partial Class FormRegistrarResultadoLabTipoValorComun
         Me.Label3.TabIndex = 67
         Me.Label3.Text = "Parametros de referencia"
         '
-        'hintProveedor
-        '
-        Me.hintProveedor.AutoSize = True
-        Me.hintProveedor.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.hintProveedor.Location = New System.Drawing.Point(576, 34)
-        Me.hintProveedor.Name = "hintProveedor"
-        Me.hintProveedor.Size = New System.Drawing.Size(82, 13)
-        Me.hintProveedor.TabIndex = 67
-        Me.hintProveedor.Text = "SELECCIONAR"
-        '
-        'cboxProveedor
-        '
-        Me.cboxProveedor.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cboxProveedor.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!)
-        Me.cboxProveedor.FormattingEnabled = True
-        Me.cboxProveedor.Location = New System.Drawing.Point(570, 29)
-        Me.cboxProveedor.Name = "cboxProveedor"
-        Me.cboxProveedor.Size = New System.Drawing.Size(240, 23)
-        Me.cboxProveedor.TabIndex = 66
-        '
-        'Label2
-        '
-        Me.Label2.AutoSize = True
-        Me.Label2.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.5!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label2.Location = New System.Drawing.Point(493, 30)
-        Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(71, 16)
-        Me.Label2.TabIndex = 65
-        Me.Label2.Text = "Proveedor"
-        '
         'numResultado
         '
         Me.numResultado.DecimalPlaces = 3
         Me.numResultado.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.numResultado.Location = New System.Drawing.Point(594, 258)
+        Me.numResultado.Location = New System.Drawing.Point(479, 286)
         Me.numResultado.Name = "numResultado"
-        Me.numResultado.Size = New System.Drawing.Size(177, 23)
+        Me.numResultado.Size = New System.Drawing.Size(176, 23)
         Me.numResultado.TabIndex = 53
         '
         'lblHeaderEmpty
@@ -534,22 +496,22 @@ Partial Class FormRegistrarResultadoLabTipoValorComun
         Me.Label14.TabIndex = 63
         Me.Label14.Text = "VALORES DE REFERENCIA DEL KIT-EQUIPO"
         '
-        'rc
+        'txtObservacion
         '
-        Me.rc.AcceptsTab = True
-        Me.rc.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.rc.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!)
-        Me.rc.Location = New System.Drawing.Point(487, 317)
-        Me.rc.Multiline = True
-        Me.rc.Name = "rc"
-        Me.rc.Size = New System.Drawing.Size(323, 71)
-        Me.rc.TabIndex = 52
+        Me.txtObservacion.AcceptsTab = True
+        Me.txtObservacion.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtObservacion.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!)
+        Me.txtObservacion.Location = New System.Drawing.Point(479, 333)
+        Me.txtObservacion.Multiline = True
+        Me.txtObservacion.Name = "txtObservacion"
+        Me.txtObservacion.Size = New System.Drawing.Size(337, 71)
+        Me.txtObservacion.TabIndex = 52
         '
         'Label1
         '
         Me.Label1.AutoSize = True
         Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.5!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label1.Location = New System.Drawing.Point(487, 295)
+        Me.Label1.Location = New System.Drawing.Point(476, 314)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(99, 16)
         Me.Label1.TabIndex = 38
@@ -622,15 +584,12 @@ Partial Class FormRegistrarResultadoLabTipoValorComun
     Friend WithEvents Label13 As Label
     Friend WithEvents dgvReferencias As DataGridView
     Friend WithEvents lblHeaderValorDeReferencia As Label
-    Friend WithEvents Label4 As Label
     Friend WithEvents cboxProcesador As ComboBox
     Friend WithEvents Label7 As Label
     Friend WithEvents lblHeaderEdad As Label
-    Friend WithEvents cboxKit As ComboBox
-    Friend WithEvents hintKit As Label
     Friend WithEvents hintProcesador As Label
     Friend WithEvents panelDatosResultado As Panel
-    Friend WithEvents rc As TextBox
+    Friend WithEvents txtObservacion As TextBox
     Friend WithEvents Label1 As Label
     Friend WithEvents txtEdad As TextBox
     Friend WithEvents lblEdad As Label
@@ -651,14 +610,14 @@ Partial Class FormRegistrarResultadoLabTipoValorComun
     Friend WithEvents panelDatosAsegurado As Panel
     Friend WithEvents Label22 As Label
     Friend WithEvents lblUnidad As Label
-    Friend WithEvents numResultado As NumericUpDown
     Friend WithEvents Column5 As DataGridViewTextBoxColumn
     Friend WithEvents Column4 As DataGridViewTextBoxColumn
     Friend WithEvents Column1 As DataGridViewTextBoxColumn
     Friend WithEvents Column2 As DataGridViewTextBoxColumn
-    Friend WithEvents hintProveedor As Label
-    Friend WithEvents cboxProveedor As ComboBox
-    Friend WithEvents Label2 As Label
     Friend WithEvents GroupBox1 As GroupBox
     Friend WithEvents Label3 As Label
+    Friend WithEvents txtKit As TextBox
+    Friend WithEvents Label2 As Label
+    Friend WithEvents numResultado As NumericUpDown
+    Friend WithEvents chboxResVacio As CheckBox
 End Class

@@ -25,12 +25,9 @@ Partial Class FormRegistrarKitEquipoLaboratorio
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
         Me.lblTituloPrincipal = New System.Windows.Forms.Label()
         Me.panelDatosKitEquipo = New System.Windows.Forms.Panel()
-        Me.btnRegistrarProveedor = New System.Windows.Forms.Button()
-        Me.txtModelo = New System.Windows.Forms.TextBox()
-        Me.Label3 = New System.Windows.Forms.Label()
-        Me.hintProveedor = New System.Windows.Forms.Label()
+        Me.hintMarca = New System.Windows.Forms.Label()
+        Me.cboxMarca = New System.Windows.Forms.ComboBox()
         Me.Label1 = New System.Windows.Forms.Label()
-        Me.cboxProveedor = New System.Windows.Forms.ComboBox()
         Me.hintTipo = New System.Windows.Forms.Label()
         Me.cboxTipo = New System.Windows.Forms.ComboBox()
         Me.Label6 = New System.Windows.Forms.Label()
@@ -102,87 +99,53 @@ Partial Class FormRegistrarKitEquipoLaboratorio
         '
         Me.panelDatosKitEquipo.BackColor = System.Drawing.Color.White
         Me.panelDatosKitEquipo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.panelDatosKitEquipo.Controls.Add(Me.btnRegistrarProveedor)
-        Me.panelDatosKitEquipo.Controls.Add(Me.txtModelo)
-        Me.panelDatosKitEquipo.Controls.Add(Me.Label3)
-        Me.panelDatosKitEquipo.Controls.Add(Me.hintProveedor)
+        Me.panelDatosKitEquipo.Controls.Add(Me.hintMarca)
+        Me.panelDatosKitEquipo.Controls.Add(Me.cboxMarca)
         Me.panelDatosKitEquipo.Controls.Add(Me.Label1)
-        Me.panelDatosKitEquipo.Controls.Add(Me.cboxProveedor)
         Me.panelDatosKitEquipo.Controls.Add(Me.hintTipo)
         Me.panelDatosKitEquipo.Controls.Add(Me.cboxTipo)
         Me.panelDatosKitEquipo.Controls.Add(Me.Label6)
         Me.panelDatosKitEquipo.Controls.Add(Me.Label2)
         Me.panelDatosKitEquipo.Location = New System.Drawing.Point(30, 76)
         Me.panelDatosKitEquipo.Name = "panelDatosKitEquipo"
-        Me.panelDatosKitEquipo.Size = New System.Drawing.Size(331, 187)
+        Me.panelDatosKitEquipo.Size = New System.Drawing.Size(331, 141)
         Me.panelDatosKitEquipo.TabIndex = 11
         '
-        'btnRegistrarProveedor
+        'hintMarca
         '
-        Me.btnRegistrarProveedor.BackColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(0, Byte), Integer), CType(CType(0, Byte), Integer), CType(CType(0, Byte), Integer))
-        Me.btnRegistrarProveedor.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnRegistrarProveedor.ForeColor = System.Drawing.Color.Black
-        Me.btnRegistrarProveedor.Location = New System.Drawing.Point(16, 115)
-        Me.btnRegistrarProveedor.Name = "btnRegistrarProveedor"
-        Me.btnRegistrarProveedor.Size = New System.Drawing.Size(299, 25)
-        Me.btnRegistrarProveedor.TabIndex = 76
-        Me.btnRegistrarProveedor.Text = "Registrar nuevo proveedor"
-        Me.btnRegistrarProveedor.UseVisualStyleBackColor = False
+        Me.hintMarca.AutoSize = True
+        Me.hintMarca.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.hintMarca.Location = New System.Drawing.Point(82, 90)
+        Me.hintMarca.Name = "hintMarca"
+        Me.hintMarca.Size = New System.Drawing.Size(82, 13)
+        Me.hintMarca.TabIndex = 29
+        Me.hintMarca.Text = "SELECCIONAR"
         '
-        'txtModelo
+        'cboxMarca
         '
-        Me.txtModelo.AcceptsReturn = True
-        Me.txtModelo.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtModelo.Location = New System.Drawing.Point(136, 150)
-        Me.txtModelo.Name = "txtModelo"
-        Me.txtModelo.Size = New System.Drawing.Size(177, 21)
-        Me.txtModelo.TabIndex = 75
-        '
-        'Label3
-        '
-        Me.Label3.AutoSize = True
-        Me.Label3.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.5!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label3.Location = New System.Drawing.Point(81, 150)
-        Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(53, 16)
-        Me.Label3.TabIndex = 32
-        Me.Label3.Text = "Modelo"
-        '
-        'hintProveedor
-        '
-        Me.hintProveedor.AutoSize = True
-        Me.hintProveedor.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.hintProveedor.Location = New System.Drawing.Point(140, 90)
-        Me.hintProveedor.Name = "hintProveedor"
-        Me.hintProveedor.Size = New System.Drawing.Size(82, 13)
-        Me.hintProveedor.TabIndex = 30
-        Me.hintProveedor.Text = "SELECCIONAR"
+        Me.cboxMarca.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cboxMarca.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.cboxMarca.FormattingEnabled = True
+        Me.cboxMarca.Location = New System.Drawing.Point(76, 85)
+        Me.cboxMarca.Name = "cboxMarca"
+        Me.cboxMarca.Size = New System.Drawing.Size(232, 23)
+        Me.cboxMarca.TabIndex = 28
         '
         'Label1
         '
         Me.Label1.AutoSize = True
         Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.5!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label1.Location = New System.Drawing.Point(15, 85)
+        Me.Label1.Location = New System.Drawing.Point(23, 88)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(119, 16)
-        Me.Label1.TabIndex = 29
-        Me.Label1.Text = "Proveedor / Marca"
-        '
-        'cboxProveedor
-        '
-        Me.cboxProveedor.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cboxProveedor.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.cboxProveedor.FormattingEnabled = True
-        Me.cboxProveedor.Location = New System.Drawing.Point(135, 85)
-        Me.cboxProveedor.Name = "cboxProveedor"
-        Me.cboxProveedor.Size = New System.Drawing.Size(180, 23)
-        Me.cboxProveedor.TabIndex = 31
+        Me.Label1.Size = New System.Drawing.Size(45, 16)
+        Me.Label1.TabIndex = 27
+        Me.Label1.Text = "Marca"
         '
         'hintTipo
         '
         Me.hintTipo.AutoSize = True
         Me.hintTipo.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.hintTipo.Location = New System.Drawing.Point(141, 56)
+        Me.hintTipo.Location = New System.Drawing.Point(82, 57)
         Me.hintTipo.Name = "hintTipo"
         Me.hintTipo.Size = New System.Drawing.Size(82, 13)
         Me.hintTipo.TabIndex = 25
@@ -193,16 +156,16 @@ Partial Class FormRegistrarKitEquipoLaboratorio
         Me.cboxTipo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboxTipo.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cboxTipo.FormattingEnabled = True
-        Me.cboxTipo.Location = New System.Drawing.Point(135, 50)
+        Me.cboxTipo.Location = New System.Drawing.Point(76, 51)
         Me.cboxTipo.Name = "cboxTipo"
-        Me.cboxTipo.Size = New System.Drawing.Size(180, 23)
+        Me.cboxTipo.Size = New System.Drawing.Size(232, 23)
         Me.cboxTipo.TabIndex = 26
         '
         'Label6
         '
         Me.Label6.AutoSize = True
         Me.Label6.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.5!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label6.Location = New System.Drawing.Point(99, 50)
+        Me.Label6.Location = New System.Drawing.Point(33, 54)
         Me.Label6.Name = "Label6"
         Me.Label6.Size = New System.Drawing.Size(35, 16)
         Me.Label6.TabIndex = 24
@@ -292,16 +255,16 @@ Partial Class FormRegistrarKitEquipoLaboratorio
         Me.panelReferencias.Controls.Add(Me.cboxTipoReferencia)
         Me.panelReferencias.Controls.Add(Me.Label15)
         Me.panelReferencias.Controls.Add(Me.Label22)
-        Me.panelReferencias.Location = New System.Drawing.Point(30, 287)
+        Me.panelReferencias.Location = New System.Drawing.Point(30, 234)
         Me.panelReferencias.Name = "panelReferencias"
-        Me.panelReferencias.Size = New System.Drawing.Size(491, 133)
+        Me.panelReferencias.Size = New System.Drawing.Size(639, 148)
         Me.panelReferencias.TabIndex = 71
         '
         'chValoresAsignados
         '
         Me.chValoresAsignados.AutoSize = True
         Me.chValoresAsignados.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.5!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chValoresAsignados.Location = New System.Drawing.Point(344, 99)
+        Me.chValoresAsignados.Location = New System.Drawing.Point(357, 99)
         Me.chValoresAsignados.Name = "chValoresAsignados"
         Me.chValoresAsignados.Size = New System.Drawing.Size(140, 20)
         Me.chValoresAsignados.TabIndex = 77
@@ -315,7 +278,7 @@ Partial Class FormRegistrarKitEquipoLaboratorio
         Me.btnAsignarReferencias.ForeColor = System.Drawing.Color.Black
         Me.btnAsignarReferencias.Location = New System.Drawing.Point(16, 94)
         Me.btnAsignarReferencias.Name = "btnAsignarReferencias"
-        Me.btnAsignarReferencias.Size = New System.Drawing.Size(309, 25)
+        Me.btnAsignarReferencias.Size = New System.Drawing.Size(333, 25)
         Me.btnAsignarReferencias.TabIndex = 74
         Me.btnAsignarReferencias.Text = "Asignar valores referencia"
         Me.btnAsignarReferencias.UseVisualStyleBackColor = False
@@ -337,7 +300,7 @@ Partial Class FormRegistrarKitEquipoLaboratorio
         Me.cboxTipoReferencia.FormattingEnabled = True
         Me.cboxTipoReferencia.Location = New System.Drawing.Point(18, 65)
         Me.cboxTipoReferencia.Name = "cboxTipoReferencia"
-        Me.cboxTipoReferencia.Size = New System.Drawing.Size(307, 23)
+        Me.cboxTipoReferencia.Size = New System.Drawing.Size(331, 23)
         Me.cboxTipoReferencia.TabIndex = 73
         '
         'Label15
@@ -523,7 +486,7 @@ Partial Class FormRegistrarKitEquipoLaboratorio
         'menuStripMenuLaboratorio
         '
         Me.menuStripMenuLaboratorio.Name = "menuStripMenuLaboratorio"
-        Me.menuStripMenuLaboratorio.Size = New System.Drawing.Size(180, 22)
+        Me.menuStripMenuLaboratorio.Size = New System.Drawing.Size(166, 22)
         Me.menuStripMenuLaboratorio.Text = "Menu laboratorio"
         '
         'FormRegistrarKitEquipoLaboratorio
@@ -591,13 +554,10 @@ Partial Class FormRegistrarKitEquipoLaboratorio
     Friend WithEvents chValoresAsignados As CheckBox
     Friend WithEvents panelDatosExamen As Panel
     Friend WithEvents Label10 As Label
-    Friend WithEvents Label1 As Label
-    Friend WithEvents hintProveedor As Label
-    Friend WithEvents cboxProveedor As ComboBox
-    Friend WithEvents txtModelo As TextBox
-    Friend WithEvents Label3 As Label
-    Friend WithEvents btnRegistrarProveedor As Button
     Friend WithEvents menuStrip As MenuStrip
     Friend WithEvents menuStripMenu As ToolStripMenuItem
     Friend WithEvents menuStripMenuLaboratorio As ToolStripMenuItem
+    Friend WithEvents cboxMarca As ComboBox
+    Friend WithEvents Label1 As Label
+    Friend WithEvents hintMarca As Label
 End Class

@@ -71,12 +71,6 @@
         Me.Close()
     End Sub
 
-    Private Sub btnProveedor_Click(sender As Object, e As EventArgs) Handles btnProveedor.Click
-        Dim form As New FormRegistrarProveedorKitEquipo(False)
-        form.Show()
-        Me.Close()
-    End Sub
-
     Private Sub btnKitEquipoQuimico_Click(sender As Object, e As EventArgs) Handles btnKitEquipoQuimico.Click
         Dim formKitEquipo As New FormRegistrarKitEquipoLaboratorio()
 
@@ -94,6 +88,25 @@
         Me.Close()
     End Sub
 
+    Private Sub btnExamenGrupal_Click(sender As Object, e As EventArgs) Handles btnExamenGrupal.Click
+        Dim formExamenGrupal As New FormRegistrarExamenGrupoLaboratorio()
+        formExamenGrupal.Show()
+        Me.Close()
+    End Sub
+
+    Private Sub btnAdministrarExamen_Click(sender As Object, e As EventArgs) Handles btnAdministrarExamen.Click
+        Dim formAdministrarExamen As New FormAdministrarExamenLab(False)
+        formAdministrarExamen.Show()
+        Me.Close()
+    End Sub
+
+    Private Sub btnAdministrarGrupos_Click(sender As Object, e As EventArgs) Handles btnAdministrarGrupos.Click
+        Dim formAdministrarGrupo As New FormAdministrarGrupoExamenLab()
+        formAdministrarGrupo.Show()
+        Me.Close()
+    End Sub
+
+
 
 
 
@@ -109,7 +122,7 @@
         form = New FormRegistrarResultadosLab()
         form.controlarTipoUsuarioValido()
         form.ajustarHabilitacionFormulario()
-        habilitado = form.registro.tipoUsuarioValido
+        habilitado = form.negocio.tipoUsuarioValido
 
 
         If habilitado Then
@@ -127,10 +140,21 @@
 
     End Sub
 
-
-
-    Private Sub BtnVolver_Click(sender As Object, e As EventArgs) Handles BtnVolver.Click
-        FormMenuPrincipal.Show()
+    Private Sub btnKitEquipoPredeterminado_Click(sender As Object, e As EventArgs) Handles btnKitEquipoPredeterminado.Click
+        Dim form As New FormAdministrarKitPredeterminado()
+        form.Show()
         Me.Close()
     End Sub
+
+    Private Sub btnRegistrarMarca_Click(sender As Object, e As EventArgs) Handles btnRegistrarMarca.Click
+        Dim form As New FormRegistrarMarcaKitEquipo(False)
+        form.Show()
+        Me.Close()
+
+    End Sub
+
+
+
+
+
 End Class

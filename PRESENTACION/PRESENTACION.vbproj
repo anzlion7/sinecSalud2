@@ -72,13 +72,13 @@
     <OptionInfer>On</OptionInfer>
   </PropertyGroup>
   <PropertyGroup>
-    <SignManifests>true</SignManifests>
+    <SignManifests>false</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
     <TargetZone>LocalIntranet</TargetZone>
   </PropertyGroup>
   <PropertyGroup>
-    <GenerateManifests>true</GenerateManifests>
+    <GenerateManifests>false</GenerateManifests>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationManifest>My Project\app.manifest</ApplicationManifest>
@@ -369,17 +369,62 @@
       <DependentUpon>SubReporte.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Modulo Laboratorio\FormRegistrarAsignacionAreasLab.Designer.vb">
-      <DependentUpon>FormRegistrarAsignacionAreasLab.vb</DependentUpon>
+    <Compile Include="Modulo Laboratorio\Administrar examen\FormAdministrarExamenLab.Designer.vb">
+      <DependentUpon>FormAdministrarExamenLab.vb</DependentUpon>
     </Compile>
-    <Compile Include="Modulo Laboratorio\FormRegistrarAsignacionAreasLab.vb">
+    <Compile Include="Modulo Laboratorio\Administrar examen\FormAdministrarExamenLab.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Modulo Laboratorio\Administrar grupo examen\FormAdministrarGrupoExamenLab.Designer.vb">
+      <DependentUpon>FormAdministrarGrupoExamenLab.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Modulo Laboratorio\Administrar grupo examen\FormAdministrarGrupoExamenLab.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Modulo Laboratorio\Administrar kit predeterminado\FormAdministrarKitPredeterminado.Designer.vb">
+      <DependentUpon>FormAdministrarKitPredeterminado.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Modulo Laboratorio\Administrar kit predeterminado\FormAdministrarKitPredeterminado.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Modulo Laboratorio\FormMenuLaboratorio.Designer.vb">
+      <DependentUpon>FormMenuLaboratorio.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Modulo Laboratorio\FormMenuLaboratorio.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Modulo Laboratorio\Imprimir resultados\FormImprimirResultadosLaboratorio.Designer.vb">
+      <DependentUpon>FormImprimirResultadosLaboratorio.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Modulo Laboratorio\Imprimir resultados\FormImprimirResultadosLaboratorio.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Modulo Laboratorio\Imprimir resultados\ReporteResultadosCR.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Modulo Laboratorio\Imprimir resultados\ReporteResultadosCR1.vb">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ReporteResultadosCR.rpt</DependentUpon>
       <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Modulo Laboratorio\Registrar asignacion areas\FormRegistrarAsignacionAreasLab.Designer.vb">
+      <DependentUpon>FormRegistrarAsignacionAreasLab.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Modulo Laboratorio\Registrar asignacion areas\FormRegistrarAsignacionAreasLab.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Modulo Laboratorio\Registrar examen grupo laboratorio\FormRegistrarExamenGrupoLaboratorio.Designer.vb">
+      <DependentUpon>FormRegistrarExamenGrupoLaboratorio.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Modulo Laboratorio\Registrar examen grupo laboratorio\FormRegistrarExamenGrupoLaboratorio.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Modulo Laboratorio\Registrar examen\FormRegistrarAreaLaboratorio.Designer.vb">
+      <DependentUpon>FormRegistrarAreaLaboratorio.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Modulo Laboratorio\Registrar examen\FormRegistrarAreaLaboratorio.vb">
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="Modulo Laboratorio\Registrar examen\FormRegistrarConjuntoOpcionesResultadoLaboratorio.Designer.vb">
       <DependentUpon>FormRegistrarConjuntoOpcionesResultadoLaboratorio.vb</DependentUpon>
@@ -391,54 +436,6 @@
       <DependentUpon>FormRegistrarExamenLaboratorio.vb</DependentUpon>
     </Compile>
     <Compile Include="Modulo Laboratorio\Registrar examen\FormRegistrarExamenLaboratorio.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Modulo Laboratorio\FormRegistrarTomaMuestra.Designer.vb">
-      <DependentUpon>FormRegistrarTomaMuestra.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Modulo Laboratorio\FormRegistrarTomaMuestra.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Modulo Laboratorio\FormMenuLaboratorio.Designer.vb">
-      <DependentUpon>FormMenuLaboratorio.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Modulo Laboratorio\FormMenuLaboratorio.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Modulo Laboratorio\Registrar orden\FormConfimarOrdenLaboratorio.Designer.vb">
-      <DependentUpon>FormConfimarOrdenLaboratorio.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Modulo Laboratorio\Registrar orden\FormConfimarOrdenLaboratorio.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Modulo Laboratorio\Registrar orden\FormRegistrarOrdenLaboratorio.Designer.vb">
-      <DependentUpon>FormRegistrarOrdenLaboratorio.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Modulo Laboratorio\Registrar orden\FormRegistrarOrdenLaboratorio.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Modulo Laboratorio\Registrar examen\FormRegistrarAreaLaboratorio.Designer.vb">
-      <DependentUpon>FormRegistrarAreaLaboratorio.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Modulo Laboratorio\Registrar examen\FormRegistrarAreaLaboratorio.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Modulo Laboratorio\Registrar kit\FormRegistrarKitEquipoLaboratorio.Designer.vb">
-      <DependentUpon>FormRegistrarKitEquipoLaboratorio.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Modulo Laboratorio\Registrar kit\FormRegistrarKitEquipoLaboratorio.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Modulo Laboratorio\Registrar kit\FormRegistrarProveedorKitEquipo.Designer.vb">
-      <DependentUpon>FormRegistrarProveedorKitEquipo.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Modulo Laboratorio\Registrar kit\FormRegistrarProveedorKitEquipo.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Modulo Laboratorio\Registrar kit\FormRegistrarReferenciaResultadoLaboratorio.designer.vb">
-      <DependentUpon>FormRegistrarReferenciaResultadoLaboratorio.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Modulo Laboratorio\Registrar kit\FormRegistrarReferenciaResultadoLaboratorio.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Modulo Laboratorio\Registrar examen\FormRegistrarSubareaLaboratorio.Designer.vb">
@@ -453,36 +450,60 @@
     <Compile Include="Modulo Laboratorio\Registrar examen\FormRegistrarUnidadMedidaLaboratorio.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Modulo Laboratorio\Imprimir resultados\FormImprimirResultadosLaboratorio.Designer.vb">
-      <DependentUpon>FormImprimirResultadosLaboratorio.vb</DependentUpon>
+    <Compile Include="Modulo Laboratorio\Registrar kit\FormRegistrarKitEquipoLaboratorio.Designer.vb">
+      <DependentUpon>FormRegistrarKitEquipoLaboratorio.vb</DependentUpon>
     </Compile>
-    <Compile Include="Modulo Laboratorio\Imprimir resultados\FormImprimirResultadosLaboratorio.vb">
+    <Compile Include="Modulo Laboratorio\Registrar kit\FormRegistrarKitEquipoLaboratorio.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Modulo Laboratorio\Registrar orden\mydataset1.Designer.vb">
+    <Compile Include="Modulo Laboratorio\Registrar kit\FormRegistrarReferenciaResultadoLaboratorio.designer.vb">
+      <DependentUpon>FormRegistrarReferenciaResultadoLaboratorio.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Modulo Laboratorio\Registrar kit\FormRegistrarReferenciaResultadoLaboratorio.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Modulo Laboratorio\Registrar marca\FormRegistrarMarcaKitEquipo.Designer.vb">
+      <DependentUpon>FormRegistrarMarcaKitEquipo.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Modulo Laboratorio\Registrar marca\FormRegistrarMarcaKitEquipo.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Modulo Laboratorio\Registrar orden\datasetOrdenLaboratorio.Designer.vb">
+      <DependentUpon>datasetOrdenLaboratorio.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Modulo Laboratorio\Registrar orden\datasetOrdenLaboratorio.vb">
+      <DependentUpon>datasetOrdenLaboratorio.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Modulo Laboratorio\Registrar orden\datasetOrdenLaboratorio1.Designer.vb">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>mydataset1.xsd</DependentUpon>
+      <DependentUpon>datasetOrdenLaboratorio.xsd</DependentUpon>
     </Compile>
-    <Compile Include="Modulo Laboratorio\Registrar orden\mydataset1.vb">
-      <DependentUpon>mydataset1.xsd</DependentUpon>
+    <Compile Include="Modulo Laboratorio\Registrar orden\FormConfimarOrdenLaboratorio.Designer.vb">
+      <DependentUpon>FormConfimarOrdenLaboratorio.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Modulo Laboratorio\Registrar orden\FormConfimarOrdenLaboratorio.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Modulo Laboratorio\Registrar orden\FormRegistrarOrdenLaboratorio.Designer.vb">
+      <DependentUpon>FormRegistrarOrdenLaboratorio.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Modulo Laboratorio\Registrar orden\FormRegistrarOrdenLaboratorio.vb">
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="Modulo Laboratorio\Registrar orden\ReporteOrdenLaboratorio.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Modulo Laboratorio\Registrar orden\ReporteOrdenLaboratorio1.vb">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ReporteOrdenLaboratorio.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Modulo Laboratorio\Registrar orden\reportPrueba.vb">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>reportPrueba.rpt</DependentUpon>
-      <SubType>Component</SubType>
+    <Compile Include="Modulo Laboratorio\Registrar resultados\FormRegistrarResultadoLabTipoValorComun.Designer.vb">
+      <DependentUpon>FormRegistrarResultadoLabTipoValorComun.vb</DependentUpon>
     </Compile>
-    <Compile Include="Modulo Laboratorio\Registrar resultados\FormRegistrarResultadosLab.Designer.vb">
-      <DependentUpon>FormRegistrarResultadosLab.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Modulo Laboratorio\Registrar resultados\FormRegistrarResultadosLab.vb">
+    <Compile Include="Modulo Laboratorio\Registrar resultados\FormRegistrarResultadoLabTipoValorComun.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Modulo Laboratorio\Registrar resultados\FormRegistrarResultadoLabTipoValorOpcionSeleccion.Designer.vb">
@@ -491,16 +512,22 @@
     <Compile Include="Modulo Laboratorio\Registrar resultados\FormRegistrarResultadoLabTipoValorOpcionSeleccion.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Modulo Laboratorio\Registrar resultados\FormRegistrarResultadoLabTipoValorComun.Designer.vb">
-      <DependentUpon>FormRegistrarResultadoLabTipoValorComun.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Modulo Laboratorio\Registrar resultados\FormRegistrarResultadoLabTipoValorComun.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="Modulo Laboratorio\Registrar resultados\FormRegistrarResultadoLabTipoValorTextual.Designer.vb">
       <DependentUpon>FormRegistrarResultadoLabTipoValorTextual.vb</DependentUpon>
     </Compile>
     <Compile Include="Modulo Laboratorio\Registrar resultados\FormRegistrarResultadoLabTipoValorTextual.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Modulo Laboratorio\Registrar resultados\FormRegistrarResultadosLab.Designer.vb">
+      <DependentUpon>FormRegistrarResultadosLab.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Modulo Laboratorio\Registrar resultados\FormRegistrarResultadosLab.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Modulo Laboratorio\Registrar toma muestra\FormRegistrarTomaMuestra.Designer.vb">
+      <DependentUpon>FormRegistrarTomaMuestra.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Modulo Laboratorio\Registrar toma muestra\FormRegistrarTomaMuestra.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Modulo Medicos\AtencionMedicaOdontologica.designer.vb">
@@ -833,12 +860,33 @@
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>SubReporte.vb</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Modulo Laboratorio\FormRegistrarAsignacionAreasLab.resx">
-      <DependentUpon>FormRegistrarAsignacionAreasLab.vb</DependentUpon>
+    <EmbeddedResource Include="Modulo Laboratorio\Administrar examen\FormAdministrarExamenLab.resx">
+      <DependentUpon>FormAdministrarExamenLab.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Modulo Laboratorio\Administrar grupo examen\FormAdministrarGrupoExamenLab.resx">
+      <DependentUpon>FormAdministrarGrupoExamenLab.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Modulo Laboratorio\Administrar kit predeterminado\FormAdministrarKitPredeterminado.resx">
+      <DependentUpon>FormAdministrarKitPredeterminado.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Modulo Laboratorio\FormMenuLaboratorio.resx">
+      <DependentUpon>FormMenuLaboratorio.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Modulo Laboratorio\Imprimir resultados\FormImprimirResultadosLaboratorio.resx">
+      <DependentUpon>FormImprimirResultadosLaboratorio.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Modulo Laboratorio\Imprimir resultados\ReporteResultadosCR.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
-      <LastGenOutput>ReporteResultadosCR.vb</LastGenOutput>
+      <LastGenOutput>ReporteResultadosCR1.vb</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Modulo Laboratorio\Registrar asignacion areas\FormRegistrarAsignacionAreasLab.resx">
+      <DependentUpon>FormRegistrarAsignacionAreasLab.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Modulo Laboratorio\Registrar examen grupo laboratorio\FormRegistrarExamenGrupoLaboratorio.resx">
+      <DependentUpon>FormRegistrarExamenGrupoLaboratorio.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Modulo Laboratorio\Registrar examen\FormRegistrarAreaLaboratorio.resx">
+      <DependentUpon>FormRegistrarAreaLaboratorio.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Modulo Laboratorio\Registrar examen\FormRegistrarConjuntoOpcionesResultadoLaboratorio.resx">
       <DependentUpon>FormRegistrarConjuntoOpcionesResultadoLaboratorio.vb</DependentUpon>
@@ -846,11 +894,20 @@
     <EmbeddedResource Include="Modulo Laboratorio\Registrar examen\FormRegistrarExamenLaboratorio.resx">
       <DependentUpon>FormRegistrarExamenLaboratorio.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Modulo Laboratorio\FormRegistrarTomaMuestra.resx">
-      <DependentUpon>FormRegistrarTomaMuestra.vb</DependentUpon>
+    <EmbeddedResource Include="Modulo Laboratorio\Registrar examen\FormRegistrarSubareaLaboratorio.resx">
+      <DependentUpon>FormRegistrarSubareaLaboratorio.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Modulo Laboratorio\FormMenuLaboratorio.resx">
-      <DependentUpon>FormMenuLaboratorio.vb</DependentUpon>
+    <EmbeddedResource Include="Modulo Laboratorio\Registrar examen\FormRegistrarUnidadMedidaLaboratorio.resx">
+      <DependentUpon>FormRegistrarUnidadMedidaLaboratorio.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Modulo Laboratorio\Registrar kit\FormRegistrarKitEquipoLaboratorio.resx">
+      <DependentUpon>FormRegistrarKitEquipoLaboratorio.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Modulo Laboratorio\Registrar kit\FormRegistrarReferenciaResultadoLaboratorio.resx">
+      <DependentUpon>FormRegistrarReferenciaResultadoLaboratorio.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Modulo Laboratorio\Registrar marca\FormRegistrarMarcaKitEquipo.resx">
+      <DependentUpon>FormRegistrarMarcaKitEquipo.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Modulo Laboratorio\Registrar orden\FormConfimarOrdenLaboratorio.resx">
       <DependentUpon>FormConfimarOrdenLaboratorio.vb</DependentUpon>
@@ -858,46 +915,24 @@
     <EmbeddedResource Include="Modulo Laboratorio\Registrar orden\FormRegistrarOrdenLaboratorio.resx">
       <DependentUpon>FormRegistrarOrdenLaboratorio.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Modulo Laboratorio\Registrar examen\FormRegistrarAreaLaboratorio.resx">
-      <DependentUpon>FormRegistrarAreaLaboratorio.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Modulo Laboratorio\Registrar kit\FormRegistrarKitEquipoLaboratorio.resx">
-      <DependentUpon>FormRegistrarKitEquipoLaboratorio.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Modulo Laboratorio\Registrar kit\FormRegistrarProveedorKitEquipo.resx">
-      <DependentUpon>FormRegistrarProveedorKitEquipo.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Modulo Laboratorio\Registrar kit\FormRegistrarReferenciaResultadoLaboratorio.resx">
-      <DependentUpon>FormRegistrarReferenciaResultadoLaboratorio.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Modulo Laboratorio\Registrar examen\FormRegistrarSubareaLaboratorio.resx">
-      <DependentUpon>FormRegistrarSubareaLaboratorio.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Modulo Laboratorio\Registrar examen\FormRegistrarUnidadMedidaLaboratorio.resx">
-      <DependentUpon>FormRegistrarUnidadMedidaLaboratorio.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Modulo Laboratorio\Imprimir resultados\FormImprimirResultadosLaboratorio.resx">
-      <DependentUpon>FormImprimirResultadosLaboratorio.vb</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Modulo Laboratorio\Registrar orden\ReporteOrdenLaboratorio.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
-      <LastGenOutput>ReporteOrdenLaboratorio.vb</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Modulo Laboratorio\Registrar orden\reportPrueba.rpt">
-      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
-      <LastGenOutput>reportPrueba.vb</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Modulo Laboratorio\Registrar resultados\FormRegistrarResultadosLab.resx">
-      <DependentUpon>FormRegistrarResultadosLab.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Modulo Laboratorio\Registrar resultados\FormRegistrarResultadoLabTipoValorOpcionSeleccion.resx">
-      <DependentUpon>FormRegistrarResultadoLabTipoValorOpcionSeleccion.vb</DependentUpon>
+      <LastGenOutput>ReporteOrdenLaboratorio1.vb</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Modulo Laboratorio\Registrar resultados\FormRegistrarResultadoLabTipoValorComun.resx">
       <DependentUpon>FormRegistrarResultadoLabTipoValorComun.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Modulo Laboratorio\Registrar resultados\FormRegistrarResultadoLabTipoValorOpcionSeleccion.resx">
+      <DependentUpon>FormRegistrarResultadoLabTipoValorOpcionSeleccion.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Modulo Laboratorio\Registrar resultados\FormRegistrarResultadoLabTipoValorTextual.resx">
       <DependentUpon>FormRegistrarResultadoLabTipoValorTextual.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Modulo Laboratorio\Registrar resultados\FormRegistrarResultadosLab.resx">
+      <DependentUpon>FormRegistrarResultadosLab.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Modulo Laboratorio\Registrar toma muestra\FormRegistrarTomaMuestra.resx">
+      <DependentUpon>FormRegistrarTomaMuestra.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Modulo Medicos\AtencionMedicaOdontologica.resx">
       <DependentUpon>AtencionMedicaOdontologica.vb</DependentUpon>
@@ -1008,16 +1043,16 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="firmadeprueba.pfx" />
-    <None Include="Modulo Laboratorio\Registrar orden\mydataset1.xsc">
-      <DependentUpon>mydataset1.xsd</DependentUpon>
+    <None Include="Modulo Laboratorio\Registrar orden\datasetOrdenLaboratorio.xsc">
+      <DependentUpon>datasetOrdenLaboratorio.xsd</DependentUpon>
     </None>
-    <None Include="Modulo Laboratorio\Registrar orden\mydataset1.xsd">
-      <SubType>Designer</SubType>
+    <None Include="Modulo Laboratorio\Registrar orden\datasetOrdenLaboratorio.xsd">
       <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>mydataset1.Designer.vb</LastGenOutput>
+      <LastGenOutput>datasetOrdenLaboratorio1.Designer.vb</LastGenOutput>
+      <SubType>Designer</SubType>
     </None>
-    <None Include="Modulo Laboratorio\Registrar orden\mydataset1.xss">
-      <DependentUpon>mydataset1.xsd</DependentUpon>
+    <None Include="Modulo Laboratorio\Registrar orden\datasetOrdenLaboratorio.xss">
+      <DependentUpon>datasetOrdenLaboratorio.xsd</DependentUpon>
     </None>
     <None Include="My Project\app.manifest" />
     <None Include="My Project\Application.myapp">

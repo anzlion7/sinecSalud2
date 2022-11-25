@@ -52,7 +52,7 @@ Public Class RegistroAreaLaboratorio
         Dim P As Object() = New Object(0) {}
         P(0) = _nombre
 
-        Return dal.TraerDataTable("SPtraerAreaRepetida_RegistrarExamenLab", P)
+        Return dal.TraerDataTable("SPtraerGrupoExamenRepetido_RegistrarGrupoExamenLaboratorio", P)
     End Function
 
     Private Function insertAreaBD(ByRef _area As AreaLaboratorio) As Short
@@ -86,7 +86,6 @@ Public Class RegistroAreaLaboratorio
 
     Private Function validarNombreArea(_nombreArea As String) As String
         If _nombreArea = "" Then Return "Error. Ingrese el nombre del area."
-
         Return ""
     End Function
 

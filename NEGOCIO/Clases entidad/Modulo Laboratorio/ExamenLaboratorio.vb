@@ -1,19 +1,39 @@
 ﻿Public Class ExamenLaboratorio
+    Inherits ExamenSolicitableLaboratorio
 
-    Private codigo As Long
-    Private nombre As String
-    Private area As AreaLaboratorio
     Private subarea As SubareaLaboratorio
+
+    Private grupoExamen As GrupoExamenLaboratorio
+    Private codigoIndividual As Short
     Private tipoResultado As Concepto
+
     Private conjuntoOpcionesResultado As ConjuntoOpcionesResultadosLaboratorio
     Private unidad As UnidadMedidaLaboratorio
+    Private kitPredeterminado As KitEquipoLaboratorio
 
-    'CONSTRUCTORES
+
     Public Sub New()
+        codigo = 0
+        nombre = ""
+        area = New AreaLaboratorio()
+        subarea = New SubareaLaboratorio()
 
+        grupoExamen = New GrupoExamenLaboratorio()
+        codigoIndividual = 0
+        tipoResultado = New Concepto()
+
+        conjuntoOpcionesResultado = New ConjuntoOpcionesResultadosLaboratorio()
+        unidad = New UnidadMedidaLaboratorio()
+        kitPredeterminado = Nothing
     End Sub
 
-    Public Sub New(ByVal _codigo As Int16, ByVal _nombre As String)
+    Public Sub New(_kitPredeterminado As KitEquipoLaboratorio)
+        codigo = 0
+        kitPredeterminado = _kitPredeterminado
+    End Sub
+
+
+    Public Sub New(_codigo As Short, _nombre As String)
         codigo = _codigo
         nombre = _nombre
     End Sub
@@ -28,36 +48,6 @@
 
 
 
-
-    'GETTERS Y SETTERS
-    Public Function getCodigo() As Int16
-        Return codigo
-    End Function
-
-    Public Sub setCodigo(ByVal _codigo As Int16)
-        codigo = _codigo
-    End Sub
-
-
-
-    Public Function getNombre() As String
-        Return nombre
-    End Function
-
-    Public Sub setNombre(ByVal _nombre As String)
-        nombre = _nombre
-    End Sub
-
-
-
-    Public Function getArea() As AreaLaboratorio
-        Return area
-    End Function
-
-    Public Sub setArea(ByRef _area As AreaLaboratorio)
-        area = _area
-    End Sub
-
     Public Function getSubarea() As SubareaLaboratorio
         Return subarea
     End Function
@@ -66,6 +56,25 @@
         subarea = _subarea
     End Sub
 
+
+
+    Public Sub setGrupoExamen(ByRef _grupoExamen As GrupoExamenLaboratorio)
+        grupoExamen = _grupoExamen
+    End Sub
+
+    Public Function getGrupoExamen() As GrupoExamenLaboratorio
+        Return grupoExamen
+    End Function
+
+
+
+    Public Sub setCodigoIndividual(_codigoIndividual As Short)
+        codigoIndividual = _codigoIndividual
+    End Sub
+
+    Public Function getCodigoIndividual() As Short
+        Return codigoIndividual
+    End Function
 
 
 
@@ -99,4 +108,41 @@
 
 
 
+    Public Sub setKitPredeterminado(ByRef _kitPredeterminado As KitEquipoLaboratorio)
+        kitPredeterminado = _kitPredeterminado
+    End Sub
+
+    Public Function getKitPredeterminado() As KitEquipoLaboratorio
+        Return kitPredeterminado
+    End Function
+
+
 End Class
+
+
+Public Class ExamenLaboratorioInput
+    Public Property codigo As String
+    Public Property nombre As String
+    Public Property area As AreaLaboratorioInput
+    Public Property subarea As SubareaLaboratorioInput
+    Public Property grupoExamen As GrupoExamenLaboratorioInput
+    Public Property codigoIndividual As String
+    Public Property tipoResultado As ConceptoInput
+    Public Property conjuntoOpcionesResultado As ConjuntoOpcionesResultadosLabInput
+    Public Property unidad As UnidadMedidaLaboratorioInput
+
+    Public Sub New()
+        codigo = "0"
+        nombre = ""
+        area = New AreaLaboratorioInput()
+        subarea = New SubareaLaboratorioInput()
+
+        grupoExamen = New GrupoExamenLaboratorioInput()
+        codigoIndividual = "0"
+        tipoResultado = New ConceptoInput()
+        conjuntoOpcionesResultado = New ConjuntoOpcionesResultadosLabInput()
+        unidad = New UnidadMedidaLaboratorioInput()
+    End Sub
+
+End Class
+

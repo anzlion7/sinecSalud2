@@ -309,12 +309,12 @@ Public Class FormImprimirResultadosLaboratorio
 
 
         'configurar ancho columnas
-        'dgvSolicitudes.Columns(clmCodigo).FillWeight = 12.5
-        'dgvSolicitudes.Columns(clmFecha).FillWeight = 12.5
-        'dgvSolicitudes.Columns(clmMatricula).FillWeight = 15
-        'dgvSolicitudes.Columns(clmAsegurado).FillWeight = 33
-        'dgvSolicitudes.Columns(clmNroExamenes).FillWeight = 13
-        'dgvSolicitudes.Columns(clmNroResultados).FillWeight = 13
+        'dgvOrdenes.Columns(clmCodigo).FillWeight = 12.5
+        'dgvOrdenes.Columns(clmFecha).FillWeight = 12.5
+        'dgvOrdenes.Columns(clmMatricula).FillWeight = 15
+        'dgvOrdenes.Columns(clmAsegurado).FillWeight = 33
+        'dgvOrdenes.Columns(clmNroExamenes).FillWeight = 13
+        'dgvOrdenes.Columns(clmNroResultados).FillWeight = 13
 
 
         'filas

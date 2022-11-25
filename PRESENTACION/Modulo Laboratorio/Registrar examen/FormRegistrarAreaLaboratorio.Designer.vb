@@ -134,7 +134,7 @@ Partial Class FormRegistrarAreaLaboratorio
         'menuStripMenuLaboratorio
         '
         Me.menuStripMenuLaboratorio.Name = "menuStripMenuLaboratorio"
-        Me.menuStripMenuLaboratorio.Size = New System.Drawing.Size(166, 22)
+        Me.menuStripMenuLaboratorio.Size = New System.Drawing.Size(180, 22)
         Me.menuStripMenuLaboratorio.Text = "Menu laboratorio"
         '
         'FormRegistrarAreaLaboratorio

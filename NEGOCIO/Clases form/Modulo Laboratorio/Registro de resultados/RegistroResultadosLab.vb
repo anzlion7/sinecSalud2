@@ -14,7 +14,7 @@ Public Class RegistroResultadosLab
     Public ordenes() As OrdenLaboratorio
 
     'ATRIBUTOS G2
-    Public detalles() As DetalleOrdenLaboratorio
+    Public detalles() As DetalleLaboratorio
 
     'ATRIBUTOS G9
     Public estadoInsercion As Short
@@ -34,7 +34,7 @@ Public Class RegistroResultadosLab
         ordenes = New OrdenLaboratorio(-1) {}
 
         'ATRIBUTOS G2
-        detalles = New DetalleOrdenLaboratorio(-1) {}
+        detalles = New DetalleLaboratorio(-1) {}
 
         'ATRIBUTOS G9
         estadoInsercion = 0
@@ -86,11 +86,13 @@ Public Class RegistroResultadosLab
         ordenes = New OrdenLaboratorio(datatable.Rows.Count - 1) {}
 
         For Each row As DataRow In datatable.Rows
-            Dim codigo As Long, fecha As Date, apPaterno As String, apMaterno As String,
+            Dim codigo As Long, fecha As Date, nota As String,
+                apPaterno As String, apMaterno As String,
                 nombres As String, sexo As Char, matricula As String, fechaNac As Date
 
             If IsDBNull(row("COD ORD")) Then codigo = 0 Else codigo = Int64.Parse(row("COD ORD"))
             If IsDBNull(row("FEC ORD")) Then fecha = "" Else fecha = Date.Parse(row("FEC ORD"))
+            If IsDBNull(row("NOT ORD")) Then nota = "" Else nota = row("NOT ORD").ToString()
             If IsDBNull(row("APA AFI")) Then apPaterno = "" Else apPaterno = row("APA AFI").ToString()
             If IsDBNull(row("AMA AFI")) Then apMaterno = "" Else apMaterno = row("AMA AFI").ToString()
             If IsDBNull(row("NOM AFI")) Then nombres = "" Else nombres = row("NOM AFI").ToString()
@@ -114,6 +116,7 @@ Public Class RegistroResultadosLab
             Dim orden As OrdenLaboratorio = New OrdenLaboratorio()
             orden.setCodigo(codigo)
             orden.setFecha(fecha)
+            orden.setNota(nota)
             orden.setAsegurado(asegurado)
 
             ordenes(index) = orden
@@ -128,11 +131,13 @@ Public Class RegistroResultadosLab
         ordenes = New OrdenLaboratorio(datatable.Rows.Count - 1) {}
 
         For Each row As DataRow In datatable.Rows
-            Dim codigo As Long, fecha As Date, apPaterno As String, apMaterno As String,
-                nombres As String, sexo As Char, matricula As String, fechaNac As Date
+            Dim codigo As Long, fecha As Date, nota As String,
+                apPaterno As String, apMaterno As String, nombres As String,
+                sexo As Char, matricula As String, fechaNac As Date
 
             If IsDBNull(row("COD ORD")) Then codigo = 0 Else codigo = Int64.Parse(row("COD ORD"))
             If IsDBNull(row("FEC ORD")) Then fecha = "" Else fecha = Date.Parse(row("FEC ORD"))
+            If IsDBNull(row("NOT ORD")) Then nota = "" Else nota = row("NOT ORD").ToString()
             If IsDBNull(row("APA AFI")) Then apPaterno = "" Else apPaterno = row("APA AFI").ToString()
             If IsDBNull(row("AMA AFI")) Then apMaterno = "" Else apMaterno = row("AMA AFI").ToString()
             If IsDBNull(row("NOM AFI")) Then nombres = "" Else nombres = row("NOM AFI").ToString()
@@ -156,6 +161,7 @@ Public Class RegistroResultadosLab
             Dim orden As OrdenLaboratorio = New OrdenLaboratorio()
             orden.setCodigo(codigo)
             orden.setFecha(fecha)
+            orden.setNota(nota)
             orden.setAsegurado(asegurado)
 
             ordenes(index) = orden
@@ -168,11 +174,13 @@ Public Class RegistroResultadosLab
         ordenes = New OrdenLaboratorio(datatable.Rows.Count - 1) {}
 
         For Each row As DataRow In datatable.Rows
-            Dim codigo As Int64, fecha As Date, apPaterno As String, apMaterno As String, nombres As String, sexo As Char, matricula As String,
-            fechaNac As Date
+            Dim codigo As Int64, fecha As Date, nota As String,
+                apPaterno As String, apMaterno As String, nombres As String,
+                sexo As Char, matricula As String, fechaNac As Date
 
             If IsDBNull(row("COD ORD")) Then codigo = 0 Else codigo = Int64.Parse(row("COD ORD"))
             If IsDBNull(row("FEC ORD")) Then fecha = "" Else fecha = Date.Parse(row("FEC ORD"))
+            If IsDBNull(row("NOT ORD")) Then nota = "" Else nota = row("NOT ORD").ToString()
             If IsDBNull(row("APA AFI")) Then apPaterno = "" Else apPaterno = row("APA AFI").ToString()
             If IsDBNull(row("AMA AFI")) Then apMaterno = "" Else apMaterno = row("AMA AFI").ToString()
             If IsDBNull(row("NOM AFI")) Then nombres = "" Else nombres = row("NOM AFI").ToString()
@@ -196,6 +204,7 @@ Public Class RegistroResultadosLab
             Dim orden As OrdenLaboratorio = New OrdenLaboratorio()
             orden.setCodigo(codigo)
             orden.setFecha(fecha)
+            orden.setNota(nota)
             orden.setAsegurado(asegurado)
 
             ordenes(index) = orden
@@ -241,7 +250,7 @@ Public Class RegistroResultadosLab
     'METODOS FUNCIONALES G2
     Public Sub traerDetalles(ByRef _orden As OrdenLaboratorio)
         Dim datatable As DataTable = traerDetallesOrdenBD(_orden), index As Int16 = 0
-        detalles = New DetalleOrdenLaboratorio(datatable.Rows.Count - 1) {}
+        detalles = New DetalleLaboratorio(datatable.Rows.Count - 1) {}
 
         For Each row As DataRow In datatable.Rows
             Dim codigo As Long, codOrden As Long, codExamen As Long, nomExamen As String,
@@ -273,7 +282,7 @@ Public Class RegistroResultadosLab
 
             Dim area As AreaLaboratorio, subarea As SubareaLaboratorio, tipoRestulado As Concepto,
                 conjunto As ConjuntoOpcionesResultadosLaboratorio, unidad As UnidadMedidaLaboratorio, examen As New ExamenLaboratorio,
-                orden As OrdenLaboratorio, detalle As DetalleOrdenLaboratorio
+                orden As OrdenLaboratorio, detalle As DetalleLaboratorio
 
             area = New AreaLaboratorio()
             area.setCodigo(codArea)
@@ -306,7 +315,7 @@ Public Class RegistroResultadosLab
             orden = New OrdenLaboratorio()
             orden.setCodigo(codOrden)
 
-            detalle = New DetalleOrdenLaboratorio()
+            detalle = New DetalleLaboratorio()
             detalle.setCodigo(codigo)
             detalle.setOrden(orden)
             detalle.setExamen(examen)
@@ -326,9 +335,11 @@ Public Class RegistroResultadosLab
 
 
         index = 0
-        For Each detalle As DetalleOrdenLaboratorio In detalles
-            Dim orden As OrdenLaboratorio, examen As New ExamenLaboratorio, area As AreaLaboratorio, subarea As SubareaLaboratorio, tipoRestulado As Concepto,
-                conjunto As ConjuntoOpcionesResultadosLaboratorio, unidad As UnidadMedidaLaboratorio, resultado As ResultadoLaboratorio
+        For Each detalle As DetalleLaboratorio In detalles
+            Dim orden As OrdenLaboratorio, examen As New ExamenLaboratorio,
+                area As AreaLaboratorio, subarea As SubareaLaboratorio,
+                tipoRestulado As Concepto, conjunto As ConjuntoOpcionesResultadosLaboratorio,
+                unidad As UnidadMedidaLaboratorio, resultado As ResultadoLaboratorio
 
             orden = detalle.getOrden()
             examen = detalle.getExamen()
@@ -413,11 +424,6 @@ Public Class RegistroResultadosLab
         Return (dal.TraerDataTable("SPtraerOrdenes_RegistrarResultadosLab", P))
     End Function
 
-
-
-
-
-
     'METODOS BD G2
     Private Function traerDetallesOrdenBD(ByRef _orden As OrdenLaboratorio) As DataTable
         Dim P As Object() = New Object(2) {}
@@ -430,7 +436,11 @@ Public Class RegistroResultadosLab
 
     'METODOS BD G9
     Private Function insertarResultadosBD(ByRef _resultado As ResultadoLaboratorio) As Short
-        Dim P As Object() = New Object(11) {}
+        Dim P As Object() = New Object(13) {}
+        Dim vacio As Boolean, observacion As String, valorComun As Double, valorOpcion As Long, valorTextual As String
+
+
+        observacion = _resultado.getObservacion()
 
         P(0) = Usuario.codUserLoggedSystem
         P(1) = _resultado.getExamen().getCodigo()
@@ -438,8 +448,6 @@ Public Class RegistroResultadosLab
         P(3) = _resultado.getOrden().getCodigo()
         P(4) = _resultado.getProcesador().getCodigo()
         P(5) = _resultado.getTipoResultado().getCorrelativo()
-
-        'If String.IsNullOrEmpty() Then P(11) = DBNull.Value Else P(11) = _beneficiario.getNroLibro()
 
         Dim unidad As Long = _resultado.getUnidad().getCodigo()
         If (IsNothing(unidad) Or unidad = 0) Then P(6) = DBNull.Value Else P(6) = unidad
@@ -450,17 +458,46 @@ Public Class RegistroResultadosLab
         Dim codigoReferncia As Long = _resultado.getReferencia().getCodigo()
         If (IsNothing(codigoReferncia) Or codigoReferncia = 0) Then P(8) = DBNull.Value Else P(8) = codigoReferncia
 
-        Dim valorComun As Double = _resultado.getValorTipoComun()
-        If (IsNothing(valorComun) Or valorComun = 0) Then P(9) = DBNull.Value Else P(9) = valorComun
+        vacio = _resultado.getVacio()
 
-        Dim valorOpcion As Long = _resultado.getValorTipoOpcion().getCodigo()
-        If (IsNothing(valorOpcion) Or valorOpcion = 0) Then P(10) = DBNull.Value Else P(10) = valorOpcion
 
-        Dim valorTextual As String = _resultado.getValorTipoTextual()
-        If (IsNothing(valorTextual) Or valorTextual = "") Then P(11) = DBNull.Value Else P(11) = valorTextual
+        If vacio Then
+            P(9) = 1
+            P(10) = DBNull.Value
+            P(11) = DBNull.Value
+            P(12) = DBNull.Value
+
+        Else
+            P(9) = 2
+
+            valorComun = _resultado.getValorTipoComun()
+            If (IsNothing(valorComun) Or valorComun = 0) Then P(10) = DBNull.Value Else P(10) = valorComun
+
+            valorOpcion = _resultado.getValorTipoOpcion().getCodigo()
+            If (IsNothing(valorOpcion) Or valorOpcion = 0) Then P(11) = DBNull.Value Else P(11) = valorOpcion
+
+            valorTextual = _resultado.getValorTipoTextual()
+            If (IsNothing(valorTextual) Or valorTextual = "") Then P(12) = DBNull.Value Else P(12) = valorTextual
+        End If
+
+
+        If String.IsNullOrEmpty(observacion) Then P(13) = DBNull.Value Else P(13) = observacion
+
 
         Return dal.Ejecutar("SPregistrarResultado_RegistrarResultadosLab", P)
     End Function
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     'METODOS VALIDACIÓN

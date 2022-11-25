@@ -7,6 +7,7 @@ Public Class RegistroExamenLaboratorio
     'ATRIBUTOS G1
     Public areas As AreaLaboratorio()
     Public subareas As SubareaLaboratorio()
+    Public gruposExamen As GrupoExamenLaboratorio()
     Public tiposResultado As Concepto()
 
     'ATRIBUTOS G2
@@ -15,7 +16,6 @@ Public Class RegistroExamenLaboratorio
     'ATRIBUTOS G3b
     Public conjuntosOpciones As ConjuntoOpcionesResultadosLaboratorio()
     Public opciones As OpcionResultadoLaboratorio()
-
 
     'ATRIBUTOS G9
     Public nuevoCodigoExamen As Long
@@ -30,6 +30,7 @@ Public Class RegistroExamenLaboratorio
         'ATRIBUTOS G1
         areas = New AreaLaboratorio(-1) {}
         subareas = New SubareaLaboratorio(-1) {}
+        gruposExamen = New GrupoExamenLaboratorio(-1) {}
         tiposResultado = New Concepto(-1) {}
 
         'ATRIBUTOS G2
@@ -38,8 +39,6 @@ Public Class RegistroExamenLaboratorio
         'ATRIBUTOS G3b
         conjuntosOpciones = New ConjuntoOpcionesResultadosLaboratorio(-1) {}
         opciones = New OpcionResultadoLaboratorio(-1) {}
-
-
 
         'ATRIBUTOS G9
         nuevoCodigoExamen = 0
@@ -59,7 +58,7 @@ Public Class RegistroExamenLaboratorio
 
     'METODOS FUNCIONALES G1
     Public Sub traerAreas()
-        Dim datatable As DataTable = traerAreasBD(), index As Int16 = 0
+        Dim datatable As DataTable = traerAreasBD(), index As Short = 0
         areas = New AreaLaboratorio(datatable.Rows.Count - 1) {}
 
         For Each row As DataRow In datatable.Rows
@@ -68,7 +67,7 @@ Public Class RegistroExamenLaboratorio
             If IsDBNull(row("COD ARE")) Then codigo = 0 Else codigo = Long.Parse(row("COD ARE"))
             If IsDBNull(row("NOM ARE")) Then nombre = "" Else nombre = row("NOM ARE").ToString()
 
-            'If IsDBNull(row("")) Then  = 0 Else  = Int64.Parse(row(""))
+            'If IsDBNull(row("")) Then  = 0 Else  = Long.Parse(row(""))
             'If IsDBNull(row("")) Then  = "" Else  = row("").ToString()
             'If IsDBNull(row("")) Then  = "" Else  = Date.Parse(row(""))
 
@@ -101,6 +100,37 @@ Public Class RegistroExamenLaboratorio
             index += 1
         Next
 
+    End Sub
+
+    Public Sub traerGruposExamen(_nombre As String)
+        Dim datatable As DataTable = traerGruposExamenBD(_nombre), index As Short = 0
+        gruposExamen = New GrupoExamenLaboratorio(datatable.Rows.Count - 1) {}
+
+        For Each row As DataRow In datatable.Rows
+            Dim codigo As Long, nombre As String, codArea As Long, nomArea As String
+
+            If IsDBNull(row("CODGRU GRU")) Then codigo = 0 Else codigo = Long.Parse(row("CODGRU GRU"))
+            If IsDBNull(row("NOMGRU GRU")) Then nombre = "" Else nombre = row("NOMGRU GRU").ToString()
+            If IsDBNull(row("CODGRU GRU")) Then codigo = 0 Else codigo = Long.Parse(row("CODGRU GRU"))
+            If IsDBNull(row("CODARE GRU")) Then codArea = 0 Else codArea = Long.Parse(row("CODARE GRU"))
+            If IsDBNull(row("NOMARE ARE")) Then nomArea = "" Else nomArea = row("NOMARE ARE").ToString()
+
+            'If IsDBNull(row("")) Then  = 0 Else  = Long.Parse(row(""))
+            'If IsDBNull(row("")) Then  = "" Else  = row("").ToString()
+            'If IsDBNull(row("")) Then  = "" Else  = Date.Parse(row(""))
+
+            Dim area As New AreaLaboratorio()
+            area.setCodigo(codArea)
+            area.setNombre(nomArea)
+
+            Dim grupoExamen As New GrupoExamenLaboratorio()
+            grupoExamen.setCodigo(codigo)
+            grupoExamen.setNombre(nombre)
+            grupoExamen.setArea(area)
+
+            gruposExamen(index) = grupoExamen
+            index += 1
+        Next
     End Sub
 
     Public Sub traerTipoDeResultado()
@@ -239,7 +269,6 @@ Public Class RegistroExamenLaboratorio
         Return respuesta
     End Function
 
-
     Private Function insertExamenResultadoTipoTextual(ByRef _examen As ExamenLaboratorio) As Short
         Dim respuesta As Short = insertExamenResultadoTipoTextualBD(_examen)
         Return respuesta
@@ -298,6 +327,13 @@ Public Class RegistroExamenLaboratorio
         Return dal.TraerDataTable("SPtraerSubareasLab_RegistrarExamenLab", P)
     End Function
 
+    Private Function traerGruposExamenBD(_nombre As String) As DataTable
+        Dim P As Object() = New Object(0) {}
+        P(0) = _nombre
+        Return dal.TraerDataTable("SPtraerGruposExamen_RegistrarExamenLab", P)
+    End Function
+
+
     Private Function traerTipoDeResultadoBD() As DataTable
         Return dal.TraerDataTable("SPtraerTipoResultadoLab_Concepto")
     End Function
@@ -326,36 +362,51 @@ Public Class RegistroExamenLaboratorio
 
     'METODOS BD G9
     Private Function insertExamenResultadoTipoComunBD(ByRef _examen As ExamenLaboratorio) As Short
-        Dim P As Object() = New Object(5) {}
+        Dim P As Object()
+
+        P = New Object(7) {}
         P(0) = Usuario.codUserLoggedSystem
         P(1) = _examen.getNombre()
         P(2) = _examen.getArea().getCodigo()
         P(3) = _examen.getSubarea().getCodigo()
-        P(4) = _examen.getTipoResultado().getCorrelativo()
-        P(5) = _examen.getUnidad().getCodigo()
+
+        P(4) = _examen.getCodigoIndividual()
+        P(5) = _examen.getTipoResultado().getCorrelativo()
+        P(6) = _examen.getUnidad().getCodigo()
 
         Return dal.Ejecutar("SPregistrarExamenLabResultadoTipoComun_RegistrarExamenLaboratorio", P)
     End Function
 
     Private Function insertExamenResultadoTipoOpcionBD(ByRef _examen As ExamenLaboratorio) As Short
-        Dim P As Object() = New Object(5) {}
+        Dim P As Object()
+
+        P = New Object(7) {}
         P(0) = Usuario.codUserLoggedSystem
         P(1) = _examen.getNombre()
         P(2) = _examen.getArea().getCodigo()
         P(3) = _examen.getSubarea().getCodigo()
-        P(4) = _examen.getTipoResultado().getCorrelativo()
-        P(5) = _examen.getConjuntoOpcionesResultado().getCodigo()
+
+        P(4) = _examen.getCodigoIndividual()
+        P(5) = _examen.getTipoResultado().getCorrelativo()
+        P(6) = _examen.getConjuntoOpcionesResultado().getCodigo()
+        'If String.IsNullOrEmpty() Then P(11) = DBNull.Value Else P(11) = _beneficiario.getNroLibro()
+
 
         Return dal.Ejecutar("SPregistrarExamenLabResultadoTipoOpcion_RegistrarExamenLaboratorio", P)
     End Function
 
     Private Function insertExamenResultadoTipoTextualBD(ByRef _examen As ExamenLaboratorio) As Short
-        Dim P As Object() = New Object(4) {}
+        Dim P As Object()
+
+        P = New Object(6) {}
         P(0) = Usuario.codUserLoggedSystem
         P(1) = _examen.getNombre()
         P(2) = _examen.getArea().getCodigo()
         P(3) = _examen.getSubarea().getCodigo()
-        P(4) = _examen.getTipoResultado().getCorrelativo()
+
+        P(4) = _examen.getCodigoIndividual()
+        P(5) = _examen.getTipoResultado().getCorrelativo()
+        'If String.IsNullOrEmpty() Then P(11) = DBNull.Value Else P(11) = _beneficiario.getNroLibro()
 
         Return dal.Ejecutar("SPregistrarExamenLabResultadoTipoTextual_RegistrarExamenLaboratorio", P)
     End Function
@@ -370,7 +421,8 @@ Public Class RegistroExamenLaboratorio
 
 
     'METODOS VALIDACIÓN G3
-    Public Function validarEntradas(ByRef _tipoReferenia As Concepto, ByRef _examenInput As ExamenLaboratorioInput, ByRef _kitEquipoAsignado As Boolean) As String
+    Public Function validarEntradas(ByRef _tipoReferenia As Concepto, ByRef _examenInput As ExamenLaboratorioInput,
+                                    ByRef _kitEquipoAsignado As Boolean) As String
         Dim mensaje As String, tipo As Short
 
         mensaje = validarArea(_examenInput.area)
@@ -384,7 +436,6 @@ Public Class RegistroExamenLaboratorio
 
         mensaje = validarTipoResultado(_examenInput.tipoResultado)
         If Not mensaje = "" Then Return mensaje
-
 
         tipo = _tipoReferenia.getCorrelativo()
 
@@ -400,7 +451,6 @@ Public Class RegistroExamenLaboratorio
             If Not mensaje = "" Then Return mensaje
 
         ElseIf tipo = 3 Then
-
         End If
 
         Return ""
@@ -428,6 +478,7 @@ Public Class RegistroExamenLaboratorio
         If nroRepetidos > 0 Then Return "Error. El examen " + _nombre + " ya está registrado en el sistema."
         Return ""
     End Function
+
 
     Private Function validarTipoResultado(ByRef _tipoResultado As ConceptoInput) As String
         If Short.Parse(_tipoResultado.correlativo) = 0 Then Return "Error. Seleccione un tipo resultado."

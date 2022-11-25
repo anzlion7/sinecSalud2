@@ -72,10 +72,10 @@ Public Class FormMenuMedicos
 
     Private Sub BtnCD_Click(sender As Object, e As EventArgs) Handles BtnCD.Click
         Dim TM = New FormSolicitudExamenDiagnostico
-        TM.SetPaciente(paciente)
-        TM.SetMatricula(matricula)
-        TM.SetCodSolicitud(codsolicitud)
-        TM.ShowDialog()
+        'TM.SetPaciente(paciente)
+        'TM.SetMatricula(matricula)
+        'TM.SetCodSolicitud(codsolicitud)
+        'TM.ShowDialog()
     End Sub
 
     Private Sub BtnCerrar_Click(sender As Object, e As EventArgs) Handles BtnCerrar.Click

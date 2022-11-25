@@ -61,13 +61,17 @@ Partial Class FormRegistrarResultadosLab
         Me.dgvResultados = New System.Windows.Forms.DataGridView()
         Me.Column3 = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.Column1 = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.Column5 = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.Column2 = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.Column4 = New System.Windows.Forms.DataGridViewButtonColumn()
+        Me.Column6 = New System.Windows.Forms.DataGridViewButtonColumn()
         Me.Label8 = New System.Windows.Forms.Label()
         Me.btnEnviarDatos = New System.Windows.Forms.Button()
         Me.MenuStrip1 = New System.Windows.Forms.MenuStrip()
         Me.MenuToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.tsmItemMenuLaboratorio = New System.Windows.Forms.ToolStripMenuItem()
+        Me.Label10 = New System.Windows.Forms.Label()
+        Me.txtNota = New System.Windows.Forms.TextBox()
         Me.TableLayoutPanel1.SuspendLayout()
         Me.panelBuscarOrden.SuspendLayout()
         Me.gboxFecha.SuspendLayout()
@@ -108,15 +112,17 @@ Partial Class FormRegistrarResultadosLab
         '
         Me.panelBuscarOrden.BackColor = System.Drawing.Color.White
         Me.panelBuscarOrden.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.panelBuscarOrden.Controls.Add(Me.txtNota)
+        Me.panelBuscarOrden.Controls.Add(Me.Label10)
         Me.panelBuscarOrden.Controls.Add(Me.gboxFecha)
         Me.panelBuscarOrden.Controls.Add(Me.gboxModoBusqueda)
         Me.panelBuscarOrden.Controls.Add(Me.gboxNombre)
         Me.panelBuscarOrden.Controls.Add(Me.gboxNroOrden)
         Me.panelBuscarOrden.Controls.Add(Me.lblMensajeRestriccion)
         Me.panelBuscarOrden.Controls.Add(Me.Label4)
-        Me.panelBuscarOrden.Location = New System.Drawing.Point(30, 80)
+        Me.panelBuscarOrden.Location = New System.Drawing.Point(32, 80)
         Me.panelBuscarOrden.Name = "panelBuscarOrden"
-        Me.panelBuscarOrden.Size = New System.Drawing.Size(737, 163)
+        Me.panelBuscarOrden.Size = New System.Drawing.Size(1097, 163)
         Me.panelBuscarOrden.TabIndex = 7
         '
         'gboxFecha
@@ -460,7 +466,7 @@ Partial Class FormRegistrarResultadosLab
         Me.panelResultados.Controls.Add(Me.Label8)
         Me.panelResultados.Location = New System.Drawing.Point(30, 263)
         Me.panelResultados.Name = "panelResultados"
-        Me.panelResultados.Size = New System.Drawing.Size(922, 251)
+        Me.panelResultados.Size = New System.Drawing.Size(1126, 251)
         Me.panelResultados.TabIndex = 8
         '
         'Label7
@@ -478,10 +484,10 @@ Partial Class FormRegistrarResultadosLab
         Me.dgvResultados.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill
         Me.dgvResultados.BackgroundColor = System.Drawing.Color.White
         Me.dgvResultados.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.dgvResultados.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.Column3, Me.Column1, Me.Column2, Me.Column4})
+        Me.dgvResultados.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.Column3, Me.Column1, Me.Column5, Me.Column2, Me.Column4, Me.Column6})
         Me.dgvResultados.Location = New System.Drawing.Point(18, 70)
         Me.dgvResultados.Name = "dgvResultados"
-        Me.dgvResultados.Size = New System.Drawing.Size(883, 162)
+        Me.dgvResultados.Size = New System.Drawing.Size(1080, 162)
         Me.dgvResultados.TabIndex = 1
         '
         'Column3
@@ -491,8 +497,13 @@ Partial Class FormRegistrarResultadosLab
         '
         'Column1
         '
-        Me.Column1.HeaderText = "EXAMEN"
+        Me.Column1.HeaderText = "GRUPO"
         Me.Column1.Name = "Column1"
+        '
+        'Column5
+        '
+        Me.Column5.HeaderText = "EXAMEN"
+        Me.Column5.Name = "Column5"
         '
         'Column2
         '
@@ -503,6 +514,11 @@ Partial Class FormRegistrarResultadosLab
         '
         Me.Column4.HeaderText = ""
         Me.Column4.Name = "Column4"
+        '
+        'Column6
+        '
+        Me.Column6.HeaderText = ""
+        Me.Column6.Name = "Column6"
         '
         'Label8
         '
@@ -518,9 +534,9 @@ Partial Class FormRegistrarResultadosLab
         'btnEnviarDatos
         '
         Me.btnEnviarDatos.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnEnviarDatos.Location = New System.Drawing.Point(1078, 486)
+        Me.btnEnviarDatos.Location = New System.Drawing.Point(1162, 486)
         Me.btnEnviarDatos.Name = "btnEnviarDatos"
-        Me.btnEnviarDatos.Size = New System.Drawing.Size(174, 28)
+        Me.btnEnviarDatos.Size = New System.Drawing.Size(128, 28)
         Me.btnEnviarDatos.TabIndex = 4
         Me.btnEnviarDatos.Text = "Guardar resultados"
         Me.btnEnviarDatos.UseVisualStyleBackColor = True
@@ -546,6 +562,24 @@ Partial Class FormRegistrarResultadosLab
         Me.tsmItemMenuLaboratorio.Name = "tsmItemMenuLaboratorio"
         Me.tsmItemMenuLaboratorio.Size = New System.Drawing.Size(169, 22)
         Me.tsmItemMenuLaboratorio.Text = "Menu Laboratorio"
+        '
+        'Label10
+        '
+        Me.Label10.AutoSize = True
+        Me.Label10.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.5!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label10.Location = New System.Drawing.Point(741, 18)
+        Me.Label10.Name = "Label10"
+        Me.Label10.Size = New System.Drawing.Size(45, 16)
+        Me.Label10.TabIndex = 26
+        Me.Label10.Text = "NOTA"
+        '
+        'txtNota
+        '
+        Me.txtNota.Location = New System.Drawing.Point(744, 38)
+        Me.txtNota.Multiline = True
+        Me.txtNota.Name = "txtNota"
+        Me.txtNota.Size = New System.Drawing.Size(326, 109)
+        Me.txtNota.TabIndex = 27
         '
         'FormRegistrarResultadosLab
         '
@@ -599,10 +633,6 @@ Partial Class FormRegistrarResultadosLab
     Friend WithEvents Label1 As Label
     Friend WithEvents Label2 As Label
     Friend WithEvents hintFecha As Label
-    Friend WithEvents Column3 As DataGridViewTextBoxColumn
-    Friend WithEvents Column1 As DataGridViewTextBoxColumn
-    Friend WithEvents Column2 As DataGridViewTextBoxColumn
-    Friend WithEvents Column4 As DataGridViewButtonColumn
     Friend WithEvents Label7 As Label
     Friend WithEvents gboxModoBusqueda As GroupBox
     Friend WithEvents Label9 As Label
@@ -627,4 +657,12 @@ Partial Class FormRegistrarResultadosLab
     Friend WithEvents cboxOrdenNroOrden As ComboBox
     Friend WithEvents gboxFecha As GroupBox
     Friend WithEvents Label18 As Label
+    Friend WithEvents Column3 As DataGridViewTextBoxColumn
+    Friend WithEvents Column1 As DataGridViewTextBoxColumn
+    Friend WithEvents Column5 As DataGridViewTextBoxColumn
+    Friend WithEvents Column2 As DataGridViewTextBoxColumn
+    Friend WithEvents Column4 As DataGridViewButtonColumn
+    Friend WithEvents Column6 As DataGridViewButtonColumn
+    Friend WithEvents Label10 As Label
+    Friend WithEvents txtNota As TextBox
 End Class

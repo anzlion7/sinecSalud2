@@ -2,42 +2,19 @@
 
 Public Class FormRegistrarResultadoLabTipoValorComun
 
-    'ATRIBUTOS -- ATRIBUTOS LÓGICOS
-    Private registro As RegistroResultadosEnValoresReferencia
-
-    'ATRIBUTOS LÓGICOS MODO FORM HIJO
-    Public estadoFormGuardado As Boolean
-    Private esFormHijo As Boolean
-    Private modoTipoUsuario As Short
-
-    'ATRIBUTOS PARAMETOS RECIBIDOS
-    Private resultadoFormPadre As ResultadoLaboratorio
-    Private aseguradoFormPadre As Asegurado
+    'ATRIBUTOS LÓGICOS ---- 
+    Private negocio As RegistroResultadosEnValoresReferencia
+    Public formIniciado As Boolean
 
     'ATRIBUTOS G0
     Private tituloDeFormulario As String
 
     'ATRIBUTOS G3
-    Private proveedorSeleccionado As ProveedorKitEquipo
-    Private kitequipoSeleccionado As KitEquipoLaboratorio
-    Private referenciaAsignada As ReferenciaResultadoLaboratorio
-    Private procesadorSeleccionado As Usuario
-    Private observacion As Boolean
-
-
     Private clmSexoDgvReferencias As String
     Private clmEdadDesdeDgvReferencias As String
     Private clmEdadHastaDgvReferencias As String
     Private clmValorDesdeDgvReferencias As String
     Private clmValorHastaDgvReferencias As String
-
-    'ATRIBUTOS PROPERTIES G9
-    Private nuevoInputResultado As ResultadoLaboratorioInput
-    Public nuevoResultado As ResultadoLaboratorio
-
-
-
-
 
 
 
@@ -49,6 +26,7 @@ Public Class FormRegistrarResultadoLabTipoValorComun
 
 
         ' Add any initialization after the InitializeComponent() call.
+        negocio = New RegistroResultadosEnValoresReferencia()
         preIniciarAtributosFormHijo(False, Nothing, Nothing, 0)
         iniciarFormulario()
     End Sub
@@ -57,7 +35,9 @@ Public Class FormRegistrarResultadoLabTipoValorComun
         ' This call is required by the designer.
         InitializeComponent()
 
+
         ' Add any initialization after the InitializeComponent() call.
+        negocio = New RegistroResultadosEnValoresReferencia()
         preIniciarAtributosFormHijo(True, _resultado, _asegurado, _modoTipoUsuario)
         iniciarFormulario()
     End Sub
@@ -71,71 +51,95 @@ Public Class FormRegistrarResultadoLabTipoValorComun
 
     End Sub
 
-    Private Sub preIniciarAtributosFormHijo(_esHijo As Boolean, ByRef _resultado As ResultadoLaboratorio, ByRef _asegurado As Asegurado,
-                                            _modoTipoUsuario As Short)
-        estadoFormGuardado = False
+    Private Sub preIniciarAtributosFormHijo(_esHijo As Boolean, ByRef _resultado As ResultadoLaboratorio,
+                                            ByRef _asegurado As Asegurado, _modoTipoUsuario As Short)
+        negocio.estadoFormGuardado = False
 
         If _esHijo Then
-            esFormHijo = True
-            resultadoFormPadre = _resultado
-            aseguradoFormPadre = _asegurado
-            modoTipoUsuario = _modoTipoUsuario
+            negocio.esFormHijo = True
+            negocio.pResultado = _resultado
+            negocio.pAsegurado = _asegurado
+            negocio.modoTipoUsuario = _modoTipoUsuario
+            negocio.pExamen = _resultado.getExamen()
+
         Else
-            esFormHijo = False
-            resultadoFormPadre = Nothing
-            aseguradoFormPadre = Nothing
-            modoTipoUsuario = 0
+            negocio.esFormHijo = False
+            negocio.pResultado = Nothing
+            negocio.pAsegurado = Nothing
+            negocio.modoTipoUsuario = 0
+            negocio.pExamen = Nothing
         End If
     End Sub
 
     Private Sub iniciarFormulario()
+        Dim codigoExamen As Short, codigoKit As Short, codigoTipoReferencia As Short
+        Dim asegurado As Asegurado
+        Dim kitNoAsignado As Boolean
+
+
         iniciarAtributos()
         iniciarProcesosNegocio()
         iniciarInterfaz()
+        iniciarInterfazSegunTipoUsuario()
 
-        ajustarControlesSegunTipoUsuario()
 
-        mostrarDatosExamen()
-        mostrarDatosAsegurado()
+        intMostrarDatosExamen()
+        intMostrarDatosAsegurado()
 
-        traerProveedores()
-        poblarCboxProveedor()
 
-        traerProcesadores()
-        poblarCboxProcesador()
+        codigoExamen = negocio.pExamen.getCodigo()
+        negocio.traerKitPredeterminado(codigoExamen)
+
+
+        kitNoAsignado = negocio.revisarKitPredeterminadoSinAsignar()
+
+        If kitNoAsignado Then
+            cerrarFormlarioFaltaDatos("Error. Este examen no tiene asignado un Kit-Equipo predeterminado. Asigne uno y vuelva a intentar.")
+            Return
+        Else
+
+            intMostrarKitPredeterminado()
+
+            codigoKit = negocio.kitPredeterminado.getCodigo()
+            negocio.traerReferencias(codigoKit)
+
+
+            codigoTipoReferencia = negocio.kitPredeterminado.getTipoReferencia().getCorrelativo()
+            asegurado = negocio.pAsegurado
+            negocio.asignarReferenciaAsegurado(codigoTipoReferencia, asegurado)
+
+
+            intAjustarInterfazDgvReferencias()
+            intPoblarDgvReferencias()
+
+            intDeseleccionarEnDgvReferencias()
+            intDespintarObservacionFilaDgv()
+
+            intDespintarObersvacionNumResultado()
+
+            intHabilitarNumResultado()
+            intReiniciarNumResultado()
+
+            negocio.traerProcesadores()
+            poblarCboxProcesador()
+        End If
+
+
     End Sub
 
     Private Sub iniciarAtributos()
-        'ATRIBUTOS LÓGICOS
-        registro = New RegistroResultadosEnValoresReferencia()
-
-        'ATRIBUTOS LÓGICOS MODO FORM HIJO
-        'estadoFormGuardado As Boolean
-        ' esFormHijo As Boolean
-
-        'ATRIBUTOS PARAMETOS RECIBIDOS
-        If IsNothing(resultadoFormPadre) Then resultadoFormPadre = New ResultadoLaboratorio
-        If IsNothing(aseguradoFormPadre) Then aseguradoFormPadre = New Asegurado
+        'ATRIBUTOS LÓGICOS ---- 
+        formIniciado = True
 
         'ATRIBUTOS G0
         tituloDeFormulario = "Registrar resultados de tipo valor numérico"
 
         'ATRIBUTOS G3
-        proveedorSeleccionado = New ProveedorKitEquipo()
-        kitequipoSeleccionado = New KitEquipoLaboratorio()
-        referenciaAsignada = New ReferenciaResultadoLaboratorio()
-        procesadorSeleccionado = New Usuario()
-        observacion = False
-
         clmSexoDgvReferencias = "clmSexo"
         clmEdadDesdeDgvReferencias = "clmEdadDesde"
         clmEdadHastaDgvReferencias = "clmEdadHasta"
         clmValorDesdeDgvReferencias = "clmDesde"
         clmValorHastaDgvReferencias = "clmHasta"
-
-        'ATRIBUTOS PROPERTIES G9
-        nuevoInputResultado = New ResultadoLaboratorioInput()
-        nuevoResultado = New ResultadoLaboratorio()
     End Sub
 
     Private Sub iniciarProcesosNegocio()
@@ -266,24 +270,18 @@ Public Class FormRegistrarResultadoLabTipoValorComun
 
         iniciarDgvReferencias()
 
-        cboxKit.Enabled = True
-        cboxKit.Visible = True
-        cboxKit.Font = New Font("Microsoft Sans Serif", 9)
-        cboxKit.Items.Clear()
-        cboxKit.DropDownStyle = ComboBoxStyle.DropDownList
-
-        hintKit.Enabled = True
-        hintKit.Visible = True
-        hintKit.Font = New Font("Microsoft Sans Serif", 9)
-        hintKit.Text = "SELECCIONAR"
-        hintKit.BackColor = Color.Transparent
-
         numResultado.Enabled = False
-        numResultado.Visible = True
         numResultado.ReadOnly = False
         numResultado.Font = New Font("Microsoft Sans Serif", 10)
         numResultado.Text = "0.000"
-        numResultado.Maximum = 999.999
+        numResultado.Maximum = 999999.999
+
+
+        chboxResVacio.Enabled = True
+        chboxResVacio.Visible = True
+        chboxResVacio.Checked = False
+        chboxResVacio.Font = New Font("Microsoft Sans Serif", 9)
+        'chboxResVacio.Text = ""
 
         cboxProcesador.Enabled = True
         cboxProcesador.Visible = True
@@ -402,8 +400,10 @@ Public Class FormRegistrarResultadoLabTipoValorComun
         dgvReferencias.Rows.Clear()
     End Sub
 
-    Private Sub ajustarControlesSegunTipoUsuario()
-        If modoTipoUsuario = 3 Then
+    Private Sub iniciarInterfazSegunTipoUsuario()
+
+        If negocio.modoTipoUsuario = 3 Then
+
             cboxProcesador.Enabled = False
             hintProcesador.Enabled = False
             hintProcesador.Text = Usuario.nameUserLoggedSystem
@@ -421,6 +421,11 @@ Public Class FormRegistrarResultadoLabTipoValorComun
         Me.CenterToScreen()
     End Sub
 
+    Private Sub cerrarFormlarioFaltaDatos(_mensaje As String)
+        intMostrarMensaje(_mensaje)
+        formIniciado = False
+        Close()
+    End Sub
 
 
 
@@ -430,62 +435,22 @@ Public Class FormRegistrarResultadoLabTipoValorComun
 
 
     'METODOS LOGICOS G3
-    Private Sub traerProveedores()
-        registro.traerProveedores()
-    End Sub
-
-    Private Sub seleccionarProveedor()
-        Dim index As Short = cboxProveedor.SelectedIndex
-        proveedorSeleccionado = registro.proveedores(index)
-    End Sub
-
-    Private Sub traerKits()
-        Dim examen As ExamenLaboratorio = resultadoFormPadre.getExamen()
-        registro.traerKits(proveedorSeleccionado, examen)
-    End Sub
-
-    Private Sub seleccionarKit()
-        Dim index As Int16 = cboxKit.SelectedIndex
-        kitequipoSeleccionado = registro.kits(index)
-    End Sub
-
-    Private Sub traerReferencias()
-        Dim codigo As Int64 = kitequipoSeleccionado.getCodigo()
-
-        registro.traerReferencias(codigo)
-    End Sub
-
-    Private Sub traerReferenciaDelPaciente()
-        Dim tipoReferecnia As Concepto
-
-        tipoReferecnia = kitequipoSeleccionado.getTipoReferencia()
-        registro.traerReferenciaPaciente(tipoReferecnia, aseguradoFormPadre, resultadoFormPadre)
-    End Sub
-
-    Private Sub traerProcesadores()
-        registro.traerProcesadores()
-    End Sub
 
     Private Sub seleccionarProcesador()
         Dim index As Short = cboxProcesador.SelectedIndex
-        procesadorSeleccionado = registro.procesadores(index)
+        negocio.procesadorSeleccionado = negocio.procesadores(index)
     End Sub
 
     Private Sub hayObservacion()
-        Dim referencia As ReferenciaResultadoLaboratorio, valorIngresado As Double
+        Dim valorIngresado As Double
 
-        referencia = resultadoFormPadre.getReferencia()
         valorIngresado = numResultado.Value
 
-        observacion = registro.hayObservacion(referencia, valorIngresado)
+        negocio.observacion = negocio.hayObservacion(negocio.referenciaDelPaciente, valorIngresado)
     End Sub
 
     Private Sub buscarIndexObservacion()
-        Dim referencia As ReferenciaResultadoLaboratorio
-
-        referencia = resultadoFormPadre.getReferencia()
-
-        registro.buscarIndexObservacion(referencia)
+        negocio.buscarIndexObservacion(negocio.referenciaDelPaciente)
     End Sub
 
     'METODOS LOGICOS G9
@@ -499,9 +464,9 @@ Public Class FormRegistrarResultadoLabTipoValorComun
                 Dim objetosCargados As Boolean = cargarObjetos()
 
                 If objetosCargados Then
-                    If esFormHijo Then
+                    If negocio.esFormHijo Then
 
-                        If observacion Then
+                        If negocio.observacion Then
                             Dim result As DialogResult
                             result = preguntarGuardarConObservacion()
 
@@ -521,7 +486,7 @@ Public Class FormRegistrarResultadoLabTipoValorComun
                 End If
 
             Else
-                mostrarMensaje(mensajeValidacion)
+                intMostrarMensaje(mensajeValidacion)
             End If
         End If
     End Sub
@@ -529,74 +494,85 @@ Public Class FormRegistrarResultadoLabTipoValorComun
     Private Function cargarEntradas() As Boolean
         Try
             Dim proveedor As ProveedorKitEquipoInput, kitequipo As KitEquipoLaboratorioInput, inputProcesador As UsuarioInput,
-            valorResultado As Double
+            valorResultado As Double, kit As KitEquipoLaboratorio
 
-            proveedor = New ProveedorKitEquipoInput()
-            proveedor.codigo = proveedorSeleccionado.getCodigo()
-            proveedor.nombre = proveedorSeleccionado.getNombre()
+            kit = negocio.kitPredeterminado
 
             kitequipo = New KitEquipoLaboratorioInput()
-            kitequipo.proveedor = proveedor
-            kitequipo.codigo = kitequipoSeleccionado.getCodigo()
+            kitequipo.codigo = kit.getCodigo()
 
             inputProcesador = New UsuarioInput()
-            If modoTipoUsuario = 3 Then
+            If negocio.modoTipoUsuario = 3 Then
                 inputProcesador = New UsuarioInput()
                 inputProcesador.codigo = Usuario.codUserLoggedSystem
                 inputProcesador.nombres = Usuario.nameUserLoggedSystem
 
-            ElseIf modoTipoUsuario = 4 Then
+            ElseIf negocio.modoTipoUsuario = 4 Then
                 inputProcesador = New UsuarioInput()
-                inputProcesador.codigo = procesadorSeleccionado.getCodigo()
-                inputProcesador.nombres = procesadorSeleccionado.getNombres()
+                inputProcesador.codigo = negocio.procesadorSeleccionado.getCodigo()
+                inputProcesador.nombres = negocio.procesadorSeleccionado.getNombres()
             End If
             valorResultado = numResultado.Value
 
 
-            nuevoInputResultado = New ResultadoLaboratorioInput()
-            nuevoInputResultado.kitequipo = kitequipo
-            nuevoInputResultado.valorTipoComun = valorResultado
-            nuevoInputResultado.procesador = inputProcesador
+            negocio.nuevoInputResultado = New ResultadoLaboratorioInput()
+            negocio.nuevoInputResultado.kitequipo = kitequipo
+            negocio.nuevoInputResultado.valorTipoComun = valorResultado
+            negocio.nuevoInputResultado.procesador = inputProcesador
             Return True
 
         Catch ex As Exception
-            mostrarMensaje(ex.Message)
+            intMostrarMensaje(ex.Message)
             Return False
         End Try
     End Function
 
     Private Function validarEntradas()
-        Dim mensaje As String = registro.validarEntradas(nuevoInputResultado, modoTipoUsuario)
+        Dim mensaje As String = negocio.validarEntradas(negocio.nuevoInputResultado, negocio.modoTipoUsuario)
         Return mensaje
     End Function
 
     Private Function cargarObjetos()
         Try
-            Dim procesador As Usuario, codProcesador As Long, nomProcesador As String, valorResultado As Double
+            Dim procesador As Usuario, codProcesador As Long, nomProcesador As String, valorResultado As Double,
+                kit As KitEquipoLaboratorio, observacion As String, referencia As ReferenciaResultadoLaboratorio
 
-            codProcesador = nuevoInputResultado.procesador.codigo
-            nomProcesador = nuevoInputResultado.procesador.nombres
+            kit = negocio.kitPredeterminado
+
+            codProcesador = negocio.nuevoInputResultado.procesador.codigo
+            nomProcesador = negocio.nuevoInputResultado.procesador.nombres
+            observacion = txtObservacion.Text.Trim()
+            referencia = negocio.referenciaDelPaciente
+
 
             procesador = New Usuario()
             procesador.setCodigo(codProcesador)
             procesador.setNombres(nomProcesador)
-            valorResultado = nuevoInputResultado.valorTipoComun
-            kitequipoSeleccionado.setProveedor(proveedorSeleccionado)
+            valorResultado = negocio.nuevoInputResultado.valorTipoComun
+            kit.setProveedor(negocio.proveedorSeleccionado)
 
 
-            resultadoFormPadre.setKitEquipo(kitequipoSeleccionado)
-            resultadoFormPadre.setProcesador(procesador)
-            resultadoFormPadre.setValorTipoComun(valorResultado)
+            If negocio.resultadoVacio Then
+                negocio.pResultado.setVacio(True)
+            Else
+                negocio.pResultado.setVacio(False)
+            End If
+
+            negocio.pResultado.setKitEquipo(kit)
+            negocio.pResultado.setProcesador(procesador)
+            negocio.pResultado.setValorTipoComun(valorResultado)
+            negocio.pResultado.setObservacion(observacion)
+            negocio.pResultado.setReferenccia(referencia)
             Return True
 
         Catch ex As Exception
-            mostrarMensaje(ex.Message)
+            intMostrarMensaje(ex.Message)
             Return False
         End Try
     End Function
 
     Private Sub guardarEstadoResultado()
-        resultadoFormPadre.setAsignado(True)
+        negocio.pResultado.setAsignado(True)
     End Sub
 
     Private Sub ocultarFormulario()
@@ -611,20 +587,22 @@ Public Class FormRegistrarResultadoLabTipoValorComun
     End Sub
 
     Private Sub descartarResultado()
-        resultadoFormPadre.setAsignado(False)
+        negocio.pResultado.setAsignado(False)
     End Sub
 
 
 
 
     'METODOS INTERFAZ G1
-    Private Sub mostrarDatosExamen()
-        Dim examen As ExamenLaboratorio, nombreExamen As String, nombreArea As String, descripcionUnidad As String
+    Private Sub intMostrarDatosExamen()
+        Dim examen As ExamenLaboratorio
+        Dim nombreExamen As String, nombreArea As String, descripcionUnidad As String
 
-        examen = resultadoFormPadre.getExamen()
+        examen = negocio.pExamen
         nombreExamen = examen.getNombre()
         nombreArea = examen.getArea().getNombre()
-        descripcionUnidad = resultadoFormPadre.getUnidad().getNombre() + " " + resultadoFormPadre.getUnidad().getAbreviacion()
+        descripcionUnidad = negocio.pResultado.getUnidad().getNombre() + " " + negocio.pResultado.getUnidad().getAbreviacion()
+
 
         txtExamen.Text = nombreExamen
         txtArea.Text = nombreArea
@@ -633,15 +611,21 @@ Public Class FormRegistrarResultadoLabTipoValorComun
 
 
     'METODOS INTERFAZ G2
-    Private Sub mostrarDatosAsegurado()
-        Dim nombre As String, matricula As String, sexo As String, edad As String
+    Private Sub intMostrarDatosAsegurado()
+        Dim asegurado As Asegurado
+        Dim nombre As String, matricula As String, sexo As String,
+            edad As String
 
-        nombre = aseguradoFormPadre.getApellidoPaterno() + " " + aseguradoFormPadre.getApellidoMaterno() + " " + aseguradoFormPadre.getNombres()
-        matricula = aseguradoFormPadre.getMatricula()
-        sexo = aseguradoFormPadre.getSexo()
+        asegurado = negocio.pAsegurado
+
+        nombre = asegurado.getApellidoPaterno() + " " + asegurado.getApellidoMaterno() + " " + asegurado.getNombres()
+        matricula = asegurado.getMatricula()
+        sexo = asegurado.getSexo()
         If sexo = "M" Then sexo = "MASCULINO" Else If sexo = "F" Then sexo = "FEMENINO"
-        edad = aseguradoFormPadre.getEdad()
-        edad = Utilitarios.calcularEdad(aseguradoFormPadre.getFechaNacimiento).ToString()
+
+        edad = asegurado.getEdad()
+        edad = Utilitarios.calcularEdad(asegurado.getFechaNacimiento()).ToString()
+
 
         txtAsegurado.Text = nombre
         txtMatricula.Text = matricula
@@ -651,45 +635,15 @@ Public Class FormRegistrarResultadoLabTipoValorComun
 
 
     'METODOS INTERFAZ G3
-    Private Sub poblarCboxProveedor()
-        cboxProveedor.Items.Clear()
+    Private Sub intMostrarKitPredeterminado()
+        Dim nombre As String
 
-        For Each proveedor As ProveedorKitEquipo In registro.proveedores
-            cboxProveedor.Items.Add(proveedor.getNombre())
-        Next
-    End Sub
-
-    Private Sub mostrarHintProveedor()
-        hintProveedor.Visible = True
-    End Sub
-
-    Private Sub ocultarHintProveedor()
-        hintProveedor.Visible = False
-    End Sub
-
-    Private Sub poblarCboxKits()
-        cboxKit.Items.Clear()
-
-        For Each kit As KitEquipoLaboratorio In registro.kits
-            Dim nombrePoveedor As String, modelo As String
-
-            nombrePoveedor = kit.getProveedor().getNombre()
-            modelo = kit.getModelo()
-
-            cboxKit.Items.Add(nombrePoveedor + " " + modelo)
-        Next
-    End Sub
-
-    Private Sub mostrarHintKit()
-        hintKit.Visible = True
-    End Sub
-
-    Private Sub ocultarHintKit()
-        hintKit.Visible = False
+        nombre = negocio.kitPredeterminado.getMarca().getNombre
+        txtKit.Text = nombre
     End Sub
 
     Private Sub poblarCboxProcesador()
-        For Each procesador As Usuario In registro.procesadores
+        For Each procesador As Usuario In negocio.procesadores
             Dim apPaterno As String, apMaterno As String, nombres As String, nombreCompleto As String
 
             apPaterno = procesador.getApellidoPaterno()
@@ -709,15 +663,14 @@ Public Class FormRegistrarResultadoLabTipoValorComun
         hintProcesador.Visible = False
     End Sub
 
-    Private Sub poblarDgvReferencias()
+    Private Sub intPoblarDgvReferencias()
+        Dim tipoReferencia As Short
+
         dgvReferencias.Rows.Clear()
 
-        Dim tipoReferencia As Short
-        tipoReferencia = kitequipoSeleccionado.getTipoReferencia().getCorrelativo()
+        tipoReferencia = negocio.kitPredeterminado.getTipoReferencia.getCorrelativo()
 
-
-        Dim referencias As ReferenciaResultadoLaboratorio() = registro.referencias
-        For Each referencia As ReferenciaResultadoLaboratorio In referencias
+        For Each referencia As ReferenciaResultadoLaboratorio In negocio.referencias
             Dim index As Short = dgvReferencias.Rows.Add()
             Dim rowActual As DataGridViewRow = dgvReferencias.Rows(index)
 
@@ -730,6 +683,7 @@ Public Class FormRegistrarResultadoLabTipoValorComun
 
                 rowActual.Cells(clmValorDesdeDgvReferencias).Value = valorDesde
                 rowActual.Cells(clmValorHastaDgvReferencias).Value = valorHasta
+
 
             ElseIf tipoReferencia = 2 Then
                 Dim valorDesde As Double, valorHasta As Double, sexo As String
@@ -744,6 +698,7 @@ Public Class FormRegistrarResultadoLabTipoValorComun
                 rowActual.Cells(clmValorHastaDgvReferencias).Value = valorHasta
                 rowActual.Cells(clmSexoDgvReferencias).Value = sexo
 
+
             ElseIf tipoReferencia = 3 Then
                 Dim valorDesde As Double, valorHasta As Double, edadInicio As Short, edadFin As Short
 
@@ -757,9 +712,10 @@ Public Class FormRegistrarResultadoLabTipoValorComun
                 rowActual.Cells(clmEdadDesdeDgvReferencias).Value = edadInicio
                 rowActual.Cells(clmEdadHastaDgvReferencias).Value = edadFin
 
+
             ElseIf tipoReferencia = 4 Then
-                Dim valorDesde As Double, valorHasta As Double, sexo As String, edadInicio As Short,
-                    edadFin As Short
+                Dim valorDesde As Double, valorHasta As Double, sexo As String,
+                    edadInicio As Short, edadFin As Short
 
                 valorDesde = referencia.getValorInicio()
                 valorHasta = referencia.getValorFin()
@@ -776,10 +732,13 @@ Public Class FormRegistrarResultadoLabTipoValorComun
                 rowActual.Cells(clmEdadHastaDgvReferencias).Value = edadFin
             End If
         Next
+
     End Sub
 
-    Private Sub ajustarInterfazDgvReferencias()
-        Dim tipoReferencia As Int16 = kitequipoSeleccionado.getTipoReferencia().getCorrelativo()
+    Private Sub intAjustarInterfazDgvReferencias()
+        Dim tipoReferencia As Short
+
+        tipoReferencia = negocio.kitPredeterminado.getTipoReferencia().getCorrelativo()
 
         If tipoReferencia = 1 Then
             'OCULTAR CULUMAS
@@ -789,6 +748,7 @@ Public Class FormRegistrarResultadoLabTipoValorComun
             dgvReferencias.Columns(clmSexoDgvReferencias).Visible = False
             dgvReferencias.Columns(clmEdadDesdeDgvReferencias).Visible = False
             dgvReferencias.Columns(clmEdadHastaDgvReferencias).Visible = False
+
 
             'MOSTRAR CULUMAS
             dgvReferencias.Columns(clmValorDesdeDgvReferencias).Visible = True
@@ -803,10 +763,12 @@ Public Class FormRegistrarResultadoLabTipoValorComun
             dgvReferencias.Columns(clmEdadDesdeDgvReferencias).Visible = False
             dgvReferencias.Columns(clmEdadHastaDgvReferencias).Visible = False
 
+
             'MOSTRAR CULUMAS
             dgvReferencias.Columns(clmSexoDgvReferencias).Visible = True
             dgvReferencias.Columns(clmValorDesdeDgvReferencias).Visible = True
             dgvReferencias.Columns(clmValorHastaDgvReferencias).Visible = True
+
 
             'AJUSTAR TAMAÑO HEADERS
             'lblHeaderEmpty.Location = New Point(0, 0)
@@ -822,6 +784,7 @@ Public Class FormRegistrarResultadoLabTipoValorComun
             lblHeaderEmpty.Visible = False
             dgvReferencias.Columns(clmSexoDgvReferencias).Visible = False
 
+
             'MOSTRAR CULUMAS
             lblHeaderEdad.Visible = True
             lblHeaderValorDeReferencia.Visible = True
@@ -829,6 +792,7 @@ Public Class FormRegistrarResultadoLabTipoValorComun
             dgvReferencias.Columns(clmEdadHastaDgvReferencias).Visible = True
             dgvReferencias.Columns(clmValorDesdeDgvReferencias).Visible = True
             dgvReferencias.Columns(clmValorHastaDgvReferencias).Visible = True
+
 
             'AJUSTAR TAMAÑO HEADERS
             'lblHeaderEmpty.Location = New Point(0, 0)
@@ -864,7 +828,7 @@ Public Class FormRegistrarResultadoLabTipoValorComun
         End If
     End Sub
 
-    Private Sub deseleccionarEnDgvReferencias()
+    Private Sub intDeseleccionarEnDgvReferencias()
         dgvReferencias.ClearSelection()
     End Sub
 
@@ -874,7 +838,7 @@ Public Class FormRegistrarResultadoLabTipoValorComun
     End Sub
 
     Private Sub pintarObservacionFilDgv()
-        Dim index As Short = registro.observacionIndex
+        Dim index As Short = negocio.observacionIndex
 
         dgvReferencias.Rows(index).DefaultCellStyle.BackColor = Color.FromArgb(255, 46, 46)
     End Sub
@@ -884,21 +848,21 @@ Public Class FormRegistrarResultadoLabTipoValorComun
     End Sub
 
     Private Sub despintarObservacionControlesInterfaz()
-        despintarObservacionFilaDgv()
-        despintarObersvacionNumResultado()
+        intDespintarObservacionFilaDgv()
+        intDespintarObersvacionNumResultado()
     End Sub
 
-    Private Sub despintarObservacionFilaDgv()
+    Private Sub intDespintarObservacionFilaDgv()
         For Each row As DataGridViewRow In dgvReferencias.Rows
             row.DefaultCellStyle.BackColor = Color.White
         Next
     End Sub
 
-    Private Sub despintarObersvacionNumResultado()
+    Private Sub intDespintarObersvacionNumResultado()
         numResultado.BackColor = Color.White
     End Sub
 
-    Private Sub habilitarNumResultado()
+    Private Sub intHabilitarNumResultado()
         numResultado.Enabled = True
     End Sub
 
@@ -906,18 +870,30 @@ Public Class FormRegistrarResultadoLabTipoValorComun
         numResultado.Enabled = False
     End Sub
 
-    Private Sub reiniciarNumResultado()
+    Private Sub intReiniciarNumResultado()
         numResultado.Value = 0.000
         numResultado.BackColor = Color.White
     End Sub
 
+    Private Sub intHabilitarInputResultado()
+        lblResultado.Visible = True
 
+        numResultado.Visible = True
+        numResultado.Enabled = True
 
+    End Sub
+
+    Private Sub intDeshabilitarInputResultado()
+        lblResultado.Visible = False
+
+        numResultado.Visible = False
+        numResultado.Enabled = False
+    End Sub
 
 
 
     'METODOS INTERFAZ G9
-    Private Sub mostrarMensaje(ByVal _mensaje As String)
+    Private Sub intMostrarMensaje(ByVal _mensaje As String)
         MessageBox.Show(_mensaje, "Mensaje")
     End Sub
 
@@ -938,51 +914,13 @@ Public Class FormRegistrarResultadoLabTipoValorComun
 
 
     'EVENTOS G3
-    Private Sub cboxProveedor_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles cboxProveedor.SelectionChangeCommitted
-        Try
-            seleccionarProveedor()
-            ocultarHintProveedor()
-
-            traerKits()
-            poblarCboxKits()
-
-        Catch ex As Exception
-            mostrarMensaje(ex.Message)
-        End Try
-    End Sub
-
-    Private Sub cboxKit_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles cboxKit.SelectionChangeCommitted
-        Try
-            seleccionarKit()
-            ocultarHintKit()
-
-            traerReferencias()
-            ajustarInterfazDgvReferencias()
-
-            poblarDgvReferencias()
-            deseleccionarEnDgvReferencias()
-
-            despintarObservacionFilaDgv()
-            despintarObersvacionNumResultado()
-
-            traerReferenciaDelPaciente()
-
-            habilitarNumResultado()
-            reiniciarNumResultado()
-
-
-        Catch ex As Exception
-            mostrarMensaje(ex.Message)
-        End Try
-    End Sub
-
     Private Sub cboxProcesador_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles cboxProcesador.SelectionChangeCommitted
         Try
             seleccionarProcesador()
             ocultarHintProcesador()
 
         Catch ex As Exception
-            mostrarMensaje(ex.Message)
+            intMostrarMensaje(ex.Message)
         End Try
     End Sub
 
@@ -990,7 +928,7 @@ Public Class FormRegistrarResultadoLabTipoValorComun
         Try
             hayObservacion()
 
-            If observacion Then
+            If negocio.observacion Then
                 buscarIndexObservacion()
                 pintarObservacionControlesInterfaz()
             Else
@@ -998,10 +936,29 @@ Public Class FormRegistrarResultadoLabTipoValorComun
             End If
 
         Catch ex As Exception
-            mostrarMensaje(ex.Message)
+            intMostrarMensaje(ex.Message)
         End Try
 
     End Sub
+
+    Private Sub chboxResVacio_CheckedChanged(sender As Object, e As EventArgs) Handles chboxResVacio.CheckedChanged
+        Try
+            Dim estado As Boolean
+
+            estado = chboxResVacio.Checked
+            negocio.actualizarEstadoResultadoVacio(estado)
+
+            If negocio.resultadoVacio Then
+                intDeshabilitarInputResultado()
+            Else
+                intHabilitarInputResultado()
+            End If
+
+        Catch ex As Exception
+            intMostrarMensaje(ex.Message)
+        End Try
+    End Sub
+
 
     Private Sub dgvReferencias_RowPostPaint(sender As Object, e As DataGridViewRowPostPaintEventArgs) Handles dgvReferencias.RowPostPaint
         Try
@@ -1017,11 +974,9 @@ Public Class FormRegistrarResultadoLabTipoValorComun
 
 
         Catch ex As Exception
-            mostrarMensaje(ex.Message)
+            intMostrarMensaje(ex.Message)
         End Try
     End Sub
-
-
 
     'EVENTOS G9
     Private Sub btnEnviarDatos_Click(sender As Object, e As EventArgs) Handles btnEnviarDatos.Click
@@ -1029,7 +984,7 @@ Public Class FormRegistrarResultadoLabTipoValorComun
             enviarDatos()
 
         Catch ex As Exception
-            mostrarMensaje(ex.Message)
+            intMostrarMensaje(ex.Message)
         End Try
     End Sub
 
@@ -1040,9 +995,10 @@ Public Class FormRegistrarResultadoLabTipoValorComun
             End If
 
         Catch ex As Exception
-            mostrarMensaje(ex.Message)
+            intMostrarMensaje(ex.Message)
         End Try
     End Sub
+
 
 
 End Class

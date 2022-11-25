@@ -2,24 +2,23 @@
 Public Class ConfirmacionOrdenLaboratorio
 
     'ATRIBUTOS LÓGICOS
-    'Private dal As TDatosSql
-
-    'ATRIBUTOS G1
     Public datatableAsegurado As DataTable
     Public dataAsegurado As DataTable
     Public dataMedico As DataTable
     Public dataUsuario As DataTable
+    Public dataExamenSolicitable As DataTable
 
 
 
 
     'METODOS INICIO
     Public Sub New()
-        'ATRIBUTOS G1
+        'ATRIBUTOS LÓGICOS
         datatableAsegurado = New DataTable()
         dataAsegurado = New DataTable()
         dataMedico = New DataTable()
         dataUsuario = New DataTable()
+        dataExamenSolicitable = New DataTable()
     End Sub
 
     Public Sub iniciarProcesos()
@@ -36,7 +35,6 @@ Public Class ConfirmacionOrdenLaboratorio
 
 
     'METODOS FUNCIONALES G1
-
     Public Sub cargarDatosAsegurado(_asegurado As Asegurado)
         Dim dcNombre As DataColumn, dcMatricula As DataColumn, dcSexo As DataColumn, dcEdad As DataColumn,
             nombreCompleto As String, matricula As String, sexo As String, edad As String
@@ -82,16 +80,41 @@ Public Class ConfirmacionOrdenLaboratorio
     End Sub
 
     Public Sub cargarDatosUsusario()
-        Dim dcNombre As DataColumn, nombreUsuario As String
-
-        dcNombre = New DataColumn("nombreUsuario", GetType(String))
-
-        dataUsuario.Columns.Add(dcNombre)
+        Dim nombreUsuario As String, dcNombre As DataColumn
 
         nombreUsuario = Trim(Usuario.nameUserLoggedSystem)
 
+        dcNombre = New DataColumn("nombreUsuario", GetType(String))
+        dataUsuario.Columns.Add(dcNombre)
         dataUsuario.Rows.Add(nombreUsuario)
     End Sub
+
+    Public Sub cargarDatosExmenSolicitable(_examenesSolicitables As ListaEnlazadaExamenSolicitableLaboratorio)
+        Dim dcNombreExamen As DataColumn, nombreExamen As String
+
+        dcNombreExamen = New DataColumn("nombreExamenSolicitable", GetType(String))
+        dataExamenSolicitable.Columns.Add(dcNombreExamen)
+
+
+        Dim nodoExamenSolicitable As NodoExamenSolicitableLaboratorio
+        nodoExamenSolicitable = _examenesSolicitables.raiz
+
+        While Not IsNothing(nodoExamenSolicitable)
+            Dim examenSolicitable As ExamenSolicitableLaboratorio
+
+            examenSolicitable = nodoExamenSolicitable.examenSolicitable
+            nombreExamen = examenSolicitable.getNombre()
+
+
+            dataExamenSolicitable.Rows.Add(nombreExamen)
+
+            nodoExamenSolicitable = nodoExamenSolicitable.siguiente
+        End While
+
+    End Sub
+
+
+
 
 
 End Class

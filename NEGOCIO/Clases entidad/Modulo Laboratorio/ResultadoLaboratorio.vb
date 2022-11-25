@@ -2,7 +2,7 @@
 
     Private codigo As Long
     Private examen As ExamenLaboratorio
-    Private detalle As DetalleOrdenLaboratorio
+    Private detalle As DetalleLaboratorio
     Private orden As OrdenLaboratorio
     Private procesador As Usuario
 
@@ -11,17 +11,19 @@
     Private kitequipo As KitEquipoLaboratorio
     Private conjunto As ConjuntoOpcionesResultadosLaboratorio
 
+    Private vacio As Boolean
     Private valorTipoComun As Double
     Private valorTipoOpcion As OpcionResultadoLaboratorio
     Private valorTipoTextual As String
 
     Private asignado As Boolean
     Private referencia As ReferenciaResultadoLaboratorio
+    Private observacion As String
 
     Public Sub New()
         codigo = 0
         examen = New ExamenLaboratorio()
-        detalle = New DetalleOrdenLaboratorio()
+        detalle = New DetalleLaboratorio()
         orden = New OrdenLaboratorio()
         procesador = New usuario
 
@@ -30,12 +32,14 @@
         kitequipo = New KitEquipoLaboratorio()
         conjunto = New ConjuntoOpcionesResultadosLaboratorio()
 
+        vacio = False
         valorTipoComun = 0
         valorTipoOpcion = New OpcionResultadoLaboratorio()
         valorTipoTextual = ""
 
         asignado = False
         referencia = New ReferenciaResultadoLaboratorio()
+        observacion = ""
     End Sub
 
 
@@ -60,11 +64,12 @@
 
 
 
-    Public Sub setDetalle(ByRef _detalle As DetalleOrdenLaboratorio)
+
+    Public Sub setDetalle(ByRef _detalle As DetalleLaboratorio)
         detalle = _detalle
     End Sub
 
-    Public Function getDetalle() As DetalleOrdenLaboratorio
+    Public Function getDetalle() As DetalleLaboratorio
         Return detalle
     End Function
 
@@ -128,6 +133,19 @@
     End Function
 
 
+
+
+    Public Sub setVacio(_vacio As Boolean)
+        vacio = _vacio
+    End Sub
+
+    Public Function getVacio() As Boolean
+        Return vacio
+    End Function
+
+
+
+
     Public Sub setValorTipoComun(_valorTipoComun As Double)
         valorTipoComun = _valorTipoComun
     End Sub
@@ -174,6 +192,19 @@
     Public Function getReferencia() As ReferenciaResultadoLaboratorio
         Return referencia
     End Function
+
+
+
+
+    Public Sub setObservacion(_observacion)
+        observacion = _observacion
+    End Sub
+
+    Public Function getObservacion() As String
+        Return observacion
+    End Function
+
+
 
 
 End Class

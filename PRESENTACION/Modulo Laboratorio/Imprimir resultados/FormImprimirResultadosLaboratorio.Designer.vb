@@ -389,7 +389,7 @@ Partial Class FormImprimirResultadosLaboratorio
         Me.txtBuscarAsegurado.Size = New System.Drawing.Size(206, 21)
         Me.txtBuscarAsegurado.TabIndex = 1
         '
-        'dgvSolicitudes
+        'dgvOrdenes
         '
         Me.dgvOrdenes.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill
         Me.dgvOrdenes.BackgroundColor = System.Drawing.Color.White

@@ -3,35 +3,35 @@
 
 Public Class FormConfimarOrdenLaboratorio
 
-    ''ATRIBUTOS LÓGICOS
-    Private registro As ConfirmacionOrdenLaboratorio
-    Private reporte As reportPrueba
+    'ATRIBUTOS LÓGICOS
+    Private negocio As ConfirmacionOrdenLaboratorio
+    Private reporte As ReporteOrdenLaboratorio
 
-
-    ''ATRIBUTOS LÓGICOS MODO FORM HIJO
+    'ATRIBUTOS LÓGICOS MODO FORM HIJO
     Public estadoFormGuardado As Boolean
     Public esFormHijo As Boolean
     Private ordenFormPadre As OrdenLaboratorio
     Private asguradoFormPadre As Asegurado
     Private medicoFormPadre As Medico
+    Private examenesSolicitables As ListaEnlazadaExamenSolicitableLaboratorio
 
-
-    ''ATRIBUTOS G0
+    'ATRIBUTOS G0
     Private tituloFormulario As String
 
-    ''ATRIBUTOS G9
+    'ATRIBUTOS SUBMIT  
     Public Property registroConfirmado As Boolean
 
 
 
+
     'METODOS INICIO
-    Public Sub New(_esHijo As Boolean, _orden As OrdenLaboratorio)
+    Public Sub New(_esHijo As Boolean, _orden As OrdenLaboratorio, _examenesSolicitables As ListaEnlazadaExamenSolicitableLaboratorio)
         ' This call is required by the designer.
         InitializeComponent()
 
 
         ' Add any initialization after the InitializeComponent() call.
-        preIniciarAtributosFormHijo(True, _orden)
+        preIniciarAtributosFormHijo(_esHijo, _orden, _examenesSolicitables)
         iniciarFormulario()
     End Sub
 
@@ -45,13 +45,13 @@ Public Class FormConfimarOrdenLaboratorio
 
     End Sub
 
-    Private Sub preIniciarAtributosFormHijo(_esHijo As Boolean, _orden As OrdenLaboratorio)
+    Private Sub preIniciarAtributosFormHijo(_esHijo As Boolean, _orden As OrdenLaboratorio, _examenesSolicitables As ListaEnlazadaExamenSolicitableLaboratorio)
         estadoFormGuardado = False
         esFormHijo = _esHijo
         ordenFormPadre = _orden
         asguradoFormPadre = _orden.getAsegurado()
         medicoFormPadre = _orden.getMedico()
-
+        examenesSolicitables = _examenesSolicitables
 
         If esFormHijo Then
 
@@ -66,18 +66,19 @@ Public Class FormConfimarOrdenLaboratorio
         iniciarControlesInterfaz()
 
 
-        'If esFormHijo Then iniciarControlesInterfazFormSecundario()
-        registro.cargarDatosAsegurado(asguradoFormPadre)
-        registro.cargarDatosMedico(medicoFormPadre)
-        registro.cargarDatosUsusario()
+        negocio.cargarDatosAsegurado(asguradoFormPadre)
+        negocio.cargarDatosMedico(medicoFormPadre)
+        negocio.cargarDatosUsusario()
+        negocio.cargarDatosExmenSolicitable(examenesSolicitables)
+
 
         cargarReporte()
     End Sub
 
     Private Sub iniciarAtributos()
         ''ATRIBUTOS LÓGICOS
-        registro = New ConfirmacionOrdenLaboratorio()
-        reporte = New reportPrueba()
+        negocio = New ConfirmacionOrdenLaboratorio()
+        reporte = New ReporteOrdenLaboratorio()
 
         ''ATRIBUTOS LÓGICOS MODO FORM HIJO
         'estadoFormGuardado = New Boolean()
@@ -88,7 +89,7 @@ Public Class FormConfimarOrdenLaboratorio
         ''ATRIBUTOS G0
         tituloFormulario = "Confirmar oden de laboratorio"
 
-        ''ATRIBUTOS G9
+        ''ATRIBUTOS SUBMIT  
         registroConfirmado = False
     End Sub
 
@@ -163,14 +164,15 @@ Public Class FormConfimarOrdenLaboratorio
 
 
 
+
     'MÉTODOS LÓGICOS G1
     Private Sub cargarReporte()
         'reporte.SetDataSource(dt)
 
-        reporte.Database.Tables(0).SetDataSource(registro.dataAsegurado)
-        reporte.Database.Tables(1).SetDataSource(registro.dataMedico)
-        reporte.Database.Tables(2).SetDataSource(registro.dataUsuario)
-
+        reporte.Database.Tables(0).SetDataSource(negocio.dataAsegurado)
+        reporte.Database.Tables(1).SetDataSource(negocio.dataMedico)
+        reporte.Database.Tables(2).SetDataSource(negocio.dataUsuario)
+        reporte.Database.Tables(3).SetDataSource(negocio.dataExamenSolicitable)
 
         rViewer.ReportSource = reporte
         rViewer.Refresh()
@@ -183,10 +185,14 @@ Public Class FormConfimarOrdenLaboratorio
 
 
 
+
+
+
     'METODOS INTERFAZ G9
     Private Sub mostrarMensaje(_mensaje As String)
         MessageBox.Show(_mensaje, "Mensaje")
     End Sub
+
 
 
 

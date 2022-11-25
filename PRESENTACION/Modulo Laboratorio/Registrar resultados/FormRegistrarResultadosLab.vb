@@ -4,7 +4,7 @@ Imports System.Globalization
 Public Class FormRegistrarResultadosLab
 
     'ATRIBUTOS LOGICOS
-    Public registro As RegistroResultadosLab
+    Public negocio As RegistroResultadosLab
 
     'ATRIBUTOS LÓGICOS MODO FORM HIJO
     Public estadoFormGuardado As Boolean
@@ -75,7 +75,7 @@ Public Class FormRegistrarResultadosLab
 
     Private Sub iniciarAtributos()
         'ATRIBUTOS LOGICOS
-        registro = New RegistroResultadosLab()
+        negocio = New RegistroResultadosLab()
 
         'ATRIBUTOS LÓGICOS MODO FORM HIJO
         'estadoFormGuardado = False
@@ -102,7 +102,7 @@ Public Class FormRegistrarResultadosLab
     End Sub
 
     Private Sub iniciarProcesosNegocio()
-        registro.iniciarProcesos()
+        negocio.iniciarProcesos()
     End Sub
 
     Private Sub iniciarInterfaz()
@@ -234,6 +234,13 @@ Public Class FormRegistrarResultadosLab
         hintOrdenFecha.BackColor = Color.Transparent
         hintOrdenFecha.Font = New Font("Microsoft Sans Serif", 8)
         hintOrdenFecha.Text = "SELECCIONAR"
+
+        txtNota.Enabled = True
+        txtNota.Visible = True
+        txtNota.ReadOnly = True
+        txtNota.Font = New Font("Microsoft Sans Serif", 9)
+        txtNota.Text = ""
+        txtNota.CharacterCasing = CharacterCasing.Upper
     End Sub
 
     Private Sub iniciarInterfazGrupo2()
@@ -332,6 +339,10 @@ Public Class FormRegistrarResultadosLab
                 columna.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleRight
                 columna.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight
 
+            ElseIf columna.Name = clmAccion Then
+                columna.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter
+                columna.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
+
             Else
                 columna.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleLeft
                 columna.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
@@ -363,6 +374,13 @@ Public Class FormRegistrarResultadosLab
         Me.CenterToScreen()
     End Sub
 
+
+
+
+
+
+
+
     'MÉTODOS LOGICOS G1 --
     Private Sub seleccionarModoBusqueda()
         If rbuttonNroOrden.Checked Then modoBusquedaSeleccionado = 1
@@ -371,22 +389,22 @@ Public Class FormRegistrarResultadosLab
     End Sub
 
     Public Sub ajustarHabilitacionFormulario()
-        Dim usuarioValido As Boolean = registro.tipoUsuarioValido
+        Dim usuarioValido As Boolean = negocio.tipoUsuarioValido
 
         If Not usuarioValido Then mostrarMensaje("Error. Usted no es un usuario valido para ingresar resultados de laboratorio")
     End Sub
 
     Public Sub controlarTipoUsuarioValido()
-        registro.controlaerTipoUsuarioValido()
+        negocio.controlaerTipoUsuarioValido()
     End Sub
 
     Private Sub generarFechas()
-        registro.generarFechas()
+        negocio.generarFechas()
     End Sub
 
     Private Sub seleccionarFecha()
         Dim index As Short = cboxFecha.SelectedIndex
-        fechaSeleccionada = registro.fechasValidas(index)
+        fechaSeleccionada = negocio.fechasValidas(index)
     End Sub
 
     Private Sub traerOrdenes()
@@ -397,39 +415,39 @@ Public Class FormRegistrarResultadosLab
 
     Private Sub traerOrdenesPorNroOrden()
         Dim codigoOrden As String = txtBuscarPorNroOrden.Text.Trim()
-        registro.traerOrdenesPorNroOrden(codigoOrden)
+        negocio.traerOrdenesPorNroOrden(codigoOrden)
     End Sub
 
     Private Sub traerOrdenesPorNombre()
         Dim nombreCompleto As String = txtBuscarPorNombre.Text.Trim()
-        registro.traerOrdenesPorNombre(nombreCompleto)
+        negocio.traerOrdenesPorNombre(nombreCompleto)
     End Sub
 
     Private Sub traerOrdenesPorFecha()
-        registro.traerOrdenesPorFechas(fechaSeleccionada)
+        negocio.traerOrdenesPorFechas(fechaSeleccionada)
     End Sub
 
     Private Sub seleccionarOrden()
         If modoBusquedaSeleccionado = 1 Then
             Dim indexCboxOrdenNroOrden As Short = cboxOrdenNroOrden.SelectedIndex
-            ordenSeleccionada = registro.ordenes(indexCboxOrdenNroOrden)
+            ordenSeleccionada = negocio.ordenes(indexCboxOrdenNroOrden)
 
         ElseIf modoBusquedaSeleccionado = 2 Then
             Dim indexCboxOrdenNombre As Short = cboxOrdenNombre.SelectedIndex
-            ordenSeleccionada = registro.ordenes(indexCboxOrdenNombre)
+            ordenSeleccionada = negocio.ordenes(indexCboxOrdenNombre)
 
         ElseIf modoBusquedaSeleccionado = 3 Then
             Dim inddexCboxOrdenFecha As Short = cboxOrdenFecha.SelectedIndex
-            ordenSeleccionada = registro.ordenes(inddexCboxOrdenFecha)
+            ordenSeleccionada = negocio.ordenes(inddexCboxOrdenFecha)
         End If
     End Sub
 
     Private Sub traerDetalles()
-        registro.traerDetalles(ordenSeleccionada)
+        negocio.traerDetalles(ordenSeleccionada)
     End Sub
 
     Private Sub generarListaResultados()
-        registro.generarListaResultados(nuevosResultados)
+        negocio.generarListaResultados(nuevosResultados)
     End Sub
 
     Private Sub reiniciarLogicoOrdenSeleccionada()
@@ -457,18 +475,21 @@ Public Class FormRegistrarResultadosLab
     End Sub
 
     Private Sub abrirFormRegistrarResultadoTipoComun()
-        Dim asegurado As Asegurado, modoTipoUsuario As Short, formulario As FormRegistrarResultadoLabTipoValorComun
+        Dim asegurado As Asegurado, modoTipoUsuario As Short, form As FormRegistrarResultadoLabTipoValorComun
 
         asegurado = ordenSeleccionada.getAsegurado()
-        modoTipoUsuario = registro.codigoTipoUsuario
-        formulario = New FormRegistrarResultadoLabTipoValorComun(resultadoSeleccionado, asegurado, modoTipoUsuario)
-        formulario.ShowDialog()
+        modoTipoUsuario = negocio.codigoTipoUsuario
+
+        form = New FormRegistrarResultadoLabTipoValorComun(resultadoSeleccionado, asegurado, modoTipoUsuario)
+        If form.formIniciado Then
+            form.ShowDialog()
+        End If
     End Sub
 
     Private Sub abrirFormRegistrarResultadoTipoOpcion()
         Dim formulario As FormRegistrarResultadoLabTipoValorOpcionSeleccion, modoTipoUsuario As Short
 
-        modoTipoUsuario = registro.codigoTipoUsuario
+        modoTipoUsuario = negocio.codigoTipoUsuario
         formulario = New FormRegistrarResultadoLabTipoValorOpcionSeleccion(resultadoSeleccionado, modoTipoUsuario)
         formulario.ShowDialog()
     End Sub
@@ -476,7 +497,7 @@ Public Class FormRegistrarResultadosLab
     Private Sub abrirFormRegistrarResultadoTipoTextual()
         Dim formulario As FormRegistrarResultadoLabTipoValorTextual, modoTipoUsuario As Short
 
-        modoTipoUsuario = registro.codigoTipoUsuario
+        modoTipoUsuario = negocio.codigoTipoUsuario
         formulario = New FormRegistrarResultadoLabTipoValorTextual(resultadoSeleccionado, modoTipoUsuario)
         formulario.ShowDialog()
     End Sub
@@ -495,10 +516,8 @@ Public Class FormRegistrarResultadosLab
 
             If mensajeValidacion = "" Then
                 Dim objetosCargados As Boolean = cargarObjetos()
+                If objetosCargados Then enviarDatosDatabase()
 
-                If objetosCargados Then
-                    enviarDatosDatabase()
-                End If
             Else
                 mostrarMensaje(mensajeValidacion)
             End If
@@ -516,7 +535,7 @@ Public Class FormRegistrarResultadosLab
     End Function
 
     Private Function validarEntradas()
-        Dim mensaje As String = registro.validarEntradas(nuevosResultados)
+        Dim mensaje As String = negocio.validarEntradas(nuevosResultados)
         Return mensaje
     End Function
 
@@ -533,10 +552,10 @@ Public Class FormRegistrarResultadosLab
     Private Sub enviarDatosDatabase()
         Dim mensajeInsercion As String, estadoInsercion As Short
 
-        registro.insertarResultados(nuevosResultados)
+        negocio.insertarResultados(nuevosResultados)
 
-        mensajeInsercion = registro.generarMensajeInsercion()
-        estadoInsercion = registro.estadoInsercion
+        mensajeInsercion = negocio.generarMensajeInsercion()
+        estadoInsercion = negocio.estadoInsercion
 
         If Not mensajeInsercion = "" Then
             mostrarMensaje(mensajeInsercion)
@@ -556,7 +575,7 @@ Public Class FormRegistrarResultadosLab
 
     'METODOS INTERFAZ G1 --
     Private Sub mostrarInformacionValidesDiasRegistro()
-        Dim parametro As Parametro = registro.parametroNroDiasValidos
+        Dim parametro As Parametro = negocio.parametroNroDiasValidos
         lblMensajeRestriccion.Text = "La busqueda de ordenes sólo aplica para ordenes ingresadas en los últimos " + parametro.getValor().ToString() + " días."
     End Sub
 
@@ -598,7 +617,7 @@ Public Class FormRegistrarResultadosLab
     Private Sub poblarCboxOrdenNroOrden()
         cboxOrdenNroOrden.Items.Clear()
 
-        For Each orden As OrdenLaboratorio In registro.ordenes
+        For Each orden As OrdenLaboratorio In negocio.ordenes
             Dim apPaterno As String, apMaterno As String, nombres As String,
                 nombreCompleto As String, codigo As String, matricula As String
 
@@ -619,7 +638,7 @@ Public Class FormRegistrarResultadosLab
     Private Sub poblarCboxOrdenNombre()
         cboxOrdenNombre.Items.Clear()
 
-        For Each orden As OrdenLaboratorio In registro.ordenes
+        For Each orden As OrdenLaboratorio In negocio.ordenes
             Dim apPaterno As String, apMaterno As String, nombres As String,
                 nombreCompleto As String, codigo As String, matricula As String
 
@@ -640,7 +659,7 @@ Public Class FormRegistrarResultadosLab
     Private Sub poblarCboxOrdenFecha()
         cboxOrdenFecha.Items.Clear()
 
-        For Each orden As OrdenLaboratorio In registro.ordenes
+        For Each orden As OrdenLaboratorio In negocio.ordenes
             Dim apPaterno As String, apMaterno As String, nombres As String,
                 nombreCompleto As String, codigo As String, matricula As String
 
@@ -661,7 +680,7 @@ Public Class FormRegistrarResultadosLab
     Private Sub poblarCboxFechas()
         cboxFecha.Items.Clear()
 
-        For Each fecha As Date In registro.fechasValidas
+        For Each fecha As Date In negocio.fechasValidas
             cboxFecha.Items.Add(fecha.ToString("dd / MM / yyyy", CultureInfo.InvariantCulture))
         Next
     End Sub
@@ -735,7 +754,13 @@ Public Class FormRegistrarResultadosLab
         hintOrdenFecha.Visible = False
     End Sub
 
+    Private Sub intMostrarNota()
+        Dim nota As String
 
+        nota = ordenSeleccionada.getNota()
+
+        txtNota.Text = nota
+    End Sub
 
     'METODOS INTERFAZ G2
     Private Sub poblarDgvResultados()
@@ -746,7 +771,8 @@ Public Class FormRegistrarResultadosLab
 
         If nroResultados > 0 Then
             For Each resultado As ResultadoLaboratorio In nuevosResultados
-                Dim codigo As String, nombreArea As String, nombreExamen As String, tipoResultado As Short, asignado As Boolean,
+                Dim codigo As String, nombreArea As String, nombreExamen As String,
+                    tipoResultado As Short, asignado As Boolean, vacio As String,
                     descripcionResultado As String
 
                 Dim rowIndex As Int16 = dgvResultados.Rows.Add()
@@ -758,7 +784,7 @@ Public Class FormRegistrarResultadosLab
                 nombreExamen = resultado.getExamen().getNombre()
                 tipoResultado = resultado.getTipoResultado().getCorrelativo()
                 asignado = resultado.getAsignado()
-
+                vacio = resultado.getVacio()
 
                 rowAux.Cells(clmCodDetalle).Value = codigo
                 rowAux.Cells(clmNomArea).Value = nombreArea
@@ -770,6 +796,10 @@ Public Class FormRegistrarResultadosLab
                     If tipoResultado = 2 Then descripcionResultado = resultado.getValorTipoOpcion().getValor().ToString()
                     If tipoResultado = 3 Then descripcionResultado = resultado.getValorTipoTextual().ToString()
 
+                    If vacio Then
+                        descripcionResultado = "RESULTADO EN BLANCO"
+                    End If
+
                     rowAux.Cells(clmResultado).Value = descripcionResultado
                 Else
                     descripcionResultado = "RESULTADOS PENDIENTES"
@@ -779,13 +809,12 @@ Public Class FormRegistrarResultadosLab
 
         Else
             mostrarNoHayPendientes()
-
         End If
     End Sub
 
     Private Sub mostrarNoHayPendientes()
         Dim modoTipoUsuario As Short
-        modoTipoUsuario = registro.codigoTipoUsuario
+        modoTipoUsuario = negocio.codigoTipoUsuario
 
         If modoTipoUsuario = 3 Then mostrarMensaje("Esta orden no tiene resultados pendientes de sus areas.")
         If modoTipoUsuario = 4 Then mostrarMensaje("Esta orden no tiene resultados pendientes.")
@@ -977,6 +1006,8 @@ Public Class FormRegistrarResultadosLab
         Try
             seleccionarOrden()
             ocultarHintOrdenFecha()
+
+            intMostrarNota()
 
             traerDetalles()
             generarListaResultados()

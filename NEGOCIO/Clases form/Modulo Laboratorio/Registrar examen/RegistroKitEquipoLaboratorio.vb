@@ -6,7 +6,8 @@ Public Class RegistroKitEquipoLaboratorio
 
     'ATRIBUTOS G1
     Public tipos As Concepto()
-    Public proveedores As ProveedorKitEquipo()
+    Public marcas() As MarcaKitEquipoLaboratorio
+    Public marcaSeleccionada As MarcaKitEquipoLaboratorio
 
     'ATRIBUTOS G2
     Public examenes As ExamenLaboratorio()
@@ -18,8 +19,6 @@ Public Class RegistroKitEquipoLaboratorio
     Public nuevoCodigoKitEquipo As Long
     Public estadoInsercion As Short
 
-
-
     'METODOS INICIO
     Public Sub New()
         'ATRIBUTOS LÓGICOS
@@ -27,7 +26,8 @@ Public Class RegistroKitEquipoLaboratorio
 
         'ATRIBUTOS G1
         tipos = New Concepto(-1) {}
-        proveedores = New ProveedorKitEquipo(-1) {}
+        marcas = Nothing
+        marcaSeleccionada = Nothing
 
         'ATRIBUTOS G2
         examenes = New ExamenLaboratorio(-1) {}
@@ -43,6 +43,15 @@ Public Class RegistroKitEquipoLaboratorio
     Public Sub iniciarProcesos()
 
     End Sub
+
+
+
+
+
+
+
+
+
 
 
 
@@ -65,17 +74,17 @@ Public Class RegistroKitEquipoLaboratorio
         Next
     End Sub
 
-    Public Sub traerProveedores()
-        Dim datatable As DataTable = traerProveedoresBD(), index As Short = 0
-        proveedores = New ProveedorKitEquipo(datatable.Rows.Count - 1) {}
+    Public Sub traerMarcas()
+        Dim datatable As DataTable = traerMarcasBD(), index As Short = 0
+        marcas = New MarcaKitEquipoLaboratorio(datatable.Rows.Count - 1) {}
 
         For Each row As DataRow In datatable.Rows
             Dim codigo As Long, nombre As String
 
-            If IsDBNull(row("CODPRO PRO")) Then codigo = 0 Else codigo = Long.Parse(row("CODPRO PRO"))
-            If IsDBNull(row("NOMPRO PRO")) Then nombre = "" Else nombre = row("NOMPRO PRO").ToString()
+            If IsDBNull(row("COD MAR")) Then codigo = 0 Else codigo = Long.Parse(row("COD MAR"))
+            If IsDBNull(row("NOM MAR")) Then nombre = "" Else nombre = row("NOM MAR").ToString()
 
-            proveedores(index) = New ProveedorKitEquipo(codigo, nombre)
+            marcas(index) = New MarcaKitEquipoLaboratorio(codigo, nombre)
             index += 1
         Next
     End Sub
@@ -248,15 +257,23 @@ Public Class RegistroKitEquipoLaboratorio
     End Function
 
 
+
+
+
+
+
+
+
+
+
     'METODOS BD G1 --
     Private Function traerTiposBD() As DataTable
         Dim P As Object() = New Object(0) {}
         Return dal.TraerDataTable("SPtraerTiposKitEquipo_RegistrarKitEquipoLaboratorio", P)
     End Function
 
-    Private Function traerProveedoresBD() As DataTable
-        Dim P As Object() = New Object(0) {}
-        Return dal.TraerDataTable("SPtraerProveedor_RegistrarKitEquipoLaboratorio", P)
+    Private Function traerMarcasBD() As DataTable
+        Return dal.TraerDataTable("SPtraerMarcas_RegistrarKitEquipoLaboratorio")
     End Function
 
     Public Function traerModeloRepetidoBD(ByRef _proveedor As ProveedorKitEquipoInput, _modelo As Long, _examen As ExamenLaboratorioInput) As DataTable
@@ -268,7 +285,6 @@ Public Class RegistroKitEquipoLaboratorio
         Return dal.TraerDataTable("SPtraerModeloRepetido_RegistrarKitEquipoLaboratorio", P)
     End Function
 
-
     'METODOS BD G2
     Private Function traerExamenesBD(_nombreExamen As String) As DataTable
         Dim P As Object() = New Object(0) {}
@@ -276,24 +292,21 @@ Public Class RegistroKitEquipoLaboratorio
         Return dal.TraerDataTable("SPtraerExamenesLab_RegistrarKitEquipoLaboratorio", P)
     End Function
 
-
     'METODOS BD G4
     Private Function traerTiposValoresReferenciaBD() As DataTable
         Dim P As Object() = New Object(0) {}
         Return dal.TraerDataTable("SPtraerTipoValoresReferencia_Concepto", P)
     End Function
 
-
     'METODOS BD G9 --
     Private Function insertKitEquipoBD(ByRef _kitEquipo As KitEquipoLaboratorio) As Short
-        Dim P As Object() = New Object(5) {}
+        Dim P As Object() = New Object(4) {}
 
         P(0) = Usuario.codUserLoggedSystem
         P(1) = _kitEquipo.getTipo().getCorrelativo()
-        P(2) = _kitEquipo.getProveedor().getCodigo()
-        P(3) = _kitEquipo.getModelo()
-        P(4) = _kitEquipo.getExamen().getCodigo()
-        P(5) = _kitEquipo.getTipoReferencia().getCorrelativo()
+        P(2) = _kitEquipo.getMarca().getCodigo()
+        P(3) = _kitEquipo.getExamen().getCodigo()
+        P(4) = _kitEquipo.getTipoReferencia().getCorrelativo()
 
         Return dal.Ejecutar("SPregistrarKit_RegistrarKitEquipoLaboratorio", P)
     End Function
@@ -318,10 +331,7 @@ Public Class RegistroKitEquipoLaboratorio
         mensaje = validarTipo(_kitEquipoInput.tipo)
         If Not mensaje = "" Then Return mensaje
 
-        mensaje = validarProveedor(_kitEquipoInput.proveedor)
-        If Not mensaje = "" Then Return mensaje
-
-        mensaje = validarModelo(_kitEquipoInput.proveedor, _kitEquipoInput.modelo, _kitEquipoInput.examen)
+        mensaje = validarMarca(marcaSeleccionada)
         If Not mensaje = "" Then Return mensaje
 
         mensaje = validarExamen(_kitEquipoInput.examen)
@@ -342,28 +352,17 @@ Public Class RegistroKitEquipoLaboratorio
         Return ""
     End Function
 
-    Private Function validarProveedor(ByRef _proveedor As ProveedorKitEquipoInput) As String
-        If Long.Parse(_proveedor.codigo) = 0 Then Return "Error. Seleccione un proveedor."
-        Return ""
-    End Function
+    Private Function validarMarca(ByRef _marca As MarcaKitEquipoLaboratorio) As String
 
-    Private Function validarModelo(ByRef _proveedor As ProveedorKitEquipoInput, _modelo As String, ByRef examen As ExamenLaboratorioInput) As String
-        Dim nroRepetidos As Short, nombreProveedor As String
+        If IsNothing(_marca) Then
+            Return "Error. Seleccione una marca de Kit-Equipo."
 
-        nombreProveedor = _proveedor.nombre
-
-        If _modelo = "" Then Return "Error. Ingrese el nro de modelo."
-
-        For Each c As Char In _modelo
-            If Not Char.IsNumber(c) Then Return "Error. El el modelo sólo puede ser un número."
-        Next
-
-        nroRepetidos = traerModeloRepetido(_proveedor, Long.Parse(_modelo), examen)
-        If nroRepetidos > 0 Then Return "Error. Ya existe un kit del proveedor " + nombreProveedor + " " + "con el número de modelo " + _modelo + " " + "para el examen " + examen.nombre + " " + "registrado en el sistema."
+        ElseIf _marca.getCodigo() = 0 Then
+            Return "Error. Seleccione una marca de Kit-Equipo."
+        End If
 
         Return ""
     End Function
-
 
     Private Function validarExamen(ByRef _examen As ExamenLaboratorioInput) As String
         If Long.Parse(_examen.codigo) = 0 Then Return "Error. Seleccione un examen."
@@ -386,26 +385,4 @@ Public Class RegistroKitEquipoLaboratorio
 End Class
 
 
-
-Public Class ExamenLaboratorioInput
-    Public Property codigo As String
-    Public Property nombre As String
-    Public Property area As AreaLaboratorioInput
-    Public Property subarea As SubareaLaboratorioInput
-    Public Property tipoResultado As ConceptoInput
-    Public Property conjuntoOpcionesResultado As ConjuntoOpcionesResultadosLabInput
-    Public Property unidad As UnidadMedidaLaboratorioInput
-
-
-    Public Sub New()
-        codigo = "0"
-        nombre = ""
-        area = New AreaLaboratorioInput()
-        subarea = New SubareaLaboratorioInput()
-        tipoResultado = New ConceptoInput()
-        conjuntoOpcionesResultado = New ConjuntoOpcionesResultadosLabInput()
-        unidad = New UnidadMedidaLaboratorioInput()
-    End Sub
-
-End Class
 
