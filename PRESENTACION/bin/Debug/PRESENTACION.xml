@@ -22,52 +22,67 @@ PRESENTACION
   búsquedas de recursos mediante esta clase de recurso fuertemente tipado.
 </summary>
 </member>
-<member name="T:PRESENTACION.mydataset1">
+<member name="T:PRESENTACION.datasetOrdenLaboratorio">
 <summary>
 Represents a strongly typed in-memory cache of data.
 </summary>
 </member>
-<member name="T:PRESENTACION.mydataset1.tableAseguradoDataTable">
+<member name="T:PRESENTACION.datasetOrdenLaboratorio.tableAseguradoDataTable">
 <summary>
 Represents the strongly named DataTable class.
 </summary>
 </member>
-<member name="T:PRESENTACION.mydataset1.tableMedicoDataTable">
+<member name="T:PRESENTACION.datasetOrdenLaboratorio.tableMedicoDataTable">
 <summary>
 Represents the strongly named DataTable class.
 </summary>
 </member>
-<member name="T:PRESENTACION.mydataset1.tableUsuarioDataTable">
+<member name="T:PRESENTACION.datasetOrdenLaboratorio.tableUsuarioDataTable">
 <summary>
 Represents the strongly named DataTable class.
 </summary>
 </member>
-<member name="T:PRESENTACION.mydataset1.tableAseguradoRow">
+<member name="T:PRESENTACION.datasetOrdenLaboratorio.tableExamenSolicitableDataTable">
+<summary>
+Represents the strongly named DataTable class.
+</summary>
+</member>
+<member name="T:PRESENTACION.datasetOrdenLaboratorio.tableAseguradoRow">
 <summary>
 Represents strongly named DataRow class.
 </summary>
 </member>
-<member name="T:PRESENTACION.mydataset1.tableMedicoRow">
+<member name="T:PRESENTACION.datasetOrdenLaboratorio.tableMedicoRow">
 <summary>
 Represents strongly named DataRow class.
 </summary>
 </member>
-<member name="T:PRESENTACION.mydataset1.tableUsuarioRow">
+<member name="T:PRESENTACION.datasetOrdenLaboratorio.tableUsuarioRow">
 <summary>
 Represents strongly named DataRow class.
 </summary>
 </member>
-<member name="T:PRESENTACION.mydataset1.tableAseguradoRowChangeEvent">
+<member name="T:PRESENTACION.datasetOrdenLaboratorio.tableExamenSolicitableRow">
+<summary>
+Represents strongly named DataRow class.
+</summary>
+</member>
+<member name="T:PRESENTACION.datasetOrdenLaboratorio.tableAseguradoRowChangeEvent">
 <summary>
 Row event argument class
 </summary>
 </member>
-<member name="T:PRESENTACION.mydataset1.tableMedicoRowChangeEvent">
+<member name="T:PRESENTACION.datasetOrdenLaboratorio.tableMedicoRowChangeEvent">
 <summary>
 Row event argument class
 </summary>
 </member>
-<member name="T:PRESENTACION.mydataset1.tableUsuarioRowChangeEvent">
+<member name="T:PRESENTACION.datasetOrdenLaboratorio.tableUsuarioRowChangeEvent">
+<summary>
+Row event argument class
+</summary>
+</member>
+<member name="T:PRESENTACION.datasetOrdenLaboratorio.tableExamenSolicitableRowChangeEvent">
 <summary>
 Row event argument class
 </summary>

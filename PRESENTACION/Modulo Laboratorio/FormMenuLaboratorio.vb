@@ -2,12 +2,13 @@
 
 
 
-    'METODOS INICIO -
+    'METODOS INICIO ----
     Public Sub New()
         ' This call is required by the designer.
         InitializeComponent()
 
         ' Add any initialization after the InitializeComponent() call.
+
     End Sub
 
     Protected Overrides Sub OnLoad(e As EventArgs)
@@ -137,7 +138,6 @@
         Dim form As New FormImprimirResultadosLaboratorio()
         form.Show()
         Me.Close()
-
     End Sub
 
     Private Sub btnKitEquipoPredeterminado_Click(sender As Object, e As EventArgs) Handles btnKitEquipoPredeterminado.Click
